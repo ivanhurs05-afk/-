@@ -616,9 +616,11 @@
           <option>Пока не знаю, нужна консультация</option>
         </select>
       </label>
-      <label>Контакт для ответа<input name="contact" placeholder="Telegram или телефон"></label>
-      <button class="btn btn--lg" type="submit">Отправить в WhatsApp</button>
-      <p class="form__hint">Откроется WhatsApp с готовым сообщением. Или <a href="https://t.me/wovlex" target="_blank" rel="noopener">напишите сразу в Telegram</a>.</p>
+      <label>Контакт для ответа<input name="contact" autocomplete="tel" placeholder="Telegram или телефон" required></label>
+      <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <button class="btn btn--lg" type="submit">Отправить заявку</button>
+      <p class="form__status" id="lead-status" role="status" aria-live="polite" hidden></p>
+      <p class="form__hint">Отвечу в течение рабочего дня. Или <a href="https://t.me/wovlex" target="_blank" rel="noopener">напишите сразу в Telegram</a>.</p>
     </form>
   </div>
 </section>

@@ -219,6 +219,11 @@ h2{font-size:clamp(26px,3.4vw,42px)}
 .form input,.form select{font:inherit;font-weight:500;color:var(--tx);background:var(--bg);border:1.5px solid var(--line);border-radius:14px;padding:14px 16px;width:100%;transition:border-color .15s}
 .form input:focus,.form select:focus{outline:0;border-color:var(--acc)}
 .form input.err{border-color:#ff6b6b}
+.hp{position:absolute;left:-9999px;opacity:0;pointer-events:none}
+.form__status{font-size:14px;font-weight:700;border-radius:12px;padding:12px 14px}
+.form__status.ok{background:rgba(120,220,160,.14);color:#8ee6b0}
+.form__status.fail{background:rgba(255,107,107,.14);color:#ff9a9a}
+.form button[disabled]{opacity:.6;cursor:progress}
 .form__hint{font-size:13px;color:var(--mut)}
 .form__hint a{color:var(--acc)}
 

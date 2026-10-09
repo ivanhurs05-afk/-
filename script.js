@@ -91,8 +91,16 @@
     rv.forEach(function (n) { n.classList.add('in'); });
   }
 
-  /* lead form: compose a WhatsApp message */
+  /* lead form: sent to Web3Forms, which emails the submission to the owner.
+     Get a free Access Key at https://web3forms.com (enter your email, the key arrives by mail) and paste it below. */
+  var FORM_ACCESS_KEY = '';
   var form = document.getElementById('lead');
+  var statusEl = document.getElementById('lead-status');
+  function say(text, cls) {
+    statusEl.hidden = false;
+    statusEl.className = 'form__status ' + cls;
+    statusEl.textContent = text;
+  }
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     var f = form.elements;
@@ -102,13 +110,34 @@
       i.classList.toggle('err', bad);
       if (bad) ok = false;
     });
-    if (!ok) return;
-    var text = 'Здравствуйте, Иван! Меня зовут ' + f.name.value.trim() + '.' +
-      (f.niche.value.trim() ? ' Занимаюсь: ' + f.niche.value.trim() + '.' : '') +
-      ' Интересует: ' + f.channel.value + '.' +
-      ' Контакт для связи: ' + f.contact.value.trim() + '.';
-    goal('form_submit');
-    window.open('https://wa.me/79050952128?text=' + encodeURIComponent(text), '_blank', 'noopener');
+    if (!ok) { say('Заполните имя и контакт для ответа.', 'fail'); return; }
+    if (f.botcheck.checked) return;
+    if (!FORM_ACCESS_KEY) { say('Форма временно недоступна. Напишите, пожалуйста, в Telegram: @wovlex', 'fail'); return; }
+
+    var btn = form.querySelector('button[type="submit"]');
+    btn.disabled = true;
+    say('Отправляю…', 'ok');
+    fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        access_key: FORM_ACCESS_KEY,
+        subject: 'Новая заявка с сайта: ' + f.name.value.trim(),
+        from_name: 'Сайт-портфолио',
+        'Имя': f.name.value.trim(),
+        'Чем занимается': f.niche.value.trim() || '—',
+        'Что нужно': f.channel.value,
+        'Контакт': f.contact.value.trim(),
+        botcheck: ''
+      })
+    }).then(function (r) { return r.json(); }).then(function (d) {
+      if (!d.success) throw new Error(d.message || 'fail');
+      goal('form_submit');
+      form.reset();
+      say('Спасибо! Заявка отправлена, я свяжусь с вами в ближайшее время.', 'ok');
+    }).catch(function () {
+      say('Не удалось отправить. Напишите, пожалуйста, в Telegram: @wovlex', 'fail');
+    }).then(function () { btn.disabled = false; });
   });
 
   /* Yandex.Metrika goals (create these goal IDs in Metrika: JavaScript event) */
