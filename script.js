@@ -107,8 +107,22 @@
       (f.niche.value.trim() ? ' Занимаюсь: ' + f.niche.value.trim() + '.' : '') +
       ' Интересует: ' + f.channel.value + '.' +
       ' Контакт для связи: ' + f.contact.value.trim() + '.';
+    goal('form_submit');
     window.open('https://wa.me/79050952128?text=' + encodeURIComponent(text), '_blank', 'noopener');
   });
+
+  /* Yandex.Metrika goals (create these goal IDs in Metrika: JavaScript event) */
+  function goal(name) { try { if (window.ym) ym(113578987, 'reachGoal', name); } catch (e) {} }
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href]');
+    if (!a) return;
+    var h = a.getAttribute('href');
+    if (h.indexOf('t.me/') > -1) goal('click_telegram');
+    else if (h.indexOf('wa.me/') > -1) goal('click_whatsapp');
+    else if (h.indexOf('tel:') === 0) goal('click_phone');
+    else if (h.indexOf('vk.com/') > -1) goal('click_vk');
+  });
+  tabs.forEach(function (t) { t.addEventListener('click', function () { goal('case_tab_' + t.id.replace('t-', '')); }); });
 
   document.getElementById('year').textContent = new Date().getFullYear();
 })();
