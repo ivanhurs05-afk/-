@@ -80,7 +80,7 @@
   }
 
   /* reveal on scroll */
-  var rv = document.querySelectorAll('.card,.mini,.process li,.faq details,.numbers__grid>div,.strip>div,.form');
+  var rv = document.querySelectorAll('.card,.mini,.process li,.faq details,.numbers__grid>div,.strip>div,.form,.about__photo');
   rv.forEach(function (n) { n.classList.add('rv'); });
   if ('IntersectionObserver' in window) {
     var io = new IntersectionObserver(function (es) {
