@@ -117,6 +117,22 @@
     o.observe(el);
   });
 
+  /* screenshot lightbox */
+  var lb = document.createElement('div');
+  lb.className = 'lightbox'; lb.hidden = true; lb.setAttribute('role', 'dialog'); lb.setAttribute('aria-label', 'Просмотр изображения');
+  lb.innerHTML = '<button class="lightbox__x" type="button" aria-label="Закрыть">×</button><img alt="">';
+  document.body.appendChild(lb);
+  var lbImg = lb.querySelector('img'), lastBtn = null;
+  function closeLb() { lb.hidden = true; lbImg.removeAttribute('src'); document.body.style.overflow = ''; if (lastBtn) lastBtn.focus(); }
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest && e.target.closest('[data-full]');
+    if (!b) return;
+    lastBtn = b; lbImg.src = b.getAttribute('data-full'); lbImg.alt = (b.querySelector('img') || {}).alt || '';
+    lb.hidden = false; document.body.style.overflow = 'hidden'; lb.querySelector('.lightbox__x').focus();
+  });
+  lb.addEventListener('click', closeLb);
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !lb.hidden) closeLb(); });
+
   /* header shadow on scroll */
   var navEl = document.querySelector('.nav');
   var onScroll = function () { navEl.classList.toggle('is-scrolled', window.scrollY > 8); };
