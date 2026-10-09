@@ -79,17 +79,48 @@
     growBars(caseWrap);
   }
 
-  /* reveal on scroll */
-  var rv = document.querySelectorAll('.card,.process li,.faq details,.numbers__grid>div,.strip>div,.reach,.about__photo,.proj');
-  rv.forEach(function (n) { n.classList.add('rv'); });
-  if ('IntersectionObserver' in window) {
+  /* reveal on scroll: staggered inside a group, cleaned up afterwards so hover transitions stay fast */
+  var rv = document.querySelectorAll('.sec__head,.card,.process li,.faq details,.numbers__grid>div,.strip>div,.reach,.about__photo,.proj,.price,.price__note');
+  rv.forEach(function (n) {
+    var sibs = Array.prototype.filter.call(n.parentNode.children, function (c) { return c.classList && (c.className === n.className || n.parentNode.classList.contains('prices') || n.parentNode.classList.contains('proj-grid')); });
+    var idx = Math.max(0, sibs.indexOf(n));
+    n.style.setProperty('--d', Math.min(idx, 5) * 80 + 'ms');
+    n.classList.add('rv');
+  });
+  function done(n) {
+    var fin = function () { n.classList.remove('rv', 'in'); n.style.removeProperty('--d'); };
+    var t = setTimeout(fin, 1600);
+    n.addEventListener('transitionend', function h(e) { if (e.propertyName === 'transform') { clearTimeout(t); n.removeEventListener('transitionend', h); fin(); } });
+  }
+  if ('IntersectionObserver' in window && !reduce) {
     var io = new IntersectionObserver(function (es) {
-      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); done(e.target); io.unobserve(e.target); } });
     }, { threshold: .08 });
     rv.forEach(function (n) { io.observe(n); });
   } else {
-    rv.forEach(function (n) { n.classList.add('in'); });
+    rv.forEach(function (n) { n.classList.remove('rv'); });
   }
+
+  /* count-up for headline numbers */
+  document.querySelectorAll('[data-count]').forEach(function (el) {
+    if (reduce || !('IntersectionObserver' in window)) return;
+    var end = parseFloat(el.dataset.count), dec = parseInt(el.dataset.dec || '0', 10), fin = el.textContent;
+    var o = new IntersectionObserver(function (es) {
+      if (!es[0].isIntersecting) return; o.disconnect();
+      var t0 = performance.now(), dur = 1200;
+      (function tick(now) {
+        var k = Math.min(1, (now - t0) / dur), v = end * (1 - Math.pow(1 - k, 3));
+        el.textContent = dec ? v.toFixed(dec).replace('.', ',') : fmt(Math.round(v));
+        if (k < 1) requestAnimationFrame(tick); else el.textContent = fin;
+      })(t0);
+    }, { threshold: .6 });
+    o.observe(el);
+  });
+
+  /* header shadow on scroll */
+  var navEl = document.querySelector('.nav');
+  var onScroll = function () { navEl.classList.toggle('is-scrolled', window.scrollY > 8); };
+  window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
 
   /* Yandex.Metrika goals (create these goal IDs in Metrika: JavaScript event) */
   function goal(name) { try { if (window.ym) ym(113578987, 'reachGoal', name); } catch (e) {} }
