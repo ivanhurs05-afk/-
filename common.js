@@ -10,6 +10,7 @@
     var v = L[k];
     if (v) { el.innerHTML = esc(v); } else if (el.hasAttribute('data-hide-empty')) { el.hidden = true; }
   });
+  document.querySelectorAll('a[data-legal="email"]').forEach(function (a) { if (L.email) a.href = 'mailto:' + L.email; });
   document.querySelectorAll('[data-legal-row]').forEach(function (el) {
     if (!L[el.getAttribute('data-legal-row')]) el.hidden = true;
   });
