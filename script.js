@@ -93,7 +93,7 @@
 
   /* lead form: sent to Web3Forms, which emails the submission to the owner.
      Get a free Access Key at https://web3forms.com (enter your email, the key arrives by mail) and paste it below. */
-  var FORM_ACCESS_KEY = '';
+  var FORM_ACCESS_KEY = '91f54bbf-3e8a-460f-8422-94d4f19c3367';
   var form = document.getElementById('lead');
   var statusEl = document.getElementById('lead-status');
   function say(text, cls) {
