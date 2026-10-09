@@ -11,9 +11,8 @@
 <meta property="og:title" content="Иван Хурс — директолог: заявки, а не клики">
 <meta property="og:description" content="Яндекс Директ, Авито Реклама, трафик в Telegram. Реальные кейсы с цифрами из рекламных кабинетов.">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="preload" href="assets/fonts/ffb0f3eb29.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/fonts.css">
 <link rel="stylesheet" href="styles.css">
 <script>document.documentElement.classList.add('js');</script>
 <script type="application/ld+json">
@@ -27,19 +26,6 @@
   "sameAs": ["https://t.me/wovlex", "https://vk.com/wovlex"]
 }
 </script>
-<!-- Yandex.Metrika counter -->
-<script type="text/javascript">
-    (function(m,e,t,r,i,k,a){
-        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-        m[i].l=1*new Date();
-        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
-        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
-    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=113578987', 'ym');
-
-    ym(113578987, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
-</script>
-<noscript><div><img src="https://mc.yandex.ru/watch/113578987" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-<!-- /Yandex.Metrika counter -->
 </head>
 <body>
 
@@ -603,37 +589,52 @@
         <li><span>ВКонтакте</span><a href="https://vk.com/wovlex" target="_blank" rel="noopener">vk.com/wovlex</a></li>
       </ul>
     </div>
-    <form class="form" id="lead" novalidate>
-      <label>Ваше имя<input name="name" autocomplete="name" placeholder="Как к вам обращаться" required></label>
-      <label>Чем занимаетесь
-        <input name="niche" placeholder="Например: клиника, производство, доставка">
-      </label>
-      <label>Что нужно
-        <select name="channel">
-          <option>Яндекс Директ</option>
-          <option>Авито Реклама</option>
-          <option>Трафик в Telegram</option>
-          <option>Пока не знаю, нужна консультация</option>
-        </select>
-      </label>
-      <label>Контакт для ответа<input name="contact" autocomplete="tel" placeholder="Telegram или телефон" required></label>
-      <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
-      <button class="btn btn--lg" type="submit">Отправить заявку</button>
-      <p class="form__status" id="lead-status" role="status" aria-live="polite" hidden></p>
-      <p class="form__hint">Отвечу в течение рабочего дня. Или <a href="https://t.me/wovlex" target="_blank" rel="noopener">напишите сразу в Telegram</a>.</p>
-    </form>
+    <div class="reach">
+      <h3>Как лучше связаться</h3>
+      <a class="reach__btn reach__btn--main" href="https://t.me/wovlex" target="_blank" rel="noopener"><b>Telegram</b><span>@wovlex · отвечаю быстрее всего</span></a>
+      <a class="reach__btn" href="https://vk.com/wovlex" target="_blank" rel="noopener"><b>ВКонтакте</b><span>vk.com/wovlex</span></a>
+      <a class="reach__btn" href="https://wa.me/79050952128" target="_blank" rel="noopener"><b>WhatsApp</b><span>+7 905 095-21-28</span></a>
+      <a class="reach__btn" href="tel:+79050952128"><b>Позвонить</b><span>8 (905) 095-21-28</span></a>
+      <div id="yaform" class="yaform" hidden></div>
+      <p class="form__hint">Отправляя сообщение или оставляя заявку, вы соглашаетесь с <a href="privacy.html">политикой обработки персональных данных</a> и <a href="consent.html">согласием на обработку персональных данных</a>.</p>
+    </div>
   </div>
 </section>
 </main>
 
 <footer class="footer">
-  <div class="wrap footer__in">
-    <span>© <span id="year">2026</span> Иван Хурс, директолог</span>
-    <span>Яндекс Директ · Авито Реклама · Telegram</span>
-    <a href="#top">Наверх ↑</a>
+  <div class="wrap">
+    <div class="footer__top">
+      <div class="req">
+        <b data-legal="name">Хурс Иван</b>
+        <span data-legal-row="status" data-legal="status"></span>
+        <span data-legal-row="inn">ИНН <span data-legal="inn"></span></span>
+        <span data-legal-row="ogrnip">ОГРНИП <span data-legal="ogrnip"></span></span>
+        <span data-legal-row="address" data-legal="address"></span>
+        <span data-legal-row="email"><a href="#" data-legal="email"></a></span>
+        <span><a href="tel:+79050952128">+7 905 095-21-28</a></span>
+      </div>
+      <nav class="footer__links" aria-label="Документы">
+        <a href="privacy.html">Политика обработки персональных данных</a>
+        <a href="consent.html">Согласие на обработку персональных данных</a>
+        <a href="#" data-cookie-settings>Настройки cookie</a>
+      </nav>
+    </div>
+    <p class="footer__legal">Материалы сайта носят информационный характер и не являются публичной офертой (ст. 437 ГК РФ). Результаты в кейсах — фактические показатели конкретных проектов за указанные периоды, они не гарантируют таких же результатов в других проектах. Яндекс, Яндекс Директ, Яндекс Метрика, Авито, Telegram, ВКонтакте, WhatsApp и другие названия — товарные знаки их правообладателей, упоминаются для описания услуг; сайт не является официальным ресурсом этих компаний. WhatsApp — продукт компании Meta, признанной экстремистской организацией, деятельность которой запрещена на территории РФ.</p>
+    <p class="footer__copy">© <span id="year">2026</span> Иван Хурс · директолог</p>
   </div>
 </footer>
 
+<div class="cookie" id="cookie" role="dialog" aria-label="Файлы cookie" hidden>
+  <p>Сайт использует файлы cookie и сервис «Яндекс Метрика» для статистики и улучшения работы, в том числе запись действий на странице. Вы можете отказаться. Подробнее: <a href="privacy.html#cookies-info">политика обработки персональных данных</a>.</p>
+  <div class="cookie__btns">
+    <button class="btn btn--sm" type="button" data-cookie="yes">Принять</button>
+    <button class="btn btn--sm btn--ghost" type="button" data-cookie="no">Отклонить</button>
+  </div>
+</div>
+
+<script src="legal-config.js"></script>
+<script src="common.js"></script>
 <script src="script.js"></script>
 </body>
 </html>
