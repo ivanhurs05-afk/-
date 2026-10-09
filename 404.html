@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Страница не найдена — Иван Хурс</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/fonts.css">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="nav"><div class="wrap nav__in">
+  <a class="logo" href="./" aria-label="На главную">
+    <svg class="logo__mark" viewBox="0 0 64 64" aria-hidden="true">
+  <rect width="64" height="64" rx="18" fill="#0f1220"/>
+  <!-- down stroke: цена заявки ↓ -->
+  <path d="M18 18 L44 44" stroke="#7f9bff" stroke-width="5.5" stroke-linecap="round" fill="none"/>
+  <path d="M45 33 V45 H33" stroke="#7f9bff" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- up stroke: заявки ↑ (with halo to cut the crossing) -->
+  <path d="M18 46 L44 20" stroke="#0f1220" stroke-width="9" stroke-linecap="round" fill="none"/>
+  <path d="M18 46 L44 20" stroke="#ffffff" stroke-width="5.5" stroke-linecap="round" fill="none"/>
+  <path d="M33 19 H45 V31" stroke="#ffffff" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+</svg>
+    <span class="logo__txt">Иван Хурс <i>директолог</i></span>
+  </a>
+  <a class="btn btn--sm btn--ghost" href="./">← На главную</a>
+</div></header>
+<main class="sec"><div class="wrap wrap--narrow legal" style="text-align:center;padding:48px 0"><h1>Страница не найдена</h1><p>Такой страницы нет. Вернитесь на главную или напишите мне в Telegram.</p><p><a class="btn" href="./">На главную</a></p></div></main>
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__top">
+      <div class="req">
+        <b data-legal="name">Хурс Иван Евгеньевич</b>
+        <span data-legal-row="status" data-legal="status"></span>
+        <span data-legal-row="inn">ИНН <span data-legal="inn"></span></span>
+        <span data-legal-row="ogrnip">ОГРНИП <span data-legal="ogrnip"></span></span>
+        <span data-legal-row="address" data-legal="address"></span>
+        <span data-legal-row="email"><a href="#" data-legal="email"></a></span>
+        <span><a href="tel:+79050952128">+7 905 095-21-28</a></span>
+      </div>
+      <nav class="footer__links" aria-label="Документы">
+        <a href="privacy.html">Политика обработки персональных данных</a>
+        <a href="consent.html">Согласие на обработку персональных данных</a>
+        <a href="#" data-cookie-settings>Настройки cookie</a>
+      </nav>
+    </div>
+    <p class="footer__legal">Материалы сайта носят информационный характер и не являются публичной офертой (ст. 437 ГК РФ). Результаты в кейсах — фактические показатели конкретных проектов за указанные периоды, они не гарантируют таких же результатов в других проектах. Яндекс, Яндекс Директ, Яндекс Метрика, Авито, Telegram, ВКонтакте, WhatsApp и другие названия — товарные знаки их правообладателей, упоминаются для описания услуг; сайт не является официальным ресурсом этих компаний. WhatsApp — продукт компании Meta, признанной экстремистской организацией, деятельность которой запрещена на территории РФ.</p>
+    <p class="footer__copy">© <span id="year">2026</span> Иван Хурс · директолог</p>
+  </div>
+</footer>
+<div class="cookie" id="cookie" role="dialog" aria-label="Файлы cookie" hidden>
+  <p>Сайт использует файлы cookie и сервис «Яндекс Метрика» для статистики и улучшения работы, в том числе запись действий на странице. Вы можете отказаться. Подробнее: <a href="privacy.html#cookies-info">политика обработки персональных данных</a>.</p>
+  <div class="cookie__btns">
+    <button class="btn btn--sm" type="button" data-cookie="yes">Принять</button>
+    <button class="btn btn--sm btn--ghost" type="button" data-cookie="no">Отклонить</button>
+  </div>
+</div>
+<script src="legal-config.js"></script>
+<script src="common.js"></script>
+<script>document.getElementById('year').textContent=new Date().getFullYear();</script>
+</body>
+</html>
