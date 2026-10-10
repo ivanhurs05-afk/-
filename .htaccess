@@ -1,10 +1,10 @@
 # Для хостинга на Apache (Рег.ру). На GitHub Pages игнорируется.
-# ВАЖНО: включайте редирект на HTTPS только после выпуска SSL-сертификата в панели хостинга.
-RewriteEngine On
-RewriteCond %{HTTPS} off
-RewriteRule ^ https://wovlex.ru%{REQUEST_URI} [L,R=301]
-RewriteCond %{HTTP_HOST} ^www\.wovlex\.ru$ [NC]
-RewriteRule ^ https://wovlex.ru%{REQUEST_URI} [L,R=301]
+# Редирект на HTTPS выключен. Включите его (уберите # в строках ниже) ТОЛЬКО после выпуска SSL-сертификата в панели хостинга.
+# RewriteEngine On
+# RewriteCond %{HTTPS} off
+# RewriteRule ^ https://wovlex.ru%{REQUEST_URI} [L,R=301]
+# RewriteCond %{HTTP_HOST} ^www\.wovlex\.ru$ [NC]
+# RewriteRule ^ https://wovlex.ru%{REQUEST_URI} [L,R=301]
 
 ErrorDocument 404 /404.html
 AddDefaultCharset UTF-8
