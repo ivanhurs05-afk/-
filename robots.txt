@@ -1,2 +1,3 @@
 User-agent: *
 Allow: /
+Sitemap: https://wovlex.ru/sitemap.xml
