@@ -10,5 +10,6 @@ window.LEGAL = {
   phone: '+7 905 095-21-28',
   telegram: '@wovlex',
   policyDate: '9 октября 2026 г.',
+  leadEndpoint: '',            // URL функции, принимающей заявки с лендинга zavod/ (см. zavod/backend/README.md)
   yandexFormUrl: ''            // ссылка на Яндекс Форму (forms.yandex.ru), если нужна форма заявки
 };

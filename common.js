@@ -1,7 +1,7 @@
 (function () {
   'use strict';
   var L = window.LEGAL || {};
-  var METRIKA_ID = 113578987;
+  var METRIKA_ID = (window.METRIKA_ID_OVERRIDE !== undefined) ? window.METRIKA_ID_OVERRIDE : 113578987;
 
   /* ---- fill operator data ---- */
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
@@ -39,7 +39,7 @@
     })(window, document, 'script', 'https://mc.yandex.ru/metrika/tag.js?id=' + METRIKA_ID, 'ym');
     window.ym(METRIKA_ID, 'init', { ssr: true, webvisor: true, clickmap: true, ecommerce: 'dataLayer', referrer: document.referrer, url: location.href, accurateTrackBounce: true, trackLinks: true });
   }
-  if (get() === 'yes') loadMetrika();
+  if (get() === 'yes' && METRIKA_ID) loadMetrika();
   if (get() === 'no') window['disableYaCounter' + METRIKA_ID] = true;
 
   /* ---- cookie banner ---- */
@@ -47,7 +47,7 @@
   function show() { if (bar) bar.hidden = false; }
   function hide() { if (bar) bar.hidden = true; }
   if (bar) {
-    if (!get()) show();
+    if (!get() && METRIKA_ID) show();
     bar.querySelector('[data-cookie="yes"]').addEventListener('click', function () { set('yes'); hide(); loadMetrika(); });
     bar.querySelector('[data-cookie="no"]').addEventListener('click', function () {
       var was = get(); set('no'); hide(); window['disableYaCounter' + METRIKA_ID] = true;
