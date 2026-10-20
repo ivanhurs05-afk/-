@@ -5,7 +5,7 @@
   var fmt = function (n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' '); };
 
   /* reveal on scroll */
-  var rv = document.querySelectorAll('.card:not(.form),.how__i,.faq details,.rules li,.vs__col,.verdict,.case__img .shot,.method>.shot');
+  var rv = document.querySelectorAll('.card:not(.form),.faq details,.rules li,.vs__col,.verdict,.case__img .shot,.process>.shot,.price-box,.metrics>div');
   rv.forEach(function (n) {
     var sibs = Array.prototype.slice.call(n.parentNode.children);
     n.style.setProperty('--d', Math.min(sibs.indexOf(n), 5) * 80 + 'ms');
@@ -26,6 +26,17 @@
   } else {
     rv.forEach(function (n) { n.classList.remove('rv'); });
     if (vs) vs.classList.add('in');
+  }
+
+  /* floating CTA hides while a form is on screen */
+  var fab = document.getElementById('fab');
+  if (fab && 'IntersectionObserver' in window) {
+    var on = new Set();
+    var fo = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) on.add(e.target); else on.delete(e.target); });
+      fab.classList.toggle('is-off', on.size > 0);
+    }, { threshold: .15 });
+    document.querySelectorAll('.form').forEach(function (f) { fo.observe(f); });
   }
 
   /* count-up */
