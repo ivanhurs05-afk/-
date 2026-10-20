@@ -5,7 +5,7 @@
   var fmt = function (n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' '); };
 
   /* reveal on scroll */
-  var rv = document.querySelectorAll('.card,.kpis>div,.how__i,.faq details,.shot,.vs__col,.nums__grid>div,.callout');
+  var rv = document.querySelectorAll('.card:not(.form),.how__i,.faq details,.rules li,.vs__col,.verdict,.case__img .shot,.method>.shot');
   rv.forEach(function (n) {
     var sibs = Array.prototype.slice.call(n.parentNode.children);
     n.style.setProperty('--d', Math.min(sibs.indexOf(n), 5) * 80 + 'ms');
