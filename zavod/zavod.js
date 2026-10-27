@@ -140,12 +140,18 @@
         .then(function () { goal('lead_form'); onOk(); say('Спасибо! Заявка отправлена, я перезвоню в течение рабочего дня.', 'ok'); })
         .catch(function () { say('Не удалось отправить. Позвоните или напишите: +7 905 095-21-28, Telegram @wovlex.', 'fail'); })
         .then(function () { btn.disabled = false; });
+    } else if (L.web3formsKey) {
+      /* временный вариант: Web3Forms (зарубежный сервис), включается только ключом в legal.js */
+      btn.disabled = true; say('Отправляю…', 'ok');
+      var msg = { access_key: L.web3formsKey, subject: 'Заявка с сайта: ' + (payload.task || ''), from_name: 'Лендинг для заводов', 'Имя': payload.name || '—', 'Телефон': payload.phone, 'Задача': payload.task || '—', 'Ответы квиза': payload.answers || '—', 'Страница': payload.page, botcheck: '' };
+      fetch('https://api.web3forms.com/submit', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(msg) })
+        .then(function (r) { return r.json(); })
+        .then(function (d) { if (!d.success) throw new Error('bad'); goal('lead_form'); onOk(); say('Спасибо! Заявка отправлена, мы перезвоним в течение рабочего дня.', 'ok'); })
+        .catch(function () { say('Не удалось отправить. Позвоните: +7 905 095-21-28.', 'fail'); })
+        .then(function () { btn.disabled = false; });
     } else {
-      /* no backend connected yet: open a prefilled Telegram message so the lead is not lost */
-      var text = 'Здравствуйте! ' + (payload.task || 'Хочу бесплатный аудит') + '. Имя: ' + (payload.name || '—') + '. Телефон: ' + payload.phone + '.' + (payload.answers ? ' Ответы квиза: ' + payload.answers + '.' : '');
-      goal('lead_form'); onOk();
-      window.open('https://t.me/wovlex?text=' + encodeURIComponent(text), '_blank', 'noopener');
-      say('Открыл Telegram с готовым сообщением, нажмите «Отправить». Или позвоните: +7 905 095-21-28.', 'ok');
+      /* приём заявок ещё не подключён: ничего не отправляем и честно говорим об этом */
+      say('Приём заявок временно не работает. Позвоните нам: +7 905 095-21-28.', 'fail');
     }
   }
 
