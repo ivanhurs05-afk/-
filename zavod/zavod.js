@@ -62,11 +62,16 @@
 
   /* ---------- callback modal ---------- */
   var modal = document.getElementById('callback');
-  function openModal() { modal.hidden = false; document.body.style.overflow = 'hidden'; var i = modal.querySelector('input[type=tel]'); if (i) i.focus(); }
+  function openModal(tag) {
+    var t = modal.querySelector('[data-modal-tag]'), task = modal.querySelector('input[name=task]');
+    if (tag) { if (t) t.textContent = tag; if (task) task.value = 'Заказ: ' + tag; }
+    modal.hidden = false; document.body.style.overflow = 'hidden';
+    var i = modal.querySelector('input[type=tel]'); if (i) i.focus();
+  }
   function closeModal() { modal.hidden = true; document.body.style.overflow = ''; }
   document.addEventListener('click', function (e) {
     var o = e.target.closest && e.target.closest('[data-open="callback"]');
-    if (o) { e.preventDefault(); openModal(); return; }
+    if (o) { e.preventDefault(); openModal(o.getAttribute('data-tag')); return; }
     if (e.target === modal || (e.target.closest && e.target.closest('[data-close]'))) closeModal();
   });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { if (!lb.hidden) closeLb(); else if (!modal.hidden) closeModal(); } });
@@ -174,8 +179,8 @@
         var s = steps[cur];
         body.innerHTML = '<p class="quiz__q">' + s.q + '</p><div class="quiz__opts">' + s.o.map(function (t) { return '<button type="button" class="opt' + (ans[s.k] === t ? ' is-on' : '') + '" data-v="' + t.replace(/"/g, '&quot;') + '">' + t + '</button>'; }).join('') + '</div>';
       } else {
-        body.innerHTML = '<form class="quiz__done" novalidate><p class="quiz__q">Куда прислать прогноз?</p>' +
-          '<p>Подготовлю прогноз заявок и цены на ваш завод и перезвоню в течение рабочего дня.</p>' +
+        body.innerHTML = '<form class="quiz__done" novalidate><p class="quiz__q">Куда прислать расчёт бюджета?</p>' +
+          '<p>Подготовим расчёт бюджета, заявок и цены на ваш завод и перезвоним в течение рабочего дня.</p>' +
           '<label class="qf">Имя<input name="name" autocomplete="name" placeholder="Как к вам обращаться" required></label>' +
           '<label class="qf">Телефон<input name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 (___) ___-__-__" required></label>' +
           '<input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">' +
