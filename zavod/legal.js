@@ -6,7 +6,7 @@ window.LEGAL = {
   ogrnip: '324710000009211',
   address: 'г. Кимовск, Тульская обл.',
   fullAddress: '301720, Россия, Тульская обл., Кимовский р-н, г. Кимовск, ул. Школьная, д. 14',
-  email: '',
+  email: 'ivan.khurs@inbox.ru',
   phone: '+7 905 095-21-28',
   telegram: '@ay11z',
   policyDate: '27 октября 2026 г.',
