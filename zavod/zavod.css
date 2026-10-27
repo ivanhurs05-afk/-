@@ -207,6 +207,12 @@ h1{font-size:clamp(32px,4.8vw,56px);font-weight:800;text-transform:uppercase;let
 .foot__links{display:grid;gap:6px;align-content:start}.foot a{text-decoration:none}.foot a:hover{color:var(--red)}
 .foot__legal{font-size:12px;line-height:1.6;max-width:900px}
 
+/* cookie */
+.cookie{position:fixed;left:16px;right:16px;bottom:16px;z-index:95;max-width:760px;margin:0 auto;display:flex;gap:16px;align-items:center;background:#17171c;color:#e9e9ee;border:1px solid #2c2c36;border-radius:16px;padding:14px 18px;box-shadow:0 20px 50px -20px #000;font-size:13px;line-height:1.5}
+.cookie[hidden]{display:none}.cookie a{color:#fff;text-decoration:underline}
+.cookie__btns{display:flex;gap:8px;flex:none}
+@media (max-width:700px){.cookie{flex-direction:column;align-items:stretch;bottom:76px}.cookie__btns .btn{flex:1}}
+
 /* motion */
 @keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 @keyframes fade{from{opacity:0}to{opacity:1}}

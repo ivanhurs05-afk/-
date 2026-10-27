@@ -10,5 +10,5 @@ window.LEGAL = {
   phone: '+7 905 095-21-28',
   telegram: '@ay11z',
   policyDate: '27 октября 2026 г.',
-  leadEndpoint: ''   // URL функции приёма заявок (см. backend/README.md)
+  leadEndpoint: ''   // ссылка на функцию приёма заявок на почту (см. backend/README.md)
 };

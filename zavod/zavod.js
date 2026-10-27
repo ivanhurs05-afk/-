@@ -99,6 +99,10 @@
     document.querySelectorAll('.hero .form,.quiz,.cta .form').forEach(function (f) { fo.observe(f); });
   }
 
+  /* ---------- Вебвизор: не записывать ввод в полях ---------- */
+  function noKeys(root) { root.querySelectorAll('input,select,textarea').forEach(function (i) { i.classList.add('ym-disable-keys'); }); }
+  noKeys(document);
+
   /* ---------- phone mask ---------- */
   function fmtPhone(v) {
     var d = v.replace(/\D/g, '');
@@ -186,7 +190,7 @@
           '<input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">' +
           '<label class="agree"><input type="checkbox" name="agree" required><span>Согласен на обработку персональных данных (<a href="../consent.html" target="_blank" rel="noopener">согласие</a>, <a href="../privacy.html" target="_blank" rel="noopener">политика</a>)</span></label>' +
           '<button class="btn btn--lg" type="submit">Получить прогноз</button><p class="form__status" role="status" aria-live="polite" hidden></p></form>';
-        maskPhones(body);
+        maskPhones(body); noKeys(body);
         var qform = body.querySelector('form'), st = qform.querySelector('.form__status');
         qform.addEventListener('submit', function (e) {
           e.preventDefault();
