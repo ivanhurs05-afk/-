@@ -135,10 +135,11 @@
     function say(t, c) { statusEl.hidden = false; statusEl.className = 'form__status ' + c; statusEl.textContent = t; }
     if (L.leadEndpoint) {
       btn.disabled = true; say('Отправляю…', 'ok');
-      fetch(L.leadEndpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
-        .then(function (r) { if (!r.ok) throw new Error('bad'); })
-        .then(function () { goal('lead_form'); onOk(); say('Спасибо! Заявка отправлена, я перезвоню в течение рабочего дня.', 'ok'); })
-        .catch(function () { say('Не удалось отправить. Позвоните или напишите: +7 905 095-21-28, Telegram @wovlex.', 'fail'); })
+      /* text/plain, а не application/json: так браузер не делает предварительный запрос (preflight), и CORS проще */
+      fetch(L.leadEndpoint, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=UTF-8' }, body: JSON.stringify(payload) })
+        .then(function (r) { if (!r.ok) { console.error('lead endpoint: HTTP ' + r.status); throw new Error('bad'); } })
+        .then(function () { goal('lead_form'); onOk(); say('Спасибо! Заявка отправлена, мы перезвоним в течение рабочего дня.', 'ok'); })
+        .catch(function (e) { console.error('lead send failed:', e && e.message); say('Не удалось отправить. Позвоните или напишите: +7 905 095-21-28, Telegram @ay11z.', 'fail'); })
         .then(function () { btn.disabled = false; });
     } else if (L.web3formsKey) {
       /* временный вариант: Web3Forms (зарубежный сервис), включается только ключом в legal.js */
