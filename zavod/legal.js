@@ -11,5 +11,5 @@ window.LEGAL = {
   telegram: '@ay11z',
   policyDate: '27 октября 2026 г.',
   web3formsKey: '',    // временный вариант без своей функции (зарубежный сервис), по умолчанию выключен
-  leadEndpoint: ''   // ссылка на функцию приёма заявок на почту (см. backend/README.md)
+  leadEndpoint: 'https://functions.yandexcloud.net/d4ec2la7hi268jnvu83f'   // ссылка на функцию приёма заявок на почту (см. backend/README.md)
 };
