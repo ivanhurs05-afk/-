@@ -223,6 +223,7 @@ h1{font-size:clamp(32px,4.8vw,56px);font-weight:800;text-transform:uppercase;let
 .js .rv.in{opacity:1;transform:none}
 
 @media (max-width:1380px){.brand i{display:none}}
+@media (max-width:1100px){.top__nav,.top__tel{display:none}}
 @media (max-width:1180px){.top__nav{gap:14px}}
 @media (max-width:1000px){
   .hero__grid,.quiz__wrap,.case__grid,.cta__grid,.process,.expert,.pains,.fit{grid-template-columns:1fr}
@@ -248,3 +249,8 @@ h1{font-size:clamp(32px,4.8vw,56px);font-weight:800;text-transform:uppercase;let
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}*{transition:none!important;animation:none!important}.js .rv{opacity:1;transform:none}.js .vs:not(.in) .vs__bar i{transform:none}
 }
+
+/* touch targets and narrow screens */
+.link{display:inline-block;padding:7px 0}
+.foot__links a{display:inline-block;padding:6px 0}
+@media (max-width:380px){.top .btn--sm{padding:9px 10px;font-size:12.5px}.brand span{font-size:14px}.top__r{gap:6px}.top__in{gap:6px}}

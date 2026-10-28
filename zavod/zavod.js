@@ -106,8 +106,9 @@
   /* ---------- phone mask ---------- */
   function fmtPhone(v) {
     var d = v.replace(/\D/g, '');
+    if (!d.length) return '';
     if (d[0] === '8') d = '7' + d.slice(1);
-    if (d[0] !== '7') d = '7' + d;
+    else if (d[0] !== '7') d = '7' + d;
     d = d.slice(0, 11);
     var s = '+7';
     if (d.length > 1) s += ' (' + d.slice(1, 4);
@@ -119,9 +120,7 @@
   }
   function maskPhones(root) {
     root.querySelectorAll('input[type=tel]').forEach(function (i) {
-      i.addEventListener('input', function () { if (i.value.replace(/\D/g, '').length) i.value = fmtPhone(i.value); });
-      i.addEventListener('focus', function () { if (!i.value) i.value = '+7 ('; });
-      i.addEventListener('blur', function () { if (i.value.replace(/\D/g, '').length < 2) i.value = ''; });
+      i.addEventListener('input', function () { i.value = fmtPhone(i.value); });
     });
   }
   maskPhones(document);
