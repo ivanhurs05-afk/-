@@ -307,19 +307,25 @@
     }
     form.size.value = size;
     form.color.value = color;
-    form.request_type.value = btn.getAttribute('data-type') === 'repeat' ? 'repeat' : 'quote';
+    var t = btn.getAttribute('data-type');
+    form.request_type.value = (t === 'repeat' || t === 'resale' || t === 'trial') ? t : 'quote';
 
     var chip = $('[data-variant]', form);
     if (SIZE_LABEL[size]) { chip.textContent = 'Вариант: ' + SIZE_LABEL[size] + (COLOR_LABEL[color] ? ', ' + COLOR_LABEL[color] : ''); chip.hidden = false; }
     else if (size === 'help') { chip.textContent = 'Поможем подобрать диаметр'; chip.hidden = placement !== 'catalog'; }
-    var repeat = form.request_type.value === 'repeat';
-    $('[data-form-title]', form).textContent = repeat ? 'Повторный заказ KISS' : 'Расчёт заказа KISS';
-    $('[data-form-sub]', form).textContent = repeat
-      ? 'Оставьте имя и телефон — перезвоним и оформим повторный заказ.'
-      : 'Оставьте имя и телефон — перезвоним, уточним вариант и количество и пришлём расчёт.';
-    var lid = $('[data-form-lid]', form), lc = COLOR_LABEL[color] ? color : 'black';
-    lid.src = 'assets/img/lid-' + lc + '-300.webp';
-    lid.style.animation = 'none'; void lid.offsetWidth; lid.style.animation = '';
+    var TITLES = {
+      repeat: ['Повторный заказ KISS', 'Оставьте имя и телефон — перезвоним и оформим повторный заказ.'],
+      resale: ['KISS для перепродажи', 'Оставьте имя и телефон — расскажем об условиях для поставщиков упаковки.'],
+      quote: ['Расчёт заказа KISS', 'Оставьте имя и телефон — перезвоним, уточним вариант и количество и пришлём расчёт.']
+    };
+    var tt = TITLES[form.request_type.value] || TITLES.quote;
+    $('[data-form-title]', form).textContent = tt[0];
+    $('[data-form-sub]', form).textContent = tt[1];
+    var lid = $('[data-form-lid]', form);
+    if (lid) {
+      lid.src = 'assets/img/lid-' + (COLOR_LABEL[color] ? color : 'black') + '-300.webp';
+      lid.style.animation = 'none'; void lid.offsetWidth; lid.style.animation = '';
+    }
 
     if (!form.submission_id.value) form.submission_id.value = uid();
     if (typeof dlg.showModal === 'function') dlg.showModal();
@@ -462,6 +468,34 @@
     form.hidden = false; $('[data-success]', dlg).hidden = true;
   }
 
+  /* ---------- Первый экран: смена цвета крышки ---------- */
+  function initHeroColors() {
+    var fig = $('[data-specimen]');
+    if (!fig) return;
+    var img = $('[data-specimen-img]', fig), name = $('[data-specimen-name]', fig);
+    var NAMES = { black: 'чёрная', white: 'белая', red: 'красная' };
+    var ALT = { black: 'чёрного', white: 'белого', red: 'красного' };
+    $$('[data-hero-color]', fig).forEach(function (b) {
+      b.addEventListener('click', function () {
+        var c = b.getAttribute('data-hero-color');
+        if (fig.getAttribute('data-color') === c) return;
+        $$('[data-hero-color]', fig).forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+        fig.setAttribute('data-color', c);
+        name.textContent = NAMES[c];
+        var swap = function () {
+          img.src = 'assets/img/lid-' + c + '-460.webp';
+          img.srcset = 'assets/img/lid-' + c + '-300.webp 300w, assets/img/lid-' + c + '-460.webp 460w';
+          img.alt = 'Крышка KISS ' + ALT[c] + ' цвета, вид сверху: нос, губы, отверстие для питья и бортик посадки';
+          img.classList.toggle('is-swap', false);
+        };
+        goal('variant_select', { color: c, place: 'hero' });
+        if (reduceMotion) return swap();
+        img.classList.toggle('is-swap', true);
+        setTimeout(swap, 200);
+      });
+    });
+  }
+
   /* ---------- Анимации ---------- */
   var reduceMotion = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -534,7 +568,7 @@
       document.body.insertBefore(bar, document.body.firstChild);
     }
     initNav(); initMobileBar(); initLightbox(); initForm(); initContactClicks(); initTouches();
-    initReveal(); initStage(); initTilt(); initScrollFx();
+    initReveal(); initStage(); initTilt(); initHeroColors();
     fetch('content.json', { cache: 'no-cache' })
       .then(function (r) { return r.json(); })
       .then(function (json) { C = json; })
