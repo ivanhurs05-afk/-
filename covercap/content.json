@@ -1,0 +1,56 @@
+{
+  "_comment": "Единый источник цен, контактов и статусов. Меняется через /admin/ (или вручную). Неизвестное оставлять пустым — сайт это не покажет.",
+  "updated_at": "2026-11-04",
+  "contacts": {
+    "phone": "",
+    "phone_display": "",
+    "email": "",
+    "hours": "",
+    "instagram": "coffee_face_nsk",
+    "show_instagram": false
+  },
+  "legal": {
+    "seller_name": "",
+    "inn": "",
+    "ogrn": "",
+    "address": ""
+  },
+  "proposal_pdf": "",
+  "photos_temporary": true,
+  "metrika": {
+    "counter_id": ""
+  },
+  "prices": {
+    "publish": false,
+    "actual_date": "",
+    "vat": "",
+    "volume_condition": "",
+    "min_order": "",
+    "delivery": "",
+    "items": {
+      "d80": { "amount": null },
+      "d90": { "amount": null }
+    }
+  },
+  "colors": {
+    "black": { "label": "Чёрный", "swatch": "#141213" },
+    "white": { "label": "Белый", "swatch": "#F4F1EC" },
+    "red":   { "label": "Красный", "swatch": "#B3101E" }
+  },
+  "catalog": {
+    "d80": {
+      "title": "KISS Д80",
+      "diameter": "80 мм",
+      "material": "Полистирол",
+      "status": "available",
+      "colors": { "black": "available", "white": "pending", "red": "pending" }
+    },
+    "d90": {
+      "title": "KISS Д90",
+      "diameter": "90 мм",
+      "material": "Полистирол",
+      "status": "available",
+      "colors": { "black": "available", "white": "pending", "red": "pending" }
+    }
+  }
+}
