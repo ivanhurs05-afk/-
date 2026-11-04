@@ -8,5 +8,7 @@
   "guarantee": "",
   "address": "",
   "license": "",
-  "email": ""
+  "email": "",
+  "pricing": {},
+  "_pricing_example": "Заполните поле pricing по образцу из content.demo.json. Пока pricing пуст, на страницах показывается блок «стоимость назовём по телефону»."
 }

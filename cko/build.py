@@ -4,7 +4,10 @@
 Страницы появятся в cko/<раздел>/<страница>/index.html, каталог в cko/index.html."""
 import json, os, html
 ROOT = os.path.dirname(os.path.abspath(__file__))
-C = json.load(open(os.path.join(ROOT, 'content.json'), encoding='utf-8'))
+import sys
+DEMO = '--demo' in sys.argv
+C = json.load(open(os.path.join(ROOT, 'content.demo.json' if DEMO else 'content.json'), encoding='utf-8'))
+OUT = os.path.join(ROOT, '_demo') if DEMO else ROOT
 e = html.escape
 
 SUBJ = {  # slug: (название, "по чему" для заголовка, значок)
@@ -54,7 +57,7 @@ def has(k): return bool(C.get(k))
 def nav_items():
     n = [('Предметы', '#predmety')]
     if has('results'): n.append(('Результаты', '#results'))
-    n.append(('Оплата', '#oplata'))
+    n.append(('Цены', '#oplata'))
     if has('teachers'): n.append(('Преподаватели', '#teachers'))
     if has('reviews'): n.append(('Отзывы', '#reviews'))
     n.append(('Вопросы', '#faq'))
@@ -92,6 +95,35 @@ def optional_blocks():
     return out
 
 def prices_block():
+    P = C.get('pricing') or {}
+    ind, grp, gr = P.get('individual'), P.get('group'), P.get('guarantee')
+    if not ind and not grp and not has('prices'):
+        return fallback_prices()
+    out = ''
+    if ind:
+        rows = ''.join(f'<div class="trow"><span>{e(t["label"])}</span><b>{e(t["price"])}{(" <em>" + e(t["off"]) + "</em>") if t.get("off") else ""}</b></div>' for t in ind.get('table', []))
+        hl = ind.get('highlight')
+        if hl: rows += f'<div class="trow trow--hl"><span>{e(hl["label"])}</span><b>{e(hl["price"])}{(" <em>" + e(hl["off"]) + "</em>") if hl.get("off") else ""}</b></div>'
+        promo = f'<p class="promo"><i></i>{e(ind["promo"])}</p>' if ind.get('promo') else ''
+        bl = ''.join(f'<li>{e(x)}</li>' for x in ind.get('bullets', []))
+        badge = f'<span class="pbadge">{e(ind["badge"])}</span>' if ind.get('badge') else ''
+        total = f'<div class="ptotal"><span>{e(ind.get("total_label",""))}</span> <b>{e(ind["total"])}</b><p>{e(ind.get("total_note",""))}</p></div>' if ind.get('total') else ''
+        out += f'''<div class="pcard">{badge}
+  <div class="pcard__l"><h3>{e(ind["title"])}</h3><p class="pdesc">{e(ind.get("desc",""))}</p>
+    <p class="pbig"><b>{e(ind["main_price"])}</b> <span>{e(ind.get("main_unit",""))}</span></p><p class="pnote">{e(ind.get("pack_note",""))}</p>{promo}<ul class="ticks">{bl}</ul></div>
+  <div class="pcard__r"><p class="ptitle">{e(ind.get("table_title","Цена за занятие в пакете"))}</p>{rows}{total}<a class="btn btn--lg" href="#zapis">Записаться на пробное</a></div>
+</div>'''
+    if grp:
+        det = ''.join(f'<div class="trow"><span>{e(t["label"])}</span><b>{e(t["price"])}</b></div>' for t in grp.get('table', []))
+        btn = '<button class="btn btn--ghost btn--sm" type="button" data-toggle="gtable" aria-expanded="false">Цены на группу ⌄</button>' if det else ''
+        out += f'''<div class="gcard"><div class="gcard__row"><div><h3>{e(grp["title"])}</h3><p>{e(grp.get("desc",""))}</p></div>
+  <div class="gcard__p"><b>{e(grp["from"])}</b><span>{e(grp.get("unit",""))}</span></div>{btn}</div>{('<div class="gtable" id="gtable" hidden>' + det + '</div>') if det else ''}</div>'''
+    if gr:
+        out += f'''<div class="guar2"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6l7-3z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8.5 12l2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><div><b>{e(gr["title"])}</b><p>{e(gr.get("text",""))}</p></div></div>'''
+    sub = e(P.get('subtitle', 'Чем длиннее пакет, тем дешевле занятие.'))
+    return f'<section class="sec sec--soft" id="oplata"><div class="wrap"><p class="tag tag--lime">ЦЕНЫ</p><h2>Всё честно и сразу</h2><p class="sub">{sub}</p>{out}</div></section>'
+
+def fallback_prices():
     if has('prices'):
         rows = ''.join(f'<article class="card price"><h3>{e(p["title"])}</h3><p class="price__sum">{e(p["price"])}</p><p>{e(p.get("note",""))}</p></article>' for p in C['prices'])
         body = f'<div class="grid3">{rows}</div><p class="note">{e(C.get("price_note",""))}</p>'
@@ -210,9 +242,9 @@ def catalog():
 
 if __name__ == '__main__':
     for p in PAGES:
-        d = os.path.join(ROOT, p['path']); os.makedirs(d, exist_ok=True)
+        d = os.path.join(OUT, p['path']); os.makedirs(d, exist_ok=True)
         open(os.path.join(d, 'index.html'), 'w', encoding='utf-8').write(render(p))
-    open(os.path.join(ROOT, 'index.html'), 'w', encoding='utf-8').write(catalog())
+    open(os.path.join(OUT, 'index.html'), 'w', encoding='utf-8').write(catalog())
     print('pages:', len(PAGES))
     for k in ('license', 'address'):
         if not C.get(k): print('ВНИМАНИЕ: не заполнено', k, '(content.json)')

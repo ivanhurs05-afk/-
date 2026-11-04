@@ -36,6 +36,13 @@
   lb.addEventListener('click', close);
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !lb.hidden) close(); });
 
+  /* group price table toggle */
+  document.addEventListener('click', function (e) {
+    var t = e.target.closest && e.target.closest('[data-toggle]'); if (!t) return;
+    var box = document.getElementById(t.getAttribute('data-toggle')); if (!box) return;
+    box.hidden = !box.hidden; t.setAttribute('aria-expanded', String(!box.hidden));
+  });
+
   /* mobile bar hides while a form is visible */
   var bar = document.getElementById('mbar');
   if (bar && 'IntersectionObserver' in window) {
