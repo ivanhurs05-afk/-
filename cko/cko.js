@@ -80,7 +80,7 @@
       if (f.botcheck.checked) return;
       if (!L.leadEndpoint) return say('Приём заявок временно не работает. Позвоните нам: ' + (L.phone || ''), 'fail');
       var title = document.querySelector('h1').textContent.replace(/\s+/g, ' ').trim();
-      var payload = { name: f.name.value.trim(), phone: '+' + d, task: 'ЦКО МИЭТ · ' + title,
+      var payload = { site: 'cko', name: f.name.value.trim(), phone: '+' + d, task: 'ЦКО МИЭТ · ' + title,
         answers: 'Предмет: ' + f.subject.value + '; класс: ' + f.grade.value, page: location.href, utm: utm, consent: true, consentAt: new Date().toISOString() };
       btn.disabled = true; say('Отправляю…', 'ok');
       fetch(L.leadEndpoint, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=UTF-8' }, body: JSON.stringify(payload) })

@@ -7,7 +7,7 @@ window.LEGAL = {
   ogrnip: '324710000042970',
   address: 'г. Тула',          // коротко: город
   fullAddress: 'Тульская область, г. Тула',      // полный юридический адрес
-  email: '',
+  email: 'info@mietcenter.ru',
   phone: '+7 (499) 735-32-65',
   policyDate: '4 ноября 2026 г.',
   leadEndpoint: 'https://functions.yandexcloud.net/d4ec2la7hi268jnvu83f'

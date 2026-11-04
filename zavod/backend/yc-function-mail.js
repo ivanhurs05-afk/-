@@ -6,7 +6,8 @@
 //   SMTP_PORT   465
 //   SMTP_USER   ivan.khurs@inbox.ru     (ящик, с которого отправляем)
 //   SMTP_PASS   пароль для внешнего приложения (создаётся в настройках почты, НЕ основной пароль)
-//   MAIL_TO     ivan.khurs@inbox.ru     (куда приходят заявки)
+//   MAIL_TO     ivan.khurs@inbox.ru     (куда приходят заявки по умолчанию)
+//   MAIL_TO_CKO sasha991111@gmail.com   (необязательно: получатель для сайта ЦКО МИЭТ; суффикс = имя сайта заглавными)
 //   ALLOWED_ORIGIN  https://ivanhurs05-afk.github.io   (адрес сайта)
 const tls = require('tls');
 const net = require('net');
@@ -69,6 +70,9 @@ module.exports.handler = async (event) => {
   try { b = JSON.parse(event.isBase64Encoded ? Buffer.from(event.body, 'base64').toString() : event.body); } catch (e) { return { statusCode: 400, headers, body: '{"ok":false}' }; }
   const phone = String(b.phone || '').replace(/\D/g, '');
   if (phone.length !== 11 || b.consent !== true) return { statusCode: 400, headers, body: '{"ok":false,"error":"invalid"}' };
+  // получатель выбирается ТОЛЬКО из переменных окружения по короткому имени сайта (адрес из браузера не берётся)
+  const site = /^[a-z0-9_]{1,16}$/.test(String(b.site || '')) ? String(b.site) : '';
+  const to = (site && process.env['MAIL_TO_' + site.toUpperCase()]) || process.env.MAIL_TO;
   const lines = [
     'Новая заявка с сайта', '',
     'Имя: ' + clean(b.name, 80),
@@ -82,8 +86,8 @@ module.exports.handler = async (event) => {
   try {
     await sendMail({
       host: process.env.SMTP_HOST || 'smtp.mail.ru', port: parseInt(process.env.SMTP_PORT || '465', 10), secure: process.env.SMTP_SECURE !== 'false',
-      user: process.env.SMTP_USER, pass: process.env.SMTP_PASS, to: process.env.MAIL_TO,
-      subject: 'Заявка с сайта: ' + clean(b.task, 60) + ' +' + phone, text: lines.join('\n')
+      user: process.env.SMTP_USER, pass: process.env.SMTP_PASS, to,
+      subject: 'Заявка с сайта' + (site ? ' [' + site + ']' : '') + ': ' + clean(b.task, 60) + ' +' + phone, text: lines.join('\n')
     });
   } catch (e) { return { statusCode: 502, headers, body: '{"ok":false}' }; }
   return { statusCode: 200, headers, body: '{"ok":true}' };
