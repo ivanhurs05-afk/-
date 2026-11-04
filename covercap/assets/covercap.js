@@ -8,7 +8,9 @@
   var LS = safeStorage('localStorage');
   var SS = safeStorage('sessionStorage');
   var CONSENT_KEY = 'cc_cookie_consent'; // 'accepted' | 'declined'
-  var sentLeads = {};                 // lead_id → true, чтобы lead_success ушёл один раз
+  var sentLeads = {};
+  // Демо-показ на GitHub Pages: там нет PHP, заявки не принимаются — форма честно говорит, что это демо.
+  var DEMO = /\.github\.io$/i.test(location.hostname);                 // lead_id → true, чтобы lead_success ушёл один раз
 
   function safeStorage(kind) {
     try { var s = window[kind]; s.setItem('__t', '1'); s.removeItem('__t'); return s; }
@@ -381,6 +383,16 @@
     submitting = true;
     var btn = $('[data-submit]', form), label = btn.textContent;
     btn.disabled = true; btn.textContent = 'Отправляем…';
+    if (DEMO) {
+      setTimeout(function () {
+        form.hidden = true;
+        var s = $('[data-success]', dlg);
+        $('[data-lead-id]', s).textContent = 'демо-режим, заявка не отправлена';
+        s.hidden = false; s.focus();
+        submitting = false; btn.disabled = false; btn.textContent = label;
+      }, 600);
+      return;
+    }
     withClientId(function (clientId) {
       var meta = collectMeta();
       if (clientId) meta.ym_client_id = clientId;
@@ -516,6 +528,11 @@
 
   /* ---------- Старт ---------- */
   function start() {
+    if (DEMO) {
+      var bar = document.createElement('div'); bar.className = 'demo-bar'; bar.setAttribute('role', 'note');
+      bar.textContent = 'Демо-версия для согласования. Заявки из формы никуда не отправляются, фото временные.';
+      document.body.insertBefore(bar, document.body.firstChild);
+    }
     initNav(); initMobileBar(); initLightbox(); initForm(); initContactClicks(); initTouches();
     initReveal(); initStage(); initTilt(); initScrollFx();
     fetch('content.json', { cache: 'no-cache' })

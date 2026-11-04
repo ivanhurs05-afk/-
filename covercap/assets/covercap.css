@@ -428,3 +428,4 @@ input:focus,textarea:focus{outline:none;border-color:var(--wine);box-shadow:0 0 
 }
 .field>label.check--consent{font-weight:400;font-size:14px}
 @media (min-width:1100px){.hero h1{font-size:clamp(56px,5vw,72px)}.hero h1 em{white-space:nowrap}}
+.demo-bar{background:var(--ink);color:var(--milk);font:600 14px/1.4 var(--sans);text-align:center;padding:8px 16px}
