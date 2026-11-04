@@ -18,7 +18,7 @@ function fail(string $code, int $http, array $fields = []): void
     http_response_code($http);
     header('Content-Type: text/html; charset=utf-8');
     $msg = $code === 'rate_limited' ? 'Слишком много отправок подряд. Подождите несколько минут.'
-         : ($fields ? 'Проверьте поля: контакт и согласие на обработку данных обязательны.'
+         : ($fields ? 'Проверьте поля: имя, телефон и согласие на обработку данных обязательны.'
          : 'Не удалось подтвердить отправку. Повторите попытку.');
     echo '<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex">'
        . '<title>Заявка не отправлена — COVERCAP</title><body style="font:17px/1.6 system-ui;max-width:560px;margin:40px auto;padding:0 16px">'
@@ -50,6 +50,7 @@ if ($contact === '') {
     $digits = preg_replace('/\D/', '', $contact);
     if (!preg_match('/^[+\d][\d\s()\-.]*$/', $contact) || strlen($digits) < 10 || strlen($digits) > 15) $errors[] = 'contact';
 }
+if (mb_strlen(cc_str($in['name'] ?? '', 80)) < 2) $errors[] = 'name';
 $consent = in_array($in['consent'] ?? '', ['1', 'on', 1, true], true);
 if (!$consent) $errors[] = 'consent';
 

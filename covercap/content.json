@@ -2,12 +2,13 @@
   "_comment": "Единый источник цен, контактов и статусов. Меняется через /admin/ (или вручную). Неизвестное оставлять пустым — сайт это не покажет.",
   "updated_at": "2026-11-04",
   "contacts": {
-    "phone": "",
-    "phone_display": "",
+    "phone": "+79050952128",
+    "phone_display": "+7 905 095-21-28",
     "email": "",
     "hours": "",
     "instagram": "coffee_face_nsk",
-    "show_instagram": false
+    "show_instagram": false,
+    "telegram": "wovlex"
   },
   "legal": {
     "seller_name": "",
@@ -28,14 +29,27 @@
     "min_order": "",
     "delivery": "",
     "items": {
-      "d80": { "amount": null },
-      "d90": { "amount": null }
+      "d80": {
+        "amount": null
+      },
+      "d90": {
+        "amount": null
+      }
     }
   },
   "colors": {
-    "black": { "label": "Чёрный", "swatch": "#141213" },
-    "white": { "label": "Белый", "swatch": "#F4F1EC" },
-    "red":   { "label": "Красный", "swatch": "#B3101E" }
+    "black": {
+      "label": "Чёрный",
+      "swatch": "#141213"
+    },
+    "white": {
+      "label": "Белый",
+      "swatch": "#F4F1EC"
+    },
+    "red": {
+      "label": "Красный",
+      "swatch": "#B3101E"
+    }
   },
   "catalog": {
     "d80": {
@@ -43,14 +57,22 @@
       "diameter": "80 мм",
       "material": "Полистирол",
       "status": "available",
-      "colors": { "black": "available", "white": "pending", "red": "pending" }
+      "colors": {
+        "black": "available",
+        "white": "pending",
+        "red": "pending"
+      }
     },
     "d90": {
       "title": "KISS Д90",
       "diameter": "90 мм",
       "material": "Полистирол",
       "status": "available",
-      "colors": { "black": "available", "white": "pending", "red": "pending" }
+      "colors": {
+        "black": "available",
+        "white": "pending",
+        "red": "pending"
+      }
     }
   }
 }

@@ -97,6 +97,7 @@
       var kind = el.getAttribute('data-c-href'), c = C.contacts || {}, href = '';
       if (kind === 'tel' && c.phone) href = 'tel:' + c.phone.replace(/[^\d+]/g, '');
       if (kind === 'mailto' && c.email) href = 'mailto:' + c.email;
+      if (kind === 'telegram' && c.telegram) { href = 'https://t.me/' + c.telegram; el.textContent = '@' + c.telegram; }
       if (kind === 'instagram' && c.instagram) { href = 'https://instagram.com/' + c.instagram; el.textContent = '@' + c.instagram; }
       if (kind === 'proposal' && C.proposal_pdf) href = C.proposal_pdf;
       if (href) el.setAttribute('href', href);
@@ -181,30 +182,33 @@
         if (STATUS_LABEL[c.status]) { var s = document.createElement('small'); s.textContent = STATUS_LABEL[c.status]; lab.appendChild(s); }
         fs.appendChild(lab);
         inp.addEventListener('change', function () {
-          setCardImage(card, c.key);
+          setCardImage(card, c.key, true);
           goal('variant_select', { size: sku, color: c.key, place: 'catalog' });
         });
       });
       if (list[0]) setCardImage(card, list[0].key);
     });
   }
-  function setCardImage(card, color) {
+  function setCardImage(card, color, animate) {
     var img = $('[data-card-img]', card);
     if (!img || !/^(black|white|red)$/.test(color)) return;
-    img.src = 'assets/img/kiss-' + color + '-490.webp';
-    img.srcset = 'assets/img/kiss-' + color + '-320.webp 320w, assets/img/kiss-' + color + '-490.webp 490w';
     var names = { black: 'чёрного', white: 'белого', red: 'красного' };
-    img.alt = 'Крышка KISS ' + names[color] + ' цвета, вид сверху';
+    var swap = function () {
+      img.src = 'assets/img/lid-' + color + '-460.webp';
+      img.srcset = 'assets/img/lid-' + color + '-300.webp 300w, assets/img/lid-' + color + '-460.webp 460w';
+      img.alt = 'Крышка KISS ' + names[color] + ' цвета, вид сверху';
+    };
+    if (!animate || reduceMotion || !img.animate) return swap();
+    // Переворот крышки: половина оборота, смена цвета, вторая половина
+    img.animate([{ transform: 'rotateY(0deg)' }, { transform: 'rotateY(90deg)' }], { duration: 220, easing: 'ease-in' }).onfinish = function () {
+      swap();
+      img.animate([{ transform: 'rotateY(-90deg)' }, { transform: 'rotateY(0deg)' }], { duration: 380, easing: 'cubic-bezier(.2,.9,.3,1.3)' });
+    };
   }
 
   function renderFormColors() {
-    var box = $('[data-form-colors]');
     var all = {};
     ['d80', 'd90'].forEach(function (s) { colorsFor(s).forEach(function (c) { all[c.key] = c; }); });
-    $$('label', box).forEach(function (l) {
-      var v = $('input', l).value;
-      if (v !== 'undecided') l.hidden = !all[v];
-    });
     var faq = $('[data-faq-colors]');
     var keys = Object.keys(all);
     if (faq && keys.length) {
@@ -263,14 +267,14 @@
     dlg.addEventListener('close', function () { if (opener) opener.focus(); });
   }
 
-  /* ---------- Форма расчёта ---------- */
+  /* ---------- Форма расчёта: имя + телефон ---------- */
   var form, dlg, opener, submitting = false;
+  var SIZE_LABEL = { d80: 'KISS Д80', d90: 'KISS Д90' };
+  var COLOR_LABEL = { black: 'чёрный', white: 'белый', red: 'красный' };
 
   function initForm() {
     dlg = $('#quote'); form = $('#quote-form');
-    if (typeof dlg.showModal !== 'function') { // очень старые браузеры: форма работает без JS-модалки
-      dlg.setAttribute('open', ''); dlg.style.position = 'static';
-    }
+    if (typeof dlg.showModal !== 'function') { dlg.setAttribute('open', ''); dlg.style.position = 'static'; }
     $$('[data-quote]').forEach(function (b) { b.addEventListener('click', function () { openQuote(b); }); });
     $$('[data-close]', dlg).forEach(function (b) { b.addEventListener('click', function () { dlg.close(); }); });
     dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
@@ -279,106 +283,87 @@
       if (!$('[data-success]', dlg).hidden) resetAfterSuccess();
       if (opener && document.contains(opener)) opener.focus();
     });
-
-    form.addEventListener('change', function (e) {
-      var t = e.target;
-      if (t.name === 'contact_method') setContactMethod(t.value);
-      if (t.name === 'request_type') $('[data-show-if="repeat"]', form).hidden = t.value !== 'repeat';
-      if (t.name === 'qty_unknown') { form.qty.disabled = t.checked; if (t.checked) { form.qty.value = ''; clearErr('qty'); } }
-      if (t.name === 'size' || t.name === 'color') goal('variant_select', { size: val('size'), color: val('color'), place: 'form' });
-      if (t.name === 'consent' && t.checked) clearErr('consent');
-    });
-    form.comment.addEventListener('input', function () { $('[data-count]', form).textContent = form.comment.value.length; });
-    form.contact.addEventListener('input', function () { if (form.contact.getAttribute('aria-invalid')) validateContact(); });
-    form.contact.addEventListener('blur', function () { if (form.contact.value.trim()) validateContact(); });
+    form.addEventListener('change', function (e) { if (e.target.name === 'consent' && e.target.checked) clearErr('consent'); });
+    form.contact.addEventListener('input', function () { if (form.contact.getAttribute('aria-invalid')) validatePhone(); });
+    form.contact.addEventListener('blur', function () { if (form.contact.value.trim()) validatePhone(); });
+    form.name.addEventListener('input', function () { if (form.name.getAttribute('aria-invalid')) validateName(); });
     form.addEventListener('submit', onSubmit);
-
-    // Ссылка вида covercap.ru/#repeat открывает форму повторного заказа
     if (location.hash === '#repeat' || location.hash === '#quote') {
       openQuote($(location.hash === '#repeat' ? '[data-quote="repeat"]' : '[data-quote="hero"]'));
     }
   }
 
-  function val(name) { var el = form.querySelector('[name="' + name + '"]:checked'); return el ? el.value : ''; }
-  function setRadio(name, v) { var el = form.querySelector('[name="' + name + '"][value="' + v + '"]'); if (el && !el.closest('[hidden]')) { el.checked = true; return true; } return false; }
-
   function openQuote(btn) {
     opener = btn;
     var placement = btn.getAttribute('data-quote');
     form.placement.value = placement;
-    var size = btn.getAttribute('data-size');
-    if (size) setRadio('size', size);
-    if (size && size !== 'help') {
+    var size = btn.getAttribute('data-size') || 'help';
+    var color = 'undecided';
+    if (size !== 'help') {
       var card = btn.closest('.card'), sw = card && card.querySelector('.swatch input:checked');
-      if (!sw || !setRadio('color', sw.value)) setRadio('color', 'undecided');
+      if (sw) color = sw.value;
     }
-    var type = btn.getAttribute('data-type');
-    if (type) setRadio('request_type', type);
-    $('[data-show-if="repeat"]', form).hidden = val('request_type') !== 'repeat';
-    if (!form.submission_id.value) form.submission_id.value = uid();
+    form.size.value = size;
+    form.color.value = color;
+    form.request_type.value = btn.getAttribute('data-type') === 'repeat' ? 'repeat' : 'quote';
 
+    var chip = $('[data-variant]', form);
+    if (SIZE_LABEL[size]) { chip.textContent = 'Вариант: ' + SIZE_LABEL[size] + (COLOR_LABEL[color] ? ', ' + COLOR_LABEL[color] : ''); chip.hidden = false; }
+    else if (size === 'help') { chip.textContent = 'Поможем подобрать диаметр'; chip.hidden = placement !== 'catalog'; }
+    var repeat = form.request_type.value === 'repeat';
+    $('[data-form-title]', form).textContent = repeat ? 'Повторный заказ KISS' : 'Расчёт заказа KISS';
+    $('[data-form-sub]', form).textContent = repeat
+      ? 'Оставьте имя и телефон — перезвоним и оформим повторный заказ.'
+      : 'Оставьте имя и телефон — перезвоним, уточним вариант и количество и пришлём расчёт.';
+    var lid = $('[data-form-lid]', form), lc = COLOR_LABEL[color] ? color : 'black';
+    lid.src = 'assets/img/lid-' + lc + '-300.webp';
+    lid.style.animation = 'none'; void lid.offsetWidth; lid.style.animation = '';
+
+    if (!form.submission_id.value) form.submission_id.value = uid();
     if (typeof dlg.showModal === 'function') dlg.showModal();
     document.documentElement.style.overflow = 'hidden';
-    var first = form.querySelector('input:checked') || form.contact;
-    setTimeout(function () { (size ? form.contact : first).focus({ preventScroll: true }); }, 30);
+    setTimeout(function () { (form.name.value ? form.contact : form.name).focus({ preventScroll: true }); }, 40);
     if (!openQuote.t0) openQuote.t0 = Date.now();
     goal('quote_open', { placement: placement });
   }
 
-  function setContactMethod(m) {
-    var c = form.contact;
-    $('[data-contact-label]', form).textContent = m === 'email' ? 'Email' : 'Телефон';
-    c.type = m === 'email' ? 'email' : 'tel';
-    c.inputMode = m === 'email' ? 'email' : 'tel';
-    c.autocomplete = m === 'email' ? 'email' : 'tel';
-    c.placeholder = m === 'email' ? 'name@cafe.ru' : '+7 900 000-00-00';
-    clearErr('contact');
-    if (c.value.trim()) validateContact();
-  }
-
   function showErr(field, msg) {
-    var p = $('#e-' + field), input = field === 'consent' ? form.consent : form[field];
+    var p = $('#e-' + field), input = form[field];
     p.textContent = msg; p.hidden = false;
     if (input) input.setAttribute('aria-invalid', 'true');
   }
   function clearErr(field) {
-    var p = $('#e-' + field), input = field === 'consent' ? form.consent : form[field];
+    var p = $('#e-' + field), input = form[field];
     if (p) { p.hidden = true; p.textContent = ''; }
     if (input) input.removeAttribute('aria-invalid');
   }
-
   // Те же правила проверяются на сервере (api/lead.php)
-  function validateContact() {
-    var m = val('contact_method'), v = form.contact.value.trim();
-    if (!v) { showErr('contact', m === 'email' ? 'Укажите email — без контакта мы не сможем прислать расчёт.' : 'Укажите телефон — без контакта мы не сможем прислать расчёт.'); return false; }
-    if (m === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) { showErr('contact', 'Проверьте email: должен быть вида name@cafe.ru.'); return false; }
-    if (m === 'phone') {
-      var digits = v.replace(/\D/g, '');
-      if (!/^[+\d][\d\s()\-.]*$/.test(v) || digits.length < 10 || digits.length > 15) {
-        showErr('contact', 'Проверьте телефон: 10–15 цифр, можно в международном формате, например +7 900 000-00-00.'); return false;
-      }
+  function validateName() {
+    if (form.name.value.trim().length < 2) { showErr('name', 'Укажите имя — чтобы менеджер знал, как к вам обращаться.'); return false; }
+    clearErr('name'); return true;
+  }
+  function validatePhone() {
+    var v = form.contact.value.trim(), digits = v.replace(/\D/g, '');
+    if (!v) { showErr('contact', 'Укажите телефон — без него мы не сможем прислать расчёт.'); return false; }
+    if (!/^[+\d][\d\s()\-.]*$/.test(v) || digits.length < 10 || digits.length > 15) {
+      showErr('contact', 'Проверьте телефон: 10–15 цифр, например +7 900 000-00-00.'); return false;
     }
     clearErr('contact'); return true;
   }
   function validate() {
-    var ok = true, firstBad = null;
-    if (!validateContact()) { ok = false; firstBad = firstBad || form.contact; }
-    var q = form.qty.value.trim();
-    if (q && !form.qty_unknown.checked && !/^[1-9]\d{0,7}$/.test(q)) {
-      showErr('qty', 'Количество — целое число штук больше нуля, или отметьте «Пока не знаю».'); ok = false; firstBad = firstBad || form.qty;
-    } else clearErr('qty');
-    if (!form.consent.checked) { showErr('consent', 'Без согласия на обработку данных мы не можем принять заявку.'); ok = false; firstBad = firstBad || form.consent; }
+    var bad = [];
+    if (!validateName()) bad.push(form.name);
+    if (!validatePhone()) bad.push(form.contact);
+    if (!form.consent.checked) { showErr('consent', 'Без согласия на обработку данных мы не можем принять заявку.'); bad.push(form.consent); }
     else clearErr('consent');
-    if (firstBad) firstBad.focus();
-    return ok;
+    if (bad[0]) bad[0].focus();
+    return !bad.length;
   }
 
   function collectMeta() {
     var meta = { page: location.pathname, placement: form.placement.value, filled_ms: openQuote.t0 ? Date.now() - openQuote.t0 : null };
     try { meta.last_touch = JSON.parse(SS.getItem('cc_session_touch') || 'null'); } catch (e) {}
-    if (analyticsAllowed()) {
-      try { meta.first_touch = JSON.parse(LS.getItem('cc_first_touch') || 'null'); } catch (e) {}
-    }
+    if (analyticsAllowed()) { try { meta.first_touch = JSON.parse(LS.getItem('cc_first_touch') || 'null'); } catch (e) {} }
     return meta;
   }
   function withClientId(cb) {
@@ -396,15 +381,12 @@
     submitting = true;
     var btn = $('[data-submit]', form), label = btn.textContent;
     btn.disabled = true; btn.textContent = 'Отправляем…';
-
     withClientId(function (clientId) {
       var meta = collectMeta();
       if (clientId) meta.ym_client_id = clientId;
       var data = {};
       new FormData(form).forEach(function (v, k) { data[k] = typeof v === 'string' ? v : ''; });
-      if (form.qty.disabled) delete data.qty;
       data.meta = meta;
-
       var ctrl = 'AbortController' in window ? new AbortController() : null;
       var timer = setTimeout(function () { if (ctrl) ctrl.abort(); }, 20000);
       fetch(form.getAttribute('action'), {
@@ -432,46 +414,110 @@
   }
 
   var SERVER_FIELD_MSG = {
-    contact: 'Проверьте контакт: сервер не принял формат.',
-    consent: 'Без согласия на обработку данных мы не можем принять заявку.',
-    qty: 'Количество — целое число штук больше нуля.'
+    name: 'Укажите имя — чтобы менеджер знал, как к вам обращаться.',
+    contact: 'Проверьте телефон: сервер не принял формат.',
+    consent: 'Без согласия на обработку данных мы не можем принять заявку.'
   };
   function onFail(code, fields) {
     goal('lead_error', { code: String(code || 'unknown').slice(0, 40) });
-    if (fields && fields.length) {
-      fields.forEach(function (f) { if (SERVER_FIELD_MSG[f]) showErr(f, SERVER_FIELD_MSG[f]); });
-    }
-    var email = C && C.contacts && C.contacts.email;
-    var msg = code === 'rate_limited'
-      ? 'Слишком много отправок подряд. Подождите несколько минут и повторите.'
-      : 'Не удалось подтвердить отправку. Ваши данные сохранены в форме. Повторите попытку' + (email ? ' или напишите нам на ' : '.');
-    showAlert(msg, code === 'rate_limited' ? null : email);
-  }
-  function showAlert(text, email) {
+    (fields || []).forEach(function (f) { if (SERVER_FIELD_MSG[f]) showErr(f, SERVER_FIELD_MSG[f]); });
+    var c = (C && C.contacts) || {};
     var a = $('[data-form-alert]', form);
-    a.textContent = text;
-    if (email) {
-      var l = document.createElement('a'); l.href = 'mailto:' + email; l.textContent = email; l.setAttribute('data-contact', 'email_error');
-      a.appendChild(l); a.appendChild(document.createTextNode('.'));
+    a.textContent = code === 'rate_limited'
+      ? 'Слишком много отправок подряд. Подождите несколько минут и повторите.'
+      : 'Не удалось подтвердить отправку. Ваши данные сохранены в форме. Повторите попытку' + (c.phone_display || c.telegram ? ' или свяжитесь с нами напрямую: ' : '.');
+    if (code !== 'rate_limited') {
+      var parts = [];
+      if (c.phone_display) parts.push(['tel:' + String(c.phone).replace(/[^\d+]/g, ''), c.phone_display, 'phone_error']);
+      if (c.telegram) parts.push(['https://t.me/' + c.telegram, 'Telegram @' + c.telegram, 'telegram_error']);
+      parts.forEach(function (p, i) {
+        if (i) a.appendChild(document.createTextNode(', '));
+        var l = document.createElement('a'); l.href = p[0]; l.textContent = p[1]; l.setAttribute('data-contact', p[2]);
+        if (p[0].indexOf('http') === 0) { l.target = '_blank'; l.rel = 'noopener'; }
+        a.appendChild(l);
+      });
+      if (parts.length) a.appendChild(document.createTextNode('.'));
     }
     a.hidden = false;
   }
-  function hideAlert() { $('[data-form-alert]', form).hidden = true; }
+  function hideAlert() { var a = $('[data-form-alert]', form); a.hidden = true; a.textContent = ''; }
 
   function resetAfterSuccess() {
     form.reset();
-    form.qty.disabled = false;
-    form.submission_id.value = '';   // следующая заявка — новая запись
+    form.submission_id.value = '';
+    form.size.value = 'help'; form.color.value = 'undecided'; form.request_type.value = 'quote'; form.contact_method.value = 'phone';
     openQuote.t0 = 0;
-    $('[data-count]', form).textContent = '0';
-    setContactMethod('phone');
-    $('[data-show-if="repeat"]', form).hidden = true;
     form.hidden = false; $('[data-success]', dlg).hidden = true;
+  }
+
+  /* ---------- Анимации ---------- */
+  var reduceMotion = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function initReveal() {
+    var els = $$('.reveal');
+    if (!('IntersectionObserver' in window) || reduceMotion) { els.forEach(function (el) { el.classList.add('is-in'); }); return; }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('is-in'); io.unobserve(en.target); } });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.12 });
+    els.forEach(function (el) { io.observe(el); });
+    // Страховка: если что-то пошло не так, контент не остаётся скрытым
+    setTimeout(function () {
+      els.forEach(function (el) { var r = el.getBoundingClientRect(); if (r.top < innerHeight) el.classList.add('is-in'); });
+    }, 2500);
+  }
+
+  function initStage() {
+    var stage = $('[data-stage]');
+    if (!stage || reduceMotion || !matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+    var lids = $$('.lid', stage), raf = 0, tx = 0, ty = 0;
+    var hero = $('.hero');
+    hero.addEventListener('pointermove', function (e) {
+      var r = stage.getBoundingClientRect();
+      tx = ((e.clientX - (r.left + r.width / 2)) / r.width);
+      ty = ((e.clientY - (r.top + r.height / 2)) / r.height);
+      if (!raf) raf = requestAnimationFrame(apply);
+    });
+    hero.addEventListener('pointerleave', function () { tx = ty = 0; if (!raf) raf = requestAnimationFrame(apply); });
+    function apply() {
+      raf = 0;
+      lids.forEach(function (l) {
+        var d = parseFloat(l.getAttribute('data-depth')) || 1;
+        l.style.setProperty('--px', (tx * 26 * d).toFixed(1) + 'px');
+        l.style.setProperty('--py', (ty * 22 * d).toFixed(1) + 'px');
+      });
+    }
+  }
+
+  function initTilt() {
+    if (reduceMotion || !matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+    $$('.tilt').forEach(function (el) {
+      el.addEventListener('pointermove', function (e) {
+        var r = el.getBoundingClientRect();
+        el.style.setProperty('--ry', (((e.clientX - r.left) / r.width - 0.5) * 10).toFixed(2) + 'deg');
+        el.style.setProperty('--rx', (((e.clientY - r.top) / r.height - 0.5) * -10).toFixed(2) + 'deg');
+      });
+      el.addEventListener('pointerleave', function () { el.style.setProperty('--rx', '0deg'); el.style.setProperty('--ry', '0deg'); });
+    });
+  }
+
+  function initScrollFx() {
+    var bar = document.createElement('div'); bar.className = 'progress'; bar.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(bar);
+    var header = $('.header'), ticking = false;
+    function upd() {
+      ticking = false;
+      var h = document.documentElement.scrollHeight - innerHeight;
+      bar.style.setProperty('--p', h > 0 ? (scrollY / h).toFixed(4) : 0);
+      header.classList.toggle('is-scrolled', scrollY > 8);
+    }
+    addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(upd); } }, { passive: true });
+    upd();
   }
 
   /* ---------- Старт ---------- */
   function start() {
     initNav(); initMobileBar(); initLightbox(); initForm(); initContactClicks(); initTouches();
+    initReveal(); initStage(); initTilt(); initScrollFx();
     fetch('content.json', { cache: 'no-cache' })
       .then(function (r) { return r.json(); })
       .then(function (json) { C = json; })
