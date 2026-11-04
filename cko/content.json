@@ -1,0 +1,12 @@
+{
+  "_help": "Блоки с пустыми списками на страницах не показываются. Заполните, когда будут реальные данные, и запустите: python3 cko/build.py",
+  "prices": [],
+  "price_note": "",
+  "teachers": [],
+  "reviews": [],
+  "results": [],
+  "guarantee": "",
+  "address": "",
+  "license": "",
+  "email": ""
+}
