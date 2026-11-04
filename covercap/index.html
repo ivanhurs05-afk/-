@@ -8,7 +8,7 @@
 <!-- ПРОТОТИП: закрыт от индексации. Перед запуском удалить эту строку (см. README, раздел «Запуск»). -->
 <meta name="robots" content="noindex, nofollow">
 <link rel="canonical" href="https://covercap.ru/">
-<meta name="theme-color" content="#551D2A">
+<meta name="theme-color" content="#D7182A">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="ru_RU">
 <meta property="og:site_name" content="COVERCAP">
@@ -17,311 +17,247 @@
 <meta property="og:url" content="https://covercap.ru/">
 <meta property="og:image" content="https://covercap.ru/assets/img/og.jpg">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="preload" href="assets/fonts/playfair-display-cyrillic-500-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="assets/fonts/manrope-cyrillic-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" as="image" href="assets/img/lid-black-460.webp" imagesrcset="assets/img/lid-black-300.webp 300w, assets/img/lid-black-460.webp 460w" imagesizes="(max-width: 600px) 62vw, 420px">
+<link rel="preload" href="assets/fonts/unbounded-cyrillic-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/onest-cyrillic-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" as="image" href="assets/img/lid-black-460.webp">
 <link rel="stylesheet" href="assets/covercap.css">
-<script>document.documentElement.classList.add('js');</script>
 </head>
 <body>
 <a class="skip" href="#main">Перейти к содержанию</a>
 
-<!-- 01. Шапка -->
 <header class="header" id="top">
   <div class="wrap header__in">
-    <a class="logo" href="#top" aria-label="COVERCAP — в начало страницы">COVERCAP</a>
+    <a class="logo" href="#top" aria-label="COVERCAP — в начало страницы">covercap<sup>®</sup></a>
     <nav class="nav" id="nav" aria-label="Разделы страницы">
-      <a href="#catalog">Крышки KISS</a>
-      <a href="#examples">Примеры</a>
-      <a href="#prices">Цены</a>
-      <a href="#order">Как заказать</a>
+      <a href="#catalog">Ассортимент</a>
+      <a href="#examples">Фото</a>
+      <a href="#prices">Цена и заказ</a>
+      <a href="#faq">Вопросы</a>
       <a href="#contacts">Контакты</a>
     </nav>
-    <div class="header__actions">
-      <a class="header__phone" data-c-href="tel" data-c="contacts.phone_display" data-hide-empty="contacts.phone" data-contact="phone_header" hidden></a>
-      <button class="btn btn--primary btn--sm" type="button" data-quote="header">Получить расчёт</button>
-      <button class="burger" type="button" aria-expanded="false" aria-controls="nav" aria-label="Открыть меню"><span></span><span></span></button>
-    </div>
+    <a class="header__phone" data-c-href="tel" data-c="contacts.phone_display" data-hide-empty="contacts.phone" data-contact="phone_header" hidden></a>
+    <button class="btn btn--ink btn--sm header__cta" type="button" data-quote="header">Расчёт</button>
+    <button class="burger" type="button" aria-expanded="false" aria-controls="nav" aria-label="Открыть меню"><span></span><span></span></button>
   </div>
 </header>
 
 <main id="main">
 
-<!-- 02. Первый экран -->
 <section class="hero" aria-labelledby="h1">
-  <div class="hero__glow" aria-hidden="true"></div>
-  <div class="wrap hero__in">
-    <div class="hero__text">
-      <p class="eyebrow anim-up" style="--d:.05s">COVERCAP / KISS</p>
-      <h1 id="h1">
-        <span class="line"><span class="anim-up" style="--d:.12s">Крышки KISS:</span></span>
-        <span class="line"><em class="anim-up" style="--d:.24s">кофе с&nbsp;характером</em></span>
-      </h1>
-      <p class="lead anim-up" style="--d:.38s">Объёмная форма лица для необычной подачи кофе навынос. Диаметры 80 и&nbsp;90&nbsp;мм, три цвета.</p>
-      <div class="hero__cta anim-up" style="--d:.5s">
-        <button class="btn btn--primary btn--lg btn--shine" type="button" data-quote="hero">Получить расчёт заказа</button>
-        <a class="btn btn--ghost btn--lg" href="#catalog">Посмотреть крышки</a>
+  <div class="wrap hero__grid">
+    <div class="hero__copy">
+      <p class="kicker">Крышки для стаканов навынос · Ø&nbsp;80 и 90&nbsp;мм</p>
+      <h1 id="h1">Крышки KISS: <span>кофе с&nbsp;характером</span></h1>
+      <p class="hero__lead">Объёмная форма лица для необычной подачи кофе навынос. Диаметры 80 и&nbsp;90&nbsp;мм, три цвета. Работаем с&nbsp;кофейнями, пекарнями и&nbsp;поставщиками упаковки.</p>
+      <div class="hero__actions">
+        <button class="btn btn--red btn--lg" type="button" data-quote="hero">Получить расчёт заказа</button>
+        <a class="link-arrow" href="#catalog">Посмотреть крышки</a>
       </div>
-      <ul class="facts anim-up" style="--d:.62s" aria-label="Характеристики">
-        <li><b>80 / 90 мм</b><span>диаметр</span></li>
-        <li><b>Полистирол</b><span>материал</span></li>
-        <li><b>3 цвета</b><span>чёрный, белый, красный</span></li>
-      </ul>
+      <p class="hero__contact" data-hide-empty="contacts.phone" hidden>
+        Или сразу позвоните: <a data-c-href="tel" data-c="contacts.phone_display" data-contact="phone_hero"></a>
+      </p>
     </div>
 
-    <div class="stage" data-stage aria-label="Крышки KISS трёх цветов">
-      <div class="stage__ring" aria-hidden="true"></div>
-      <div class="stage__shadow" aria-hidden="true"></div>
-      <div class="lid lid--white" data-depth="0.5"><img src="assets/img/lid-white-460.webp" srcset="assets/img/lid-white-300.webp 300w, assets/img/lid-white-460.webp 460w" sizes="(max-width: 600px) 46vw, 300px" width="460" height="460" alt="Белая крышка KISS"></div>
-      <div class="lid lid--red" data-depth="0.7"><img src="assets/img/lid-red-460.webp" srcset="assets/img/lid-red-300.webp 300w, assets/img/lid-red-460.webp 460w" sizes="(max-width: 600px) 46vw, 300px" width="460" height="460" alt="Красная крышка KISS"></div>
-      <div class="lid lid--black" data-depth="1.2"><img src="assets/img/lid-black-460.webp" srcset="assets/img/lid-black-300.webp 300w, assets/img/lid-black-460.webp 460w" sizes="(max-width: 600px) 62vw, 420px" width="460" height="460" alt="Чёрная крышка KISS: объёмные нос и губы, отверстие для питья в линии губ" fetchpriority="high"></div>
-      <span class="tmp-badge" data-temp-photo>Временное фото из КП</span>
-    </div>
+    <figure class="specimen" data-specimen data-color="black">
+      <div class="specimen__plate">
+        <div class="lidwrap">
+          <img class="specimen__lid" data-specimen-img src="assets/img/lid-black-460.webp" srcset="assets/img/lid-black-300.webp 300w, assets/img/lid-black-460.webp 460w" sizes="(max-width: 700px) 62vw, 360px" width="460" height="460" alt="Крышка KISS чёрного цвета, вид сверху: нос, губы, отверстие для питья и бортик посадки" fetchpriority="high">
+          <svg class="callouts" viewBox="0 0 100 100" aria-hidden="true">
+            <path d="M52 37 L84 9 H130"/><circle cx="52" cy="37" r="1.3"/>
+            <path d="M4 54 L-6 42 H-34"/><circle cx="4" cy="54" r="1.3"/>
+            <path d="M38 67 L14 92 H-34"/><circle cx="38" cy="67" r="1.3"/>
+            <path d="M54 81 L84 110 H130"/><circle cx="54" cy="81" r="1.3"/>
+          </svg>
+          <span class="tag tag--nose">нос</span>
+          <span class="tag tag--rim">бортик<br>посадки</span>
+          <span class="tag tag--lips">губы</span>
+          <span class="tag tag--hole">отверстие<br>для питья</span>
+        </div>
+      </div>
+      <figcaption class="specimen__bar">
+        <span class="specimen__label">Цвет:</span>
+        <span class="dots" role="group" aria-label="Цвет крышки на фото">
+          <button type="button" class="dot dot--black" data-hero-color="black" aria-pressed="true" aria-label="Чёрная"></button>
+          <button type="button" class="dot dot--white" data-hero-color="white" aria-pressed="false" aria-label="Белая"></button>
+          <button type="button" class="dot dot--red" data-hero-color="red" aria-pressed="false" aria-label="Красная"></button>
+        </span>
+        <span class="specimen__name" data-specimen-name>чёрная</span>
+        <span class="specimen__note" data-temp-photo>фото из КП, временно</span>
+      </figcaption>
+    </figure>
   </div>
 </section>
 
-<div class="ticker-clip" aria-hidden="true"><div class="ticker">
-  <div class="ticker__track">
-    <span>KISS</span><i></i><span>кофе с характером</span><i></i><span>80 мм</span><i></i><span>90 мм</span><i></i><span>чёрный · белый · красный</span><i></i><span>для кофеен и coffee-to-go</span><i></i>
-    <span>KISS</span><i></i><span>кофе с характером</span><i></i><span>80 мм</span><i></i><span>90 мм</span><i></i><span>чёрный · белый · красный</span><i></i><span>для кофеен и coffee-to-go</span><i></i>
-  </div>
-</div></div>
-
-<!-- 03. Решение -->
-<section class="section" aria-labelledby="solution-h">
-  <div class="wrap split">
-    <div class="reveal">
-      <p class="eyebrow">Решение</p>
-      <h2 id="solution-h">Заметная деталь привычного стакана</h2>
-    </div>
-    <div class="reveal" style="--d:.1s">
-      <p class="lead lead--dark">KISS дополняет подачу напитка объёмной формой лица. Крышки можно использовать в&nbsp;повседневной выдаче, специальном напитке или совместной акции.</p>
-      <p class="muted">Напиток и стакан остаются прежними — меняется только то, как выглядит кофе в руке гостя.</p>
-      <h3 class="h-small">Кому подойдёт</h3>
-      <ul class="tags stagger">
-        <li>Кофейни и coffee-to-go</li>
-        <li>Пекарни и кондитерские</li>
-        <li>АЗС с кофейными зонами</li>
-        <li>Кейтеринг и мероприятия</li>
-        <li>Поставщики упаковки</li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<!-- 04. Выгоды -->
-<section class="section section--tint" aria-labelledby="benefits-h">
+<section class="about" aria-labelledby="about-h">
   <div class="wrap">
-    <div class="reveal">
-      <p class="eyebrow">Применение</p>
-      <h2 id="benefits-h">Три способа использовать KISS</h2>
-    </div>
-    <div class="benefits">
-      <article class="benefit reveal tilt" style="--d:0s">
-        <svg class="icon draw" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="17"/><path d="M24 12c-3 4-3 9 0 12m0 0c-3 0-6 2-6 5 3 2 9 2 12 0 0-3-3-5-6-5"/></svg>
-        <h3>Выразительная подача</h3>
+    <h2 id="about-h" class="statement">Заметная деталь привычного стакана. Напиток и&nbsp;стакан прежние&nbsp;— меняется то, как выглядит кофе в&nbsp;руке гостя.</h2>
+    <div class="uses">
+      <div class="use">
+        <h3>Подача</h3>
         <p>Форма отличается от стандартной плоской крышки: нос и губы видны с любого ракурса, отверстие для питья — в линии губ.</p>
-      </article>
-      <article class="benefit reveal tilt" style="--d:.12s">
-        <svg class="icon draw" viewBox="0 0 48 48" aria-hidden="true"><rect x="7" y="14" width="34" height="24" rx="4"/><circle cx="24" cy="26" r="7"/><path d="M17 14l3-5h8l3 5"/></svg>
-        <h3>Материал для контента</h3>
-        <p>Покажите напиток по-новому в фото и коротких видео — для своих соцсетей, меню и витрины.</p>
-      </article>
-      <article class="benefit reveal tilt" style="--d:.24s">
-        <svg class="icon draw" viewBox="0 0 48 48" aria-hidden="true"><path d="M14 16h20l-2 26H16z"/><path d="M12 11h24v5H12z"/><path d="M24 23l2 4 4 .5-3 3 .8 4-3.8-2-3.8 2 .8-4-3-3 4-.5z"/></svg>
-        <h3>Вариант для акции</h3>
-        <p>Выберите цвет для сезонного напитка или специального предложения, коллаборации или события.</p>
-      </article>
+      </div>
+      <div class="use">
+        <h3>Фото и видео</h3>
+        <p>Покажите напиток по-новому в своих соцсетях, меню и на витрине.</p>
+      </div>
+      <div class="use">
+        <h3>Акции</h3>
+        <p>Отдельный цвет под сезонный напиток, специальное предложение или коллаборацию.</p>
+      </div>
     </div>
+    <p class="for-whom"><b>Кому подходит:</b> кофейням и coffee-to-go, пекарням и кондитерским, АЗС с кофейными зонами, кейтерингу. Поставщикам упаковки — <button class="link" type="button" data-quote="hero" data-type="resale">условия для перепродажи</button>.</p>
   </div>
 </section>
 
-<!-- 05. Ассортимент -->
-<section class="section" id="catalog" aria-labelledby="catalog-h">
+<section class="catalog-sec" id="catalog" aria-labelledby="catalog-h">
   <div class="wrap">
-    <div class="reveal">
-      <p class="eyebrow">Ассортимент</p>
-      <h2 id="catalog-h">Крышки KISS</h2>
-      <p class="muted section__sub">Размер подбирается по диаметру венчика стакана, а не по его объёму. Не знаете диаметр — поможем определить.</p>
+    <div class="sec-head">
+      <h2 id="catalog-h">Ассортимент</h2>
+      <p>Размер подбирается по диаметру венчика стакана, а&nbsp;не по объёму.</p>
     </div>
 
     <div class="catalog">
-      <article class="card reveal" data-sku="d80" style="--d:0s">
+      <article class="card" data-sku="d80">
         <div class="card__media">
           <img src="assets/img/lid-black-460.webp" srcset="assets/img/lid-black-300.webp 300w, assets/img/lid-black-460.webp 460w" sizes="(max-width: 700px) 70vw, 300px" width="460" height="460" loading="lazy" alt="Крышка KISS чёрного цвета, вид сверху" data-card-img>
-          <span class="tmp-badge" data-temp-photo>Временное фото</span>
         </div>
         <div class="card__body">
-          <h3 data-c="catalog.d80.title">KISS Д80</h3>
+          <h3><span class="card__size">Ø80</span> <span class="card__name" data-c="catalog.d80.title">KISS Д80</span></h3>
           <dl class="spec">
             <div><dt>Диаметр</dt><dd data-c="catalog.d80.diameter">80 мм</dd></div>
             <div><dt>Материал</dt><dd data-c="catalog.d80.material">Полистирол</dd></div>
             <div><dt>Цена</dt><dd data-price="d80">по запросу</dd></div>
           </dl>
-          <fieldset class="swatches" data-swatches="d80">
-            <legend>Цвет</legend>
-          </fieldset>
-          <button class="btn btn--primary btn--block" type="button" data-quote="catalog" data-size="d80">Рассчитать этот вариант</button>
+          <fieldset class="swatches" data-swatches="d80"><legend>Цвет</legend></fieldset>
+          <button class="btn btn--ink btn--block" type="button" data-quote="catalog" data-size="d80">Рассчитать этот вариант</button>
         </div>
       </article>
 
-      <article class="card reveal" data-sku="d90" style="--d:.12s">
+      <article class="card" data-sku="d90">
         <div class="card__media">
           <img src="assets/img/lid-black-460.webp" srcset="assets/img/lid-black-300.webp 300w, assets/img/lid-black-460.webp 460w" sizes="(max-width: 700px) 70vw, 300px" width="460" height="460" loading="lazy" alt="Крышка KISS чёрного цвета, вид сверху" data-card-img>
-          <span class="tmp-badge" data-temp-photo>Временное фото</span>
         </div>
         <div class="card__body">
-          <h3 data-c="catalog.d90.title">KISS Д90</h3>
+          <h3><span class="card__size">Ø90</span> <span class="card__name" data-c="catalog.d90.title">KISS Д90</span></h3>
           <dl class="spec">
             <div><dt>Диаметр</dt><dd data-c="catalog.d90.diameter">90 мм</dd></div>
             <div><dt>Материал</dt><dd data-c="catalog.d90.material">Полистирол</dd></div>
             <div><dt>Цена</dt><dd data-price="d90">по запросу</dd></div>
           </dl>
-          <fieldset class="swatches" data-swatches="d90">
-            <legend>Цвет</legend>
-          </fieldset>
-          <button class="btn btn--primary btn--block" type="button" data-quote="catalog" data-size="d90">Рассчитать этот вариант</button>
+          <fieldset class="swatches" data-swatches="d90"><legend>Цвет</legend></fieldset>
+          <button class="btn btn--ink btn--block" type="button" data-quote="catalog" data-size="d90">Рассчитать этот вариант</button>
         </div>
       </article>
 
-      <article class="card card--help reveal" style="--d:.24s">
-        <div class="card__body">
-          <svg class="icon icon--lg draw" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="17"/><path d="M19 19a5 5 0 1 1 7 4.6c-1.3.6-2 1.6-2 3V28"/><circle cx="24" cy="34" r="1.2"/></svg>
-          <h3>Не знаю диаметр</h3>
-          <p>Не знаете диаметр? Оставьте контакт — уточним модель стакана и подберём вариант.</p>
-          <p class="muted small">Измерить самостоятельно: линейкой по внешнему краю венчика стакана, через центр.</p>
-          <button class="btn btn--ghost btn--block" type="button" data-quote="catalog" data-size="help">Нужна помощь с выбором</button>
-        </div>
-      </article>
+      <aside class="measure" aria-labelledby="measure-h">
+        <svg class="drawing" viewBox="0 0 260 220" aria-hidden="true">
+          <path class="cup" d="M60 60 H200 L186 210 H74 Z"/>
+          <ellipse class="rim" cx="130" cy="60" rx="72" ry="14"/>
+          <path class="dim" d="M58 26 H202 M58 18 V40 M202 18 V40"/>
+          <path class="arrow" d="M58 26 l10 -4 v8 z M202 26 l-10 -4 v8 z"/>
+          <text x="130" y="18" text-anchor="middle">Ø ? мм</text>
+        </svg>
+        <h3 id="measure-h">Не знаете диаметр?</h3>
+        <p>Измерьте линейкой внешний край венчика стакана через центр. Не получается — оставьте телефон, уточним по модели стакана.</p>
+        <button class="btn btn--line btn--block" type="button" data-quote="catalog" data-size="help">Нужна помощь с выбором</button>
+      </aside>
     </div>
   </div>
 </section>
 
-<!-- 06. Примеры -->
-<section class="section section--tint" id="examples" aria-labelledby="examples-h">
+<section class="photos" id="examples" aria-labelledby="examples-h">
   <div class="wrap">
-    <div class="reveal">
-      <p class="eyebrow">Примеры</p>
-      <h2 id="examples-h">Как KISS выглядит в подаче</h2>
+    <div class="sec-head">
+      <h2 id="examples-h">Как это выглядит</h2>
+      <p data-temp-photo>Пока фото из коммерческого предложения. Предметную съёмку добавим до запуска.</p>
     </div>
-    <div class="gallery">
-      <figure class="shot shot--wide reveal">
-        <button type="button" class="shot__btn" data-full="assets/img/use-trio-1550.webp" aria-label="Увеличить фото: три цвета крышек">
-          <img src="assets/img/use-trio-800.webp" srcset="assets/img/use-trio-800.webp 800w, assets/img/use-trio-1550.webp 1550w" sizes="(max-width: 900px) 92vw, 1100px" width="1550" height="510" loading="lazy" alt="Крышки KISS чёрного, белого и красного цвета рядом, вид сверху">
+    <div class="photo-grid">
+      <figure class="ph ph--wide">
+        <button type="button" class="ph__btn" data-full="assets/img/use-trio-1550.webp" aria-label="Увеличить фото: три цвета крышек">
+          <img src="assets/img/use-trio-800.webp" srcset="assets/img/use-trio-800.webp 800w, assets/img/use-trio-1550.webp 1550w" sizes="(max-width: 900px) 92vw, 1160px" width="1550" height="510" loading="lazy" alt="Крышки KISS чёрного, белого и красного цвета рядом, вид сверху">
         </button>
-        <figcaption>Три цвета для разных напитков и акций</figcaption>
+        <figcaption>Чёрная, белая и красная</figcaption>
       </figure>
-      <figure class="shot reveal" style="--d:.1s">
-        <button type="button" class="shot__btn" data-full="assets/img/use-hand-827.webp" aria-label="Увеличить фото: крышка в руке">
-          <img src="assets/img/use-hand-480.webp" srcset="assets/img/use-hand-480.webp 480w, assets/img/use-hand-827.webp 827w" sizes="(max-width: 600px) 92vw, 540px" width="827" height="851" loading="lazy" alt="Чёрная крышка KISS в руке, крупный план">
+      <figure class="ph ph--big">
+        <button type="button" class="ph__btn" data-full="assets/img/use-hand-827.webp" aria-label="Увеличить фото: крышка в руке">
+          <img src="assets/img/use-hand-480.webp" srcset="assets/img/use-hand-480.webp 480w, assets/img/use-hand-827.webp 827w" sizes="(max-width: 700px) 92vw, 680px" width="827" height="851" loading="lazy" alt="Чёрная крышка KISS в руке, крупный план">
         </button>
         <figcaption>Крупный план для фото и видео</figcaption>
       </figure>
-      <figure class="shot reveal" style="--d:.2s">
-        <button type="button" class="shot__btn" data-full="assets/img/use-side-872.webp" aria-label="Увеличить фото: крышка под углом">
-          <img src="assets/img/use-side-480.webp" srcset="assets/img/use-side-480.webp 480w, assets/img/use-side-872.webp 872w" sizes="(max-width: 600px) 92vw, 540px" width="872" height="870" loading="lazy" alt="Чёрная крышка KISS под углом: нос, губы и отверстие для питья">
+      <figure class="ph ph--small">
+        <button type="button" class="ph__btn" data-full="assets/img/use-side-872.webp" aria-label="Увеличить фото: крышка под углом">
+          <img src="assets/img/use-side-480.webp" srcset="assets/img/use-side-480.webp 480w, assets/img/use-side-872.webp 872w" sizes="(max-width: 700px) 92vw, 440px" width="872" height="870" loading="lazy" alt="Чёрная крышка KISS под углом: нос, губы и отверстие для питья">
         </button>
-        <figcaption>Подача в кофейне: деталь, которую замечают</figcaption>
+        <figcaption>Рельеф под углом</figcaption>
       </figure>
     </div>
-    <p class="note" data-temp-photo>Фото на прототипе временные — взяты из коммерческого предложения. До запуска заменяются оригинальными предметными снимками.</p>
   </div>
 </section>
 
-<!-- 07. Цены -->
-<section class="section" id="prices" aria-labelledby="prices-h">
-  <div class="wrap">
-    <div class="reveal">
-      <p class="eyebrow">Цены</p>
-      <h2 id="prices-h">Стоимость</h2>
+<section class="deal" id="prices" aria-labelledby="prices-h">
+  <div class="wrap deal__grid">
+    <div class="deal__price">
+      <h2 id="prices-h">Цена</h2>
+      <table class="price-table">
+        <tbody>
+          <tr data-price-row="d80"><th scope="row">KISS Ø80</th><td data-price-big="d80">Цена по запросу</td></tr>
+          <tr data-price-row="d90"><th scope="row">KISS Ø90</th><td data-price-big="d90">Цена по запросу</td></tr>
+        </tbody>
+      </table>
+      <div class="price-terms" data-price-terms hidden><ul class="terms"></ul></div>
+      <p class="deal__note" data-price-note>Укажите вариант и объём — подготовим расчёт.</p>
+      <button class="btn btn--red" type="button" data-quote="price">Получить расчёт</button>
     </div>
-    <div class="prices">
-      <div class="price reveal" data-price-row="d80">
-        <span class="price__name">KISS Д80</span>
-        <span class="price__value" data-price-big="d80">Цена по запросу</span>
-      </div>
-      <div class="price reveal" data-price-row="d90" style="--d:.12s">
-        <span class="price__name">KISS Д90</span>
-        <span class="price__value" data-price-big="d90">Цена по запросу</span>
-      </div>
-    </div>
-    <div class="price-terms" data-price-terms hidden>
-      <ul class="terms"></ul>
-    </div>
-    <p class="muted" data-price-note>Укажите вариант и объём — подготовим расчёт.</p>
-    <button class="btn btn--primary btn--shine" type="button" data-quote="price">Получить расчёт</button>
-  </div>
-</section>
-
-<!-- 08. Как заказать -->
-<section class="section section--tint" id="order" aria-labelledby="order-h">
-  <div class="wrap">
-    <div class="reveal">
-      <p class="eyebrow">Как заказать</p>
-      <h2 id="order-h">Четыре шага до отгрузки</h2>
-    </div>
-    <ol class="steps reveal">
-      <li><span class="steps__n">1</span><h3>Заявка</h3><p>Оставьте имя и телефон.</p></li>
-      <li><span class="steps__n">2</span><h3>Согласование</h3><p>Согласуем совместимость, количество, цену и доставку.</p></li>
-      <li><span class="steps__n">3</span><h3>Оплата</h3><p>После согласования — оплата.</p></li>
-      <li><span class="steps__n">4</span><h3>Отгрузка</h3><p>Отгрузка в подтверждённый срок.</p></li>
-    </ol>
-    <p class="muted small">Уже заказывали? <button class="link" type="button" data-quote="repeat" data-type="repeat">Заказать повторно</button></p>
-  </div>
-</section>
-
-<!-- 09. Вопросы -->
-<section class="section" id="faq" aria-labelledby="faq-h">
-  <div class="wrap wrap--narrow">
-    <div class="reveal">
-      <p class="eyebrow">Вопросы</p>
-      <h2 id="faq-h">Ответы на вопросы</h2>
-    </div>
-    <div class="faq reveal">
-      <details>
-        <summary>Как определить диаметр стакана?</summary>
-        <div class="faq__a"><p>Измерьте линейкой внешний край венчика стакана через центр. Обычно это 80 или 90&nbsp;мм. Объём стакана диаметр не определяет: стаканы одного объёма у разных производителей бывают разными. Если сомневаетесь — оставьте телефон, проверим по модели стакана.</p></div>
-      </details>
-      <details>
-        <summary>Подойдут ли крышки к нашим стаканам?</summary>
-        <div class="faq__a"><p>Одного диаметра недостаточно для безусловной гарантии: посадка зависит от профиля венчика. Поэтому мы проверяем модель вашего стакана и посадку крышки до оформления заказа.</p></div>
-      </details>
-      <details>
-        <summary>Какие цвета доступны?</summary>
-        <div class="faq__a"><p data-faq-colors>Крышки KISS выпускаются в чёрном, белом и красном цвете. Наличие конкретного сочетания размера и цвета уточняем при расчёте.</p></div>
-      </details>
-      <details>
-        <summary>Как согласовать количество?</summary>
-        <div class="faq__a"><p>Оставьте имя и телефон — менеджер уточнит нужный объём и условия поставки и подготовит расчёт.</p></div>
-      </details>
-      <details>
-        <summary>Как проходят оплата и доставка?</summary>
-        <div class="faq__a"><p>Оплата — после согласования варианта, количества и цены. Способ и срок доставки согласуются при расчёте; отгрузка — в подтверждённый срок.</p></div>
-      </details>
+    <div class="deal__order" id="order">
+      <h2>Как заказать</h2>
+      <ol class="steps">
+        <li><span><b>Заявка.</b> Оставьте имя и телефон.</span></li>
+        <li><span><b>Согласование.</b> Проверим совместимость со стаканом, обсудим количество, цену и доставку.</span></li>
+        <li><span><b>Оплата</b> — после согласования.</span></li>
+        <li><span><b>Отгрузка</b> в подтверждённый срок.</span></li>
+      </ol>
+      <p class="deal__repeat">Уже заказывали? <button class="link link--light" type="button" data-quote="repeat" data-type="repeat">Повторить заказ</button></p>
     </div>
   </div>
 </section>
 
-<!-- 10. Финальный запрос -->
+<section class="faq-sec" id="faq" aria-labelledby="faq-h">
+  <div class="wrap faq-grid">
+    <h2 id="faq-h">Вопросы</h2>
+    <dl class="faq">
+      <dt>Как определить диаметр стакана?</dt>
+      <dd>Измерьте линейкой внешний край венчика через центр. Обычно это 80 или 90&nbsp;мм. Объём стакана диаметр не определяет: у разных производителей стаканы одного объёма бывают разными.</dd>
+      <dt>Подойдут ли крышки к нашим стаканам?</dt>
+      <dd>Одного диаметра мало, чтобы гарантировать посадку: она зависит от профиля венчика. Поэтому до заказа проверяем модель вашего стакана.</dd>
+      <dt>Какие цвета есть?</dt>
+      <dd data-faq-colors>Чёрный, белый и красный. Наличие конкретного сочетания размера и цвета уточняем при расчёте.</dd>
+      <dt>Как согласовать количество?</dt>
+      <dd>Оставьте имя и телефон — менеджер уточнит нужный объём, условия поставки и пришлёт расчёт.</dd>
+      <dt>Как проходят оплата и доставка?</dt>
+      <dd>Оплата — после согласования варианта, количества и цены. Способ и срок доставки обсуждаем при расчёте.</dd>
+    </dl>
+  </div>
+</section>
+
 <section class="final" id="contacts" aria-labelledby="final-h">
-  <img class="final__lid" src="assets/img/lid-red-300.webp" width="300" height="300" alt="" aria-hidden="true" loading="lazy">
-  <div class="wrap final__in">
-    <div class="reveal">
+  <div class="wrap final__grid">
+    <div class="final__copy">
       <h2 id="final-h">Подберём KISS для вашей кофейни</h2>
       <p>Оставьте имя и телефон — согласуем вариант и подготовим расчёт заказа.</p>
-      <div class="hero__cta">
-        <button class="btn btn--light btn--lg btn--shine" type="button" data-quote="footer">Получить расчёт</button>
-        <a class="btn btn--outline-light btn--lg" data-c-href="proposal" data-hide-empty="proposal_pdf" data-goal="proposal_download" target="_blank" rel="noopener" hidden>Коммерческое предложение, PDF</a>
+      <div class="final__actions">
+        <button class="btn btn--white btn--lg" type="button" data-quote="footer">Получить расчёт</button>
+        <a class="btn btn--outline-white btn--lg" data-c-href="proposal" data-hide-empty="proposal_pdf" data-goal="proposal_download" target="_blank" rel="noopener" hidden>Коммерческое предложение, PDF</a>
       </div>
     </div>
-    <ul class="contacts reveal" style="--d:.12s">
-      <li data-hide-empty="contacts.phone" hidden><span>Телефон</span><a data-c-href="tel" data-c="contacts.phone_display" data-contact="phone"></a></li>
+    <ul class="contacts">
+      <li data-hide-empty="contacts.phone" hidden><span>Телефон</span><a class="contacts__big" data-c-href="tel" data-c="contacts.phone_display" data-contact="phone"></a></li>
       <li data-hide-empty="contacts.telegram" hidden><span>Telegram</span><a data-c-href="telegram" data-contact="telegram" target="_blank" rel="noopener"></a></li>
       <li data-hide-empty="contacts.email" hidden><span>Почта</span><a data-c-href="mailto" data-c="contacts.email" data-contact="email"></a></li>
       <li data-hide-empty="contacts.hours" hidden><span>Часы работы</span><b data-c="contacts.hours"></b></li>
       <li data-hide-empty="contacts.instagram" data-flag="contacts.show_instagram" hidden><span>Instagram</span><a data-c-href="instagram" data-contact="instagram" target="_blank" rel="noopener"></a></li>
       <li data-contacts-empty hidden><span>Контакты</span><b>Появятся после утверждения. Пока — через форму расчёта.</b></li>
     </ul>
+    <img class="final__lid" src="assets/img/lid-black-460.webp" width="460" height="460" alt="" aria-hidden="true" loading="lazy">
   </div>
 </section>
 
@@ -330,8 +266,8 @@
 <footer class="footer">
   <div class="wrap footer__in">
     <div>
-      <div class="logo logo--footer">COVERCAP</div>
-      <p class="small muted" data-legal-line></p>
+      <div class="logo logo--footer">covercap<sup>®</sup></div>
+      <p class="footer__legal" data-legal-line></p>
     </div>
     <nav class="footer__links" aria-label="Документы">
       <a href="privacy/">Политика обработки персональных данных</a>
@@ -341,12 +277,10 @@
   </div>
 </footer>
 
-<!-- Мобильная кнопка: появляется после первого экрана -->
 <div class="mbar" data-mbar hidden>
-  <button class="btn btn--primary btn--block" type="button" data-quote="mobile_bar">Получить расчёт заказа</button>
+  <button class="btn btn--red btn--block" type="button" data-quote="mobile_bar">Получить расчёт заказа</button>
 </div>
 
-<!-- Форма расчёта: имя и телефон. Выбранный вариант кнопки передают скрытыми полями. -->
 <dialog class="modal" id="quote" aria-labelledby="quote-h">
   <div class="modal__box">
     <button class="modal__close" type="button" data-close aria-label="Закрыть форму">
@@ -354,9 +288,8 @@
     </button>
 
     <form class="form" id="quote-form" action="api/lead.php" method="post" novalidate>
-      <img class="form__lid" src="assets/img/lid-black-300.webp" width="300" height="300" alt="" aria-hidden="true" data-form-lid>
       <h2 id="quote-h" data-form-title>Расчёт заказа KISS</h2>
-      <p class="muted small" data-form-sub>Оставьте имя и телефон — перезвоним, уточним вариант и количество и пришлём расчёт.</p>
+      <p class="form__sub" data-form-sub>Оставьте имя и телефон — перезвоним, уточним вариант и количество и пришлём расчёт.</p>
       <p class="chip" data-variant hidden></p>
 
       <div class="field">
@@ -364,14 +297,12 @@
         <input id="f-name" name="name" type="text" maxlength="80" autocomplete="name" required aria-describedby="e-name" class="ym-disable-keys">
         <p class="field__err" id="e-name" hidden></p>
       </div>
-
       <div class="field">
         <label for="f-contact">Телефон</label>
         <input id="f-contact" name="contact" type="tel" autocomplete="tel" inputmode="tel" placeholder="+7 900 000-00-00" required aria-describedby="e-contact" class="ym-disable-keys">
         <p class="field__err" id="e-contact" hidden></p>
       </div>
 
-      <!-- защита от спама: поле не видно людям -->
       <div class="hp" aria-hidden="true">
         <label for="f-website">Не заполняйте</label>
         <input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off">
@@ -384,7 +315,7 @@
       <input type="hidden" name="placement">
 
       <div class="field">
-        <label class="check check--consent">
+        <label class="check">
           <input type="checkbox" name="consent" value="1" required aria-describedby="e-consent">
           <span>Даю <a href="consent/" target="_blank" rel="noopener">согласие на обработку персональных данных</a> для ответа на заявку. С&nbsp;<a href="privacy/" target="_blank" rel="noopener">политикой</a> ознакомлен(а).</span>
         </label>
@@ -392,21 +323,18 @@
       </div>
 
       <div class="form__alert" role="alert" data-form-alert hidden></div>
-
-      <button class="btn btn--primary btn--block btn--lg btn--shine" type="submit" data-submit>Получить расчёт</button>
+      <button class="btn btn--red btn--block btn--lg" type="submit" data-submit>Отправить</button>
     </form>
 
     <div class="success" data-success hidden tabindex="-1">
-      <svg class="icon icon--lg check-draw" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="17"/><path d="M16 24.5l5.5 5.5L33 18.5"/></svg>
       <h2>Заявка получена</h2>
       <p>Мы получили ваш запрос на крышки KISS. Менеджер уточнит вариант и условия заказа.</p>
-      <p class="muted small">Номер заявки: <b data-lead-id></b></p>
-      <button class="btn btn--ghost" type="button" data-close>Закрыть</button>
+      <p class="form__sub">Номер заявки: <b data-lead-id></b></p>
+      <button class="btn btn--line" type="button" data-close>Закрыть</button>
     </div>
   </div>
 </dialog>
 
-<!-- Просмотр фото -->
 <dialog class="lightbox" id="lightbox" aria-label="Просмотр фото">
   <button class="modal__close modal__close--light" type="button" data-close aria-label="Закрыть просмотр">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
@@ -414,12 +342,11 @@
   <img alt="">
 </dialog>
 
-<!-- Cookies: аналитика только после согласия -->
 <div class="cookie" data-cookie hidden role="region" aria-label="Настройки cookies">
-  <p>Мы используем cookies Яндекс Метрики, чтобы понимать, какие разделы полезны. Сайт и форма работают и без них. <a href="privacy/">Подробнее</a></p>
+  <p>Используем cookies Яндекс Метрики, чтобы понимать, какие разделы полезны. Сайт и форма работают и без них. <a href="privacy/">Подробнее</a></p>
   <div class="cookie__btns">
-    <button class="btn btn--primary btn--sm" type="button" data-cookie-accept>Разрешить</button>
-    <button class="btn btn--ghost btn--sm" type="button" data-cookie-decline>Отказаться</button>
+    <button class="btn btn--ink btn--sm" type="button" data-cookie-accept>Разрешить</button>
+    <button class="btn btn--line btn--sm" type="button" data-cookie-decline>Отказаться</button>
   </div>
 </div>
 
