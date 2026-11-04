@@ -1,0 +1,37 @@
+# COVERCAP — Apache (Рег.ру, Beget, Timeweb и т.п.). Сайт кладётся в корень домена covercap.ru.
+AddDefaultCharset UTF-8
+ErrorDocument 404 /404.html
+Options -Indexes
+
+# HTTPS и домен без www. Включить ПОСЛЕ выпуска SSL-сертификата (убрать #).
+# RewriteEngine On
+# RewriteCond %{HTTPS} off [OR]
+# RewriteCond %{HTTP_HOST} ^www\. [NC]
+# RewriteRule ^ https://covercap.ru%{REQUEST_URI} [L,R=301]
+
+# Служебные файлы недоступны снаружи
+<FilesMatch "^(\.|README|.*\.(md|sqlite|jsonl|sample\.php)$)">
+  Require all denied
+</FilesMatch>
+
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+  <FilesMatch "content\.json$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+</IfModule>
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css application/javascript application/json image/svg+xml application/xml
+</IfModule>
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType font/woff2 "access plus 1 year"
+  ExpiresByType text/css "access plus 1 week"
+  ExpiresByType application/javascript "access plus 1 week"
+</IfModule>

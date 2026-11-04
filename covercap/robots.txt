@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /api/
+Disallow: /thanks/
+
+Sitemap: https://covercap.ru/sitemap.xml
