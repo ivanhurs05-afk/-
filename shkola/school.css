@@ -181,3 +181,8 @@ h1{font-size:clamp(36px,5.8vw,76px);margin-bottom:26px;letter-spacing:-.035em}
   .mbar.is-off{opacity:0;pointer-events:none;transform:translateY(10px)}
 }
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}.js .rv{opacity:1;transform:none}.ticker__in{animation:none}}
+
+/* legal documents */
+.legal h1{font-size:clamp(28px,4vw,44px);margin-bottom:10px}.legal h2{font-size:22px;margin:34px 0 12px;letter-spacing:-.01em}
+.legal p,.legal li{color:#2d3560;margin-bottom:12px;font-size:16px}.legal ul{list-style:disc;padding-left:22px;margin-bottom:12px}
+.legal a{color:var(--blue);text-decoration:underline}.legal__date{color:var(--mut)!important}

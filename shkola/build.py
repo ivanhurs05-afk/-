@@ -238,7 +238,30 @@ def catalog():
 <header class="top"><div class="wrap top__in"><span class="brand">{LOGO}</span></div></header>
 <main class="sec"><div class="wrap"><p class="tag tag--lime">КАТАЛОГ</p><h1 class="cat__h">Посадочные страницы под Яндекс Директ ({len(PAGES)})</h1>{blocks}</div></main></body></html>'''
 
+def legal_page(name, title):
+    body = open(os.path.join(ROOT, 'legal', name + '.main.html'), encoding='utf-8').read()
+    return f'''<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{e(title)} — {BRAND}</title><meta name="robots" content="noindex">
+<link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="../assets/fonts.css"><link rel="stylesheet" href="school.css">
+</head><body>
+<header class="top"><div class="wrap top__in"><a href="./" class="brand" aria-label="На главную">{LOGO}</a><a class="btn btn--sm btn--ghost" href="./">← На главную</a></div></header>
+<main class="sec"><div class="wrap wrap--narrow legal">{body}</div></main>
+<footer class="foot"><div class="wrap">
+  <div class="req"><b data-legal="name"></b> <span data-legal-row="status" data-legal="status"></span> <span data-legal-row="inn">ИНН <span data-legal="inn"></span></span> <span data-legal-row="ogrnip">ОГРНИП <span data-legal="ogrnip"></span></span> <span data-legal-row="address" data-legal="address"></span>
+  <p><a href="privacy.html">Политика конфиденциальности</a> · <a href="consent.html">Согласие на обработку персональных данных</a> · <a href="#" data-cookie-settings>Настройки cookie</a></p></div>
+</div></footer>
+<div class="cookie" id="cookie" role="dialog" aria-label="Файлы cookie" hidden>
+  <p>Сайт использует файлы cookie и сервис «Яндекс Метрика» для статистики и улучшения работы, в том числе запись действий на странице. Вы можете отказаться. Подробнее: <a href="privacy.html#cookies-info">политика обработки персональных данных</a>.</p>
+  <div class="cookie__btns"><button class="btn btn--sm" type="button" data-cookie="yes">Принять</button><button class="btn btn--sm btn--ghost" type="button" data-cookie="no">Отклонить</button></div>
+</div>
+<script>window.METRIKA_ID_OVERRIDE = 103512796;</script>
+<script src="legal.js"></script><script src="../common.js"></script>
+</body></html>'''
+
 if __name__ == '__main__':
+    for n, t in (('privacy', 'Политика обработки персональных данных'), ('consent', 'Согласие на обработку персональных данных')):
+        open(os.path.join(OUT, n + '.html'), 'w', encoding='utf-8').write(legal_page(n, t))
     for p in PAGES:
         d = os.path.join(OUT, p['path']); os.makedirs(d, exist_ok=True)
         open(os.path.join(d, 'index.html'), 'w', encoding='utf-8').write(render(p))
