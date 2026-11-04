@@ -7,7 +7,7 @@
 //   SMTP_USER   ivan.khurs@inbox.ru     (ящик, с которого отправляем)
 //   SMTP_PASS   пароль для внешнего приложения (создаётся в настройках почты, НЕ основной пароль)
 //   MAIL_TO     ivan.khurs@inbox.ru     (куда приходят заявки по умолчанию)
-//   MAIL_TO_CKO sasha991111@gmail.com   (необязательно: получатель для сайта ЦКО МИЭТ; суффикс = имя сайта заглавными)
+//   MAIL_TO_SCHOOL  (необязательно: получатель для другого сайта; суффикс = имя сайта заглавными)
 //   ALLOWED_ORIGIN  https://ivanhurs05-afk.github.io   (адрес сайта)
 const tls = require('tls');
 const net = require('net');

@@ -1,0 +1,14 @@
+{
+  "_help": "Блоки с пустыми списками на страницах не показываются. Заполните, когда будут реальные данные, и запустите: python3 shkola/build.py",
+  "prices": [],
+  "price_note": "",
+  "teachers": [],
+  "reviews": [],
+  "results": [],
+  "guarantee": "",
+  "address": "",
+  "license": "",
+  "email": "",
+  "pricing": {},
+  "_pricing_example": "Заполните поле pricing по образцу из content.demo.json. Пока pricing пуст, на страницах показывается блок «стоимость назовём по телефону»."
+}
