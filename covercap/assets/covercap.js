@@ -496,6 +496,65 @@
     });
   }
 
+  /* ---------- Ленты, слова, линии, крышка в финале ---------- */
+  function initMotion() {
+    if (reduceMotion) return;
+    var root = document.documentElement;
+
+    // Фраза проявляется по словам по мере прокрутки
+    var st = $('[data-words]');
+    var words = [];
+    if (st) {
+      var parts = st.textContent.split(/(\s+)/);
+      st.textContent = '';
+      parts.forEach(function (w) {
+        if (/^\s+$/.test(w)) { st.appendChild(document.createTextNode(w)); return; }
+        if (!w) return;
+        var sp = document.createElement('span'); sp.className = 'w'; sp.textContent = w; st.appendChild(sp); words.push(sp);
+      });
+      st.setAttribute('aria-label', parts.join(''));
+      root.classList.add('js-words');
+    }
+
+    // Линии под заголовками
+    var heads = $$('.sec-head');
+    if ('IntersectionObserver' in window && heads.length) {
+      root.classList.add('js-lines');
+      var io = new IntersectionObserver(function (en) {
+        en.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } });
+      }, { threshold: 0.4 });
+      heads.forEach(function (h) { io.observe(h); });
+      setTimeout(function () { heads.forEach(function (h) { if (h.getBoundingClientRect().top < innerHeight) h.classList.add('is-in'); }); }, 2000);
+    }
+
+    // Ленты ускоряются, пока страницу крутят, и плавно возвращаются к обычной скорости
+    var tracks = $$('.tape__track').map(function (t) { return t.getAnimations ? t.getAnimations()[0] : null; }).filter(Boolean);
+    var lastY = scrollY, boost = 0, raf = 0;
+    var finalLid = $('.final__lid'), finalSec = $('.final');
+
+    function frame() {
+      raf = 0;
+      var y = scrollY, dy = y - lastY; lastY = y;
+      boost = Math.max(-6, Math.min(6, boost * 0.9 + dy * 0.06));
+      tracks.forEach(function (a) { a.playbackRate = 1 + Math.abs(boost); });
+
+      if (words.length) {
+        var r = st.getBoundingClientRect();
+        var p = (innerHeight * 0.85 - r.top) / (r.height + innerHeight * 0.35);
+        var n = Math.round(Math.max(0, Math.min(1, p)) * words.length);
+        for (var i = 0; i < words.length; i++) words[i].classList.toggle('on', i < n);
+      }
+      if (finalLid && finalSec) {
+        var fr = finalSec.getBoundingClientRect();
+        var q = 1 - (fr.top + fr.height) / (innerHeight + fr.height);
+        finalLid.style.setProperty('--fr', (-60 + q * 120).toFixed(1) + 'deg');
+      }
+      if (Math.abs(boost) > 0.02) raf = requestAnimationFrame(frame);
+    }
+    addEventListener('scroll', function () { if (!raf) raf = requestAnimationFrame(frame); }, { passive: true });
+    frame();
+  }
+
   /* ---------- Анимации ---------- */
   var reduceMotion = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -568,7 +627,7 @@
       document.body.insertBefore(bar, document.body.firstChild);
     }
     initNav(); initMobileBar(); initLightbox(); initForm(); initContactClicks(); initTouches();
-    initReveal(); initStage(); initTilt(); initHeroColors();
+    initReveal(); initStage(); initTilt(); initHeroColors(); initMotion();
     fetch('content.json', { cache: 'no-cache' })
       .then(function (r) { return r.json(); })
       .then(function (json) { C = json; })
