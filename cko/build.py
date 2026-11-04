@@ -111,6 +111,7 @@ FAQ = [
 
 def render(pg):
     X = pg['h1']
+    lic = f'<p>Образовательная лицензия: {e(C["license"])}</p>' if has('license') else ''
     nav = ''.join(f'<a href="{h}">{t}</a>' for t, h in nav_items())
     phone = ''.join(f'<a href="tel:{p[1]}">{p[0]}</a>' for p in PHONES)
     ticker = ''.join(f'<span>{e(s)}</span><i></i>' for s in SUBJECTS[:8]) * 2
@@ -187,10 +188,14 @@ def render(pg):
     <div><b>Контакты</b>{phone}<a href="{VK}" target="_blank" rel="noopener">ВКонтакте</a><a href="https://{SITE}" target="_blank" rel="noopener">{SITE}</a><span data-legal-row="email"><a href="#" data-legal="email"></a></span></div>
   </div>
   <div class="req"><span data-legal-row="name" data-legal="name"></span> <span data-legal-row="status" data-legal="status"></span> <span data-legal-row="inn">ИНН <span data-legal="inn"></span></span> <span data-legal-row="ogrnip">ОГРНИП <span data-legal="ogrnip"></span></span> <span data-legal-row="address" data-legal="address"></span>
-    <p><a href="../../privacy.html">Политика конфиденциальности</a> · <a href="../../consent.html">Согласие на обработку персональных данных</a></p></div>
+    <p><a href="../../privacy.html">Политика конфиденциальности</a> · <a href="../../consent.html">Согласие на обработку персональных данных</a> · <a href="#" data-cookie-settings>Настройки cookie</a></p>{lic}</div>
 </div></footer>
+<div class="cookie" id="cookie" role="dialog" aria-label="Файлы cookie" hidden>
+  <p>Сайт использует файлы cookie и сервис «Яндекс Метрика» для статистики и улучшения работы, в том числе запись действий на странице. Вы можете отказаться. Подробнее: <a href="../../privacy.html#cookies-info">политика обработки персональных данных</a>.</p>
+  <div class="cookie__btns"><button class="btn btn--sm" type="button" data-cookie="yes">Принять</button><button class="btn btn--sm btn--ghost" type="button" data-cookie="no">Отклонить</button></div>
+</div>
 <div class="mbar" id="mbar"><a class="btn btn--ghost" href="tel:{PHONES[0][1]}">Позвонить</a><a class="btn" href="#zapis">Записаться</a></div>
-<script>window.METRIKA_ID_OVERRIDE = null; /* счётчик Метрики для этих страниц: укажите id, когда будет создан */</script>
+<script>window.METRIKA_ID_OVERRIDE = 103512796;</script>
 <script src="../../legal.js"></script><script src="../../../common.js"></script><script src="../../cko.js"></script>
 </body></html>'''
 
