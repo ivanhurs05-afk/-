@@ -133,7 +133,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .specimen__note{margin-left:auto;color:var(--ink-2);font-size:13px}
 
 @media (max-width:900px){
-  .hero__grid{grid-template-columns:1fr;min-height:0}
+  .hero__grid{grid-template-columns:minmax(0,1fr);min-height:0}
   .hero__copy{border-right:0;padding-right:0;padding-top:32px;padding-bottom:36px}
   .specimen{margin:0 calc(-1 * max(20px,env(safe-area-inset-left,0px)));border-top:2px solid var(--line)}
   .specimen__plate{min-height:0;aspect-ratio:1/1;max-height:520px}
@@ -262,7 +262,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .contacts{list-style:none;margin:0;padding:0;position:relative;z-index:1}
 .contacts li{padding:16px 0;border-top:1px solid rgba(255,255,255,.45)}
 .contacts li:last-child{border-bottom:1px solid rgba(255,255,255,.45)}
-.contacts span{display:block;font-size:13px;opacity:.85;margin-bottom:2px}
+.contacts span{display:block;font-size:13px;margin-bottom:2px}
 .contacts a,.contacts b{font-weight:600;font-size:19px;text-decoration:none}
 .contacts a:hover{text-decoration:underline}
 .contacts__big{font-family:var(--display);font-weight:700!important;font-size:clamp(24px,2.6vw,34px)!important;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
@@ -378,7 +378,7 @@ input:focus{outline:none;border-color:var(--red)}
 
 /* фраза под лентами проявляется по словам при прокрутке */
 .statement .w{transition:color .25s}
-.js-words .statement .w{color:rgba(18,17,18,.18)}
+.js-words .statement .w{color:rgba(18,17,18,.3)}
 .js-words .statement .w.on{color:var(--ink)}
 
 /* линии под заголовками секций прочерчиваются */
@@ -394,3 +394,5 @@ input:focus{outline:none;border-color:var(--red)}
   .js-words .statement .w{color:var(--ink)}
   .js-lines .sec-head::after{transform:none}
 }
+.logo{display:inline-flex;align-items:center;min-height:44px}
+@media (min-width:1081px){.header__phone{display:inline-flex;align-items:center;min-height:44px}}

@@ -2,5 +2,8 @@ User-agent: *
 Disallow: /admin/
 Disallow: /api/
 Disallow: /thanks/
+Disallow: /v1/
+Disallow: /data/
+Disallow: /private/
 
 Sitemap: https://covercap.ru/sitemap.xml

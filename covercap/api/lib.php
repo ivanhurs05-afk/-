@@ -34,7 +34,7 @@ function cc_cfg(): array
         'mail_from'       => 'no-reply@covercap.ru',
         'telegram_token'  => '',
         'telegram_chat'   => '',
-        'consent_version' => 'consent-v1-draft',
+        'consent_version' => 'consent-2026-11-05',
         'ip_salt'         => 'change-me',
         'rate_limit'      => 5,     // заявок с одного IP
         'rate_window'     => 600,   // за 10 минут
