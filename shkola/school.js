@@ -72,6 +72,24 @@
   /* goals (Yandex.Metrika, only if a counter id is set) */
   function goal(n) { try { if (window.ym && window.METRIKA_ID_OVERRIDE) ym(window.METRIKA_ID_OVERRIDE, 'reachGoal', n); } catch (e) {} }
 
+  /* поведенческие цели Яндекс Метрики (срабатывают после согласия на cookie) */
+  var fired = {};
+  function once(n) { if (fired[n]) return; fired[n] = 1; goal(n); }
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href],button[data-toggle]'); if (!a) return;
+    var h = a.getAttribute('href') || '';
+    if (h.indexOf('tel:') === 0) goal('click_phone');
+    else if (h === '#zapis' || h === '#final') goal('click_cta');
+    else if (a.hasAttribute('data-toggle')) goal('click_group_prices');
+  });
+  document.addEventListener('focusin', function (e) { if (e.target.closest && e.target.closest('[data-form]')) once('form_start'); });
+  document.querySelectorAll('.faq summary').forEach(function (s) { s.addEventListener('click', function () { if (!s.parentNode.open) once('faq_open'); }); });
+  var marks = [['scroll_50', .5], ['scroll_90', .9]];
+  window.addEventListener('scroll', function () {
+    var h = document.documentElement, p = (window.scrollY + window.innerHeight) / h.scrollHeight;
+    marks.forEach(function (m) { if (p >= m[1]) once(m[0]); });
+  }, { passive: true });
+
   /* lead forms */
   var utm = {};
   try { new URLSearchParams(location.search).forEach(function (v, k) { if (/^(utm_|yclid|rs|from)/.test(k)) utm[k] = v; }); } catch (e) {}
