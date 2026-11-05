@@ -114,7 +114,7 @@
     $('[data-contacts-empty]').hidden = anyContact;
 
     var L = C.legal || {};
-    var legal = [L.seller_name, L.inn && ('ИНН ' + L.inn), L.ogrn && ('ОГРН ' + L.ogrn), L.address].filter(Boolean).join(' · ');
+    var legal = [L.seller_name, L.inn && ('ИНН ' + L.inn), L.ogrn && ('ОГРН/ОГРНИП ' + L.ogrn), L.address].filter(Boolean).join(' · ');
     $('[data-legal-line]').textContent = legal || 'Крышки KISS для кофеен и заведений с напитками навынос.';
 
     if (C.photos_temporary === false) $$('[data-temp-photo]').forEach(function (el) { el.hidden = true; });
