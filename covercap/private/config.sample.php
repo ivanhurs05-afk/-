@@ -5,11 +5,13 @@
  */
 return [
     'site_url'        => 'https://covercap.ru',
-    'notify_email'    => '',                    // рабочая почта для уведомлений о заявках
+    'notify_email'    => '',                    // рабочая почта для уведомлений. Только российский почтовый сервис
+                                                // (Яндекс, Mail.ru и т.п.): письмо содержит персональные данные,
+                                                // а Gmail и др. — это трансграничная передача (ст. 12 152-ФЗ).
     'mail_from'       => 'no-reply@covercap.ru',
     'telegram_token'  => '',                    // необязательно: в Telegram уходит только номер заявки и ссылка
     'telegram_chat'   => '',
-    'consent_version' => 'consent-v1-draft',    // менять при каждой правке текста согласия
+    'consent_version' => 'consent-2026-11-05',  // менять при каждой правке текста согласия (consent/index.html)
     'ip_salt'         => 'замените-на-случайную-строку',
     'rate_limit'      => 5,
     'rate_window'     => 600,

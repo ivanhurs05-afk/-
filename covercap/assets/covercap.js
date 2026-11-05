@@ -623,7 +623,7 @@
   function start() {
     if (DEMO) {
       var bar = document.createElement('div'); bar.className = 'demo-bar'; bar.setAttribute('role', 'note');
-      bar.textContent = 'Демо-версия для согласования. Заявки из формы никуда не отправляются, фото временные.';
+      bar.textContent = 'Это предпросмотр сайта: заявки с этой страницы не отправляются. Позвоните или напишите — контакты внизу страницы.';
       document.body.insertBefore(bar, document.body.firstChild);
     }
     initNav(); initMobileBar(); initLightbox(); initForm(); initContactClicks(); initTouches();
