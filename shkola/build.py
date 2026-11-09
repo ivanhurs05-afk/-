@@ -21,22 +21,22 @@ for exam, grades in (('ege', '10–11 класс'), ('oge', '8–9 класс'))
     for s in SUBJ:
         n, dat = SUBJ[s]; X = {'ege': 'ЕГЭ', 'oge': 'ОГЭ'}[exam]
         PAGES.append(dict(path=f'{exam}/{s}', group=X, name=f'{n}', aud=grades, subj=n, grade='11 класс' if exam == 'ege' else '9 класс',
-            h1=(f'Подготовка к {X} по {dat}', 'в мини-группах', ''),
-            lead=f'Бесплатное открытое занятие: посмотрите, как всё устроено, и узнайте уровень ребёнка.',
+            h1=(f'Подготовка к {X} по {dat}', 'где видно каждое занятие', ''),
+            lead='После каждого занятия вам приходит разбор: что прошли, что получилось и над чем работать. Индивидуально или в небольшой группе.',
             title=f'Подготовка к {X} по {dat}'))
 PAGES += [
  dict(path='angliyskiy/shkolnikam', group='Английский', name='Английский для школьников', aud='Школьники', subj='Английский', grade='5 класс',
-      h1=('Английский язык для', 'школьников', 'в мини-группах'), lead='Бесплатное открытое занятие: познакомьтесь с форматом и узнайте уровень ребёнка.', title='Английский язык для школьников'),
+      h1=('Английский язык для', 'школьников', 'где видно каждое занятие'), lead='Пробное занятие бесплатно: познакомьтесь с форматом и узнайте уровень ребёнка.', title='Английский язык для школьников'),
  dict(path='angliyskiy/detyam', group='Английский', name='Английский для детей', aud='1–4 класс', subj='Английский', grade='3 класс',
-      h1=('Английский язык для', 'детей 1–4 классов', ''), lead='Бесплатное открытое занятие: посмотрите, как проходят уроки для младших школьников.', title='Английский язык для детей'),
+      h1=('Английский язык для', 'детей 1–4 классов', ''), lead='Пробное занятие бесплатно: посмотрите, как проходят уроки для младших школьников.', title='Английский язык для детей'),
  dict(path='angliyskiy/razgovornyy', group='Английский', name='Разговорный английский', aud='По уровню', subj='Английский', grade='7 класс',
-      h1=('Разговорный', 'английский', 'по вашему уровню'), lead='Бесплатное открытое занятие: определим уровень и подскажем подходящую группу.', title='Разговорный английский'),
+      h1=('Разговорный', 'английский', 'по вашему уровню'), lead='Пробное занятие бесплатно: определим уровень и подскажем подходящую группу.', title='Разговорный английский'),
  dict(path='angliyskiy/dlya-raboty', group='Английский', name='Английский для работы', aud='Взрослые', subj='Английский', grade='',
-      h1=('Английский язык', 'для работы', ''), lead='Бесплатное открытое занятие: определим уровень и цели.', title='Английский язык для работы'),
+      h1=('Английский язык', 'для работы', ''), lead='Пробное занятие бесплатно: определим уровень и цели.', title='Английский язык для работы'),
  dict(path='matematika/shkolnikam', group='Школьная программа', name='Математика для школьников', aud='5–8 класс', subj='Математика', grade='6 класс',
-      h1=('Математика для', 'школьников 5–8 классов', ''), lead='Бесплатное открытое занятие: посмотрите, как всё устроено, и узнайте уровень ребёнка.', title='Математика для школьников'),
+      h1=('Математика для', 'школьников 5–8 классов', ''), lead='Пробное занятие бесплатно: посмотрите, как всё устроено, и узнайте уровень ребёнка.', title='Математика для школьников'),
  dict(path='russkiy/shkolnikam', group='Школьная программа', name='Русский язык для школьников', aud='5–8 класс', subj='Русский язык', grade='6 класс',
-      h1=('Русский язык для', 'школьников 5–8 классов', ''), lead='Бесплатное открытое занятие: посмотрите, как всё устроено, и узнайте уровень ребёнка.', title='Русский язык для школьников'),
+      h1=('Русский язык для', 'школьников 5–8 классов', ''), lead='Пробное занятие бесплатно: посмотрите, как всё устроено, и узнайте уровень ребёнка.', title='Русский язык для школьников'),
 ]
 SUBJECTS = ['Математика', 'Русский язык', 'Английский', 'Физика', 'Химия', 'Биология', 'История', 'Обществознание', 'Информатика']
 GRADES = ['1 класс', '2 класс', '3 класс', '4 класс', '5 класс', '6 класс', '7 класс', '8 класс', '9 класс', '10 класс', '11 класс']
@@ -62,20 +62,21 @@ def nav_items():
     return n
 
 def form(fid, pg, final=False):
-    t = 'Записаться' if final else 'Бесплатное открытое занятие'
+    t = 'Записаться' if final else 'Пробное занятие'
     return f'''<form class="fcard" id="{fid}" data-form novalidate>
   <p class="fcard__top">Позвоните нам или оставьте заявку</p>
   <p class="fcard__sub">Перезвоним в течение рабочего дня</p>
   <div class="msgr"><a class="msg" href="tel:{PHONES[0][1]}">Позвонить</a><a class="msg" href="tel:{PHONES[1][1]}">Позвонить (моб.)</a></div>
   <p class="or"><span>или</span></p>
   <h3>{t}</h3>
+  {'' if final else '<p class="ftrial">Пробное занятие 60 минут бесплатно: разберём уровень и пробелы по темам. Дальше занятия платные, от 1 260 ₽ за 60 минут.</p>'}
   <label>Имя родителя<input name="name" autocomplete="name" placeholder="Как к вам обращаться" required></label>
   <label>Предмет<select name="subject">{opt(SUBJECTS, pg['subj'])}</select></label>
   <label>Класс ребёнка<select name="grade">{opt(GRADES + ['Взрослый'], pg['grade'] or 'Взрослый')}</select></label>
   <label>Телефон<input name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 (___) ___-__-__" required></label>
   <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
   <label class="agree"><input type="checkbox" name="agree" required><span>Я родитель или законный представитель и согласен на обработку персональных данных (<a href="../../consent.html" target="_blank" rel="noopener">согласие</a>, <a href="../../privacy.html" target="_blank" rel="noopener">политика</a>)</span></label>
-  <button class="btn btn--lg" type="submit">Записаться бесплатно</button>
+  <button class="btn btn--lg" type="submit">Записаться на пробное занятие</button>
   <p class="fstatus" role="status" aria-live="polite" hidden></p>
 </form>'''
 
@@ -132,8 +133,8 @@ def fallback_prices():
     return f'<section class="sec sec--soft" id="oplata"><div class="wrap"><p class="tag tag--lime">ОПЛАТА</p><h2>Всё честно и сразу</h2><p class="sub">Условия оплаты.</p>{perks}{body}{g}</div></section>'
 
 FAQ = [
- ('Как проходят занятия?', 'Занятия проходят в мини-группах. Формат, расписание и преподавателя подскажем при записи.'),
- ('Что такое бесплатное открытое занятие?', 'Это знакомство со школой: можно посмотреть, как всё устроено, и задать вопросы. Дату и время подскажем после заявки.'),
+ ('Как проходят занятия?', 'Онлайн: индивидуально по 60 или 90 минут либо в небольшой группе по 120 минут. После каждого занятия приходит разбор: что прошли и над чем работать.'),
+ ('Что такое пробное занятие?', 'Это 60 минут бесплатно: разберём уровень ребёнка и пробелы по темам, покажем формат занятий. Дату и время подскажем после заявки.'),
  ('Сколько стоит обучение?', 'Индивидуальные занятия — от 1 260 ₽ за 60 минут в пакете на 24 занятия, разовое занятие — 2 000 ₽. Группа — от 880 ₽ за занятие в пакете на 48. Пробное занятие бесплатно.'),
  ('Можно ли оплатить частями или материнским капиталом?', 'Да, доступны оплата частями, оплата материнским капиталом и налоговый вычет. Детали и документы уточнит администратор.'),
  ('С какого класса и по каким предметам вы берёте?', 'Подскажем при записи: напишите класс и предмет в заявке, и мы подберём группу.'),
@@ -147,13 +148,13 @@ def render(pg):
     ticker = ''.join(f'<span>{e(s)}</span><i></i>' for s in SUBJECTS[:8]) * 2
     core = ''.join(f'<a class="card subj" href="../../{p}/"><span class="ico ico--{c}">{ICON[c]}</span><h3>{n}</h3><p>ЕГЭ, ОГЭ и школьная программа</p></a>' for n, p, c in CORE)
     faq = ''.join(f'<details{" open" if i == 0 else ""}><summary>{e(q)}</summary><p>{e(a)}</p></details>' for i, (q, a) in enumerate(FAQ))
-    pills = ''.join(f'<li class="pill{" pill--on" if i == 0 else ""}">{t}</li>' for i, t in enumerate(['Бесплатное открытое занятие', 'Мини-группы', 'Оплата частями', pg['aud']]))
-    stats = f'<div class="stat"><b>0 ₽</b><span>открытое занятие</span></div><div class="stat"><b>{e(pg["aud"])}</b><span>{e(pg["group"])}, {e(pg["name"])}</span></div>'
+    pills = ''.join(f'<li class="pill{" pill--on" if i == 0 else ""}">{t}</li>' for i, t in enumerate(['от 1 260 ₽', '1 на 1 и группы', 'разбор после занятия', pg['aud']]))
+    stats = f'<div class="stat"><b>0 ₽</b><span>пробное занятие</span></div><div class="stat"><b>{e(pg["aud"])}</b><span>{e(pg["group"])}, {e(pg["name"])}</span></div>'
     return f'''<!doctype html>
 <html lang="ru"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{e(pg["title"])} — {BRAND}</title>
-<meta name="description" content="{e(pg["title"])}: занятия в мини-группах, бесплатное открытое занятие. Оплата частями, материнский капитал, налоговый вычет.">
+<meta name="description" content="{e(pg["title"])}: индивидуально и в небольшой группе, пробное занятие бесплатно. Оплата частями, материнский капитал, налоговый вычет.">
 <meta name="robots" content="noindex">
 <meta property="og:title" content="{e(pg["title"])} — {BRAND}"><meta property="og:type" content="website">
 <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
@@ -164,7 +165,7 @@ def render(pg):
 <header class="top"><div class="wrap top__in">
   <a href="../../" class="brand" aria-label="Проходной балл">{LOGO}</a>
   <nav class="top__nav" aria-label="Разделы">{nav}</nav>
-  <div class="top__r"><div class="top__ph">{phone}</div><a class="btn btn--sm" href="#zapis">Бесплатное занятие</a></div>
+  <div class="top__r"><div class="top__ph">{phone}</div><a class="btn btn--sm" href="#zapis">Пробное занятие</a></div>
 </div></header>
 <main>
 <section class="hero"><div class="wrap hero__grid">
@@ -181,9 +182,9 @@ def render(pg):
 
 <section class="sec" id="about"><div class="wrap about">
   <div><p class="tag tag--cyan">О ШКОЛЕ</p><h2>Школа «Проходной балл»</h2>
-  <p class="sub">Подготовка к ЕГЭ и ОГЭ и школьная программа в мини-группах. Начните с бесплатного открытого занятия: посмотрите, как всё устроено, и решите вместе с нами.</p>
-  <ul class="ticks"><li>Занятия в мини-группах</li><li>Бесплатное открытое занятие</li><li>Оплата частями, материнский капитал, налоговый вычет</li></ul></div>
-  <div class="facts"><div class="card fact"><b>0 ₽</b><span>открытое занятие</span></div><div class="card fact"><b>8</b><span>предметов ЕГЭ и ОГЭ</span></div><div class="card fact"><b>1–11</b><span>классы</span></div><div class="card fact"><b>Мини</b><span>группы</span></div></div>
+  <p class="sub">Подготовка к ЕГЭ и ОГЭ и школьная программа онлайн: индивидуально или в небольшой группе. Начните с бесплатного пробного занятия: посмотрите, как всё устроено, и решите вместе с нами.</p>
+  <ul class="ticks"><li>Индивидуально или в небольшой группе</li><li>Бесплатное пробное занятие</li><li>Оплата частями, материнский капитал, налоговый вычет</li></ul></div>
+  <div class="facts"><div class="card fact"><b>0 ₽</b><span>пробное занятие</span></div><div class="card fact"><b>8</b><span>предметов ЕГЭ и ОГЭ</span></div><div class="card fact"><b>1–11</b><span>классы</span></div><div class="card fact"><b>1 на 1</b><span>и группы</span></div></div>
 </div></section>
 
 <section class="sec sec--soft" id="predmety"><div class="wrap">
@@ -201,11 +202,11 @@ def render(pg):
 
 <section class="final" id="final"><div class="wrap final__grid">
   <div class="final__txt">
-    <h2>Запишите ребёнка на <span class="hl">бесплатное</span> занятие</h2>
+    <h2>Запишите ребёнка на <span class="hl">пробное</span> занятие</h2>
     <p class="final__sub">Ничего не платите и ничего не обещаете. Просто посмотрите, как всё устроено.</p>
     <ul class="fticks"><li>Узнаете уровень ребёнка</li><li>Познакомитесь с форматом занятий</li><li>Узнаете стоимость и условия оплаты</li></ul>
     <p class="steps_t">Что будет после заявки</p>
-    <ol class="fsteps"><li>Перезвоним в течение рабочего дня</li><li>Подберём группу и удобное время</li><li>Проведём занятие — платить не нужно</li></ol>
+    <ol class="fsteps"><li>Перезвоним в течение рабочего дня</li><li>Подберём группу и удобное время</li><li>Проведём пробное занятие — платить не нужно</li></ol>
   </div>
   {form("final-form", pg, True)}
 </div></section>
@@ -213,7 +214,7 @@ def render(pg):
 
 <footer class="foot"><div class="wrap">
   <div class="foot__grid">
-    <div><div class="brand">{LOGO}</div><p class="foot__d">Школа подготовки к ЕГЭ и ОГЭ: математика, русский язык, английский, физика, химия, биология, история, обществознание. Занятия в мини-группах.</p></div>
+    <div><div class="brand">{LOGO}</div><p class="foot__d">Школа подготовки к ЕГЭ и ОГЭ: математика, русский язык, английский, физика, химия, биология, история, обществознание. Занятия онлайн, индивидуально и в небольших группах.</p></div>
     <div><b>Разделы</b>{"".join(f'<a href="{h}">{t}</a>' for t, h in nav_items())}</div>
     <div><b>Контакты</b>{phone}<span data-legal-row="email"><a href="#" data-legal="email"></a></span></div>
   </div>
