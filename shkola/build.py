@@ -233,7 +233,7 @@ def catalog():
     groups = {}
     for p in PAGES: groups.setdefault(p['group'], []).append(p)
     blocks = ''.join(f'<h2>{e(g)}</h2><div class="grid4">' + ''.join(f'<a class="card subj" href="{p["path"]}/"><h3>{e(p["name"])}</h3><p>{e(p["aud"])}</p></a>' for p in ps) + '</div>' for g, ps in groups.items())
-    return f'''<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Посадочные страницы ЦКО МИЭТ</title><meta name="robots" content="noindex">
+    return f'''<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Посадочные страницы Проходной балл</title><meta name="robots" content="noindex">
 <link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="../assets/fonts.css"><link rel="stylesheet" href="school.css"></head><body>
 <header class="top"><div class="wrap top__in"><span class="brand">{LOGO}</span></div></header>
 <main class="sec"><div class="wrap"><p class="tag tag--lime">КАТАЛОГ</p><h1 class="cat__h">Посадочные страницы под Яндекс Директ ({len(PAGES)})</h1>{blocks}</div></main></body></html>'''
@@ -267,5 +267,5 @@ if __name__ == '__main__':
         open(os.path.join(d, 'index.html'), 'w', encoding='utf-8').write(render(p))
     open(os.path.join(OUT, 'index.html'), 'w', encoding='utf-8').write(catalog())
     print('pages:', len(PAGES))
-    for k in ('license', 'address'):
+    for k in ('license',):
         if not C.get(k): print('ВНИМАНИЕ: не заполнено', k, '(content.json)')
