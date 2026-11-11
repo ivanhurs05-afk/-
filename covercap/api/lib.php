@@ -41,6 +41,13 @@ function cc_cfg(): array
         'users'           => [],    // логин => ['hash' => password_hash(...), 'role' => 'admin'|'manager']
         'fail_test'       => false, // true — имитировать сбой хранилища (для приёмочного теста)
     ];
+    $over = $cfg['data_dir'] . '/users.json';
+    if (is_file($over)) {
+        $u = json_decode((string)file_get_contents($over), true);
+        if (is_array($u)) foreach ($u as $login => $hash) {
+            if (isset($cfg['users'][$login]) && is_string($hash)) $cfg['users'][$login]['hash'] = $hash;
+        }
+    }
     return $cfg;
 }
 
