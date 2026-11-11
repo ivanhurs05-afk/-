@@ -1,6 +1,6 @@
 {
   "_comment": "Единый источник цен, контактов и статусов. Меняется через /admin/ (или вручную). Неизвестное оставлять пустым — сайт это не покажет.",
-  "updated_at": "2026-11-05",
+  "updated_at": "2026-11-11",
   "contacts": {
     "phone": "+79050952128",
     "phone_display": "+7 905 095-21-28",
@@ -19,7 +19,7 @@
   "proposal_pdf": "",
   "photos_temporary": false,
   "metrika": {
-    "counter_id": ""
+    "counter_id": "114193683"
   },
   "prices": {
     "publish": false,

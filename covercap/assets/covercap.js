@@ -34,6 +34,8 @@
       try { window.ym(ymId, 'reachGoal', name, params || {}); } catch (e) {}
     }
   }
+  var goalSent = {};
+  function goalOnce(name, params) { if (goalSent[name]) return; goalSent[name] = true; goal(name, params); }
   function loadMetrika() {
     var id = C && C.metrika && String(C.metrika.counter_id || '').trim();
     if (!id || !/^\d+$/.test(id) || ymId) return;
@@ -250,7 +252,14 @@
   function initContactClicks() {
     document.addEventListener('click', function (e) {
       var a = e.target.closest('[data-contact]');
-      if (a) goal('contact_click', { channel: a.getAttribute('data-contact') });
+      if (a) {
+        var ch = a.getAttribute('data-contact') || '';
+        goal('contact_click', { channel: ch });
+        if (/^phone/.test(ch)) goal('phone_click');
+        else if (/^telegram/.test(ch)) goal('telegram_click');
+        else if (/^email/.test(ch)) goal('email_click');
+        else if (/^instagram/.test(ch)) goal('instagram_click');
+      }
       var g = e.target.closest('[data-goal="proposal_download"]');
       if (g) goal('proposal_download');
     });
@@ -270,7 +279,7 @@
   }
 
   /* ---------- Форма расчёта: имя + телефон ---------- */
-  var form, dlg, opener, submitting = false;
+  var form, dlg, opener, submitting = false, formStarted = false;
   var SIZE_LABEL = { d80: 'KISS Д80', d90: 'KISS Д90' };
   var COLOR_LABEL = { black: 'чёрный', white: 'белый', red: 'красный' };
 
@@ -282,10 +291,16 @@
     dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
     dlg.addEventListener('close', function () {
       document.documentElement.style.overflow = '';
-      if (!$('[data-success]', dlg).hidden) resetAfterSuccess();
+      var done = !$('[data-success]', dlg).hidden;
+      if (!done && form.placement.value === 'popup') goal('popup_dismiss');
+      if (done) resetAfterSuccess();
       if (opener && document.contains(opener)) opener.focus();
     });
     form.addEventListener('change', function (e) { if (e.target.name === 'consent' && e.target.checked) clearErr('consent'); });
+    form.addEventListener('input', function () {
+      if (formStarted) return; formStarted = true;
+      goal('form_start', { placement: form.placement.value });
+    });
     form.contact.addEventListener('input', function () { if (form.contact.getAttribute('aria-invalid')) validatePhone(); });
     form.contact.addEventListener('blur', function () { if (form.contact.value.trim()) validatePhone(); });
     form.name.addEventListener('input', function () { if (form.name.getAttribute('aria-invalid')) validateName(); });
@@ -328,6 +343,7 @@
       lid.style.animation = 'none'; void lid.offsetWidth; lid.style.animation = '';
     }
 
+    formStarted = false;
     if (!form.submission_id.value) form.submission_id.value = uid();
     if (typeof dlg.showModal === 'function') dlg.showModal();
     document.documentElement.style.overflow = 'hidden';
@@ -621,6 +637,28 @@
     upd();
   }
 
+  /* ---------- Цели поведения: прокрутка и просмотр блоков ---------- */
+  function initGoals() {
+    var ticking = false;
+    function onScroll() {
+      ticking = false;
+      var h = document.documentElement.scrollHeight - innerHeight;
+      if (h <= 0) return;
+      var p = scrollY / h;
+      if (p >= 0.5) goalOnce('scroll_50');
+      if (p >= 0.9) goalOnce('scroll_90');
+    }
+    addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
+    if (!('IntersectionObserver' in window)) return;
+    [['catalog', 'catalog_view'], ['prices', 'price_view'], ['faq', 'faq_view']].forEach(function (x) {
+      var el = document.getElementById(x[0]); if (!el) return;
+      var io = new IntersectionObserver(function (en) {
+        if (en[0].isIntersecting) { goalOnce(x[1]); io.disconnect(); }
+      }, { threshold: 0.4 });
+      io.observe(el);
+    });
+  }
+
   /* ---------- Попап через 45 секунд ---------- */
   var POPUP_DELAY_MS = 45000;
   function initPopup() {
@@ -638,6 +676,7 @@
       SS.setItem('cc_popup_shown', '1'); LS.setItem('cc_popup_at', String(Date.now()));
       var trigger = document.createElement('button');
       trigger.setAttribute('data-quote', 'popup');
+      goal('popup_shown');
       openQuote(trigger);
     }
   }
@@ -650,7 +689,7 @@
       document.body.insertBefore(bar, document.body.firstChild);
     }
     initNav(); initMobileBar(); initLightbox(); initForm(); initContactClicks(); initTouches();
-    initReveal(); initStage(); initTilt(); initHeroColors(); initMotion(); initPopup();
+    initReveal(); initStage(); initTilt(); initHeroColors(); initMotion(); initPopup(); initGoals();
     fetch('content.json', { cache: 'no-cache' })
       .then(function (r) { return r.json(); })
       .then(function (json) { C = json; })
