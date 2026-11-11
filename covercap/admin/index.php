@@ -57,6 +57,38 @@ if (!user()) {
     page_foot(); exit;
 }
 
+/* ---------- Проверка сервера ---------- */
+function server_checks(): array
+{
+    $cfg = cc_cfg();
+    $dir = $cfg['data_dir'];
+    if (!is_dir($dir)) @mkdir($dir, 0750, true);
+    $probe = $dir . '/.write-test';
+    $writable = @file_put_contents($probe, '1') !== false;
+    if ($writable) @unlink($probe);
+    $content = CC_ROOT . '/content.json';
+    return [
+        ['PHP 7.4 или новее', version_compare(PHP_VERSION, '7.4.0', '>='), 'Сейчас ' . PHP_VERSION . '. Версия выбирается в панели хостинга.'],
+        ['Расширение pdo_sqlite (база заявок)', extension_loaded('pdo_sqlite'), 'Включается в панели хостинга в настройках PHP.'],
+        ['Расширение mbstring', extension_loaded('mbstring'), 'Включается в настройках PHP.'],
+        ['Папка data/ доступна для записи', $writable, 'Права 750 или 755 на папку data/.'],
+        ['Файл content.json доступен для записи', is_writable($content), 'Нужно, чтобы цены и контакты сохранялись из админки. Права 640 или 644.'],
+        ['Отправка почты (mail)', function_exists('mail'), 'На Рег.ру включена по умолчанию.'],
+        ['Почта для уведомлений указана', (bool)$cfg['notify_email'], 'Параметр notify_email в private/config.php.'],
+        ['Сайт открыт по HTTPS', !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off', 'Выпустите бесплатный SSL в панели Рег.ру и включите редирект в .htaccess.'],
+    ];
+}
+
+if (($_GET['view'] ?? '') === 'check') {
+    page_head('Проверка сервера');
+    echo '<main><h1>Проверка сервера</h1><div class="scroll"><table><tbody>';
+    foreach (server_checks() as $c) {
+        echo '<tr><td>' . ($c[1] ? '✅' : '❌') . '</td><td><b>' . h($c[0]) . '</b>' . ($c[1] ? '' : '<br><span class="hint">' . h($c[2]) . '</span>') . '</td></tr>';
+    }
+    echo '</tbody></table></div><p class="hint">Всё зелёное — можно отправить тестовую заявку с сайта и проверить, что она пришла сюда и на почту.</p></main>';
+    page_foot(); exit;
+}
+
 /* ---------- База ---------- */
 try { $db = cc_db(); $flushed = cc_queue_flush(); }
 catch (Throwable $e) { page_head('Ошибка'); echo '<main><p class="warn">База заявок недоступна: проверьте права на папку data/. Заявки при этом сохраняются в резервную очередь (' . cc_queue_count() . ' шт.).</p></main>'; page_foot(); exit; }
@@ -126,6 +158,19 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
         if ($r) { $s = cc_notify($r); $db->prepare('UPDATE leads SET notify_status=? WHERE lead_id=?')->execute([$s, $id]); flash('Уведомление: ' . $s); }
         redirect('view=lead&id=' . rawurlencode($id));
     }
+    if ($act === 'password') {
+        $login = user()['login'];
+        $cur = (string)($_POST['current'] ?? ''); $new = (string)($_POST['new'] ?? '');
+        if (!password_verify($cur, $cfg['users'][$login]['hash'] ?? '')) { flash('Текущий пароль неверный.'); redirect('view=password'); }
+        if (mb_strlen($new) < 10) { flash('Новый пароль — не короче 10 символов.'); redirect('view=password'); }
+        $file = $cfg['data_dir'] . '/users.json';
+        $all = is_file($file) ? (json_decode((string)file_get_contents($file), true) ?: []) : [];
+        $all[$login] = password_hash($new, PASSWORD_DEFAULT);
+        file_put_contents($file, json_encode($all), LOCK_EX);
+        @chmod($file, 0640);
+        flash('Пароль изменён.');
+        redirect('view=password');
+    }
     if ($act === 'content' && is_admin()) {
         $c = json_decode((string)file_get_contents($CONTENT_FILE), true) ?: [];
         $p = $_POST;
@@ -175,7 +220,7 @@ function page_head(string $title): void
     if (user()) {
         $v = $_GET['view'] ?? 'leads';
         $a = static function ($k, $t) use ($v) { return '<a href="?view=' . $k . '"' . ($v === $k ? ' aria-current="page"' : '') . '>' . $t . '</a>'; };
-        echo '<header><b>COVERCAP</b><nav>' . $a('leads', 'Заявки') . $a('report', 'Отчёт') . (is_admin() ? $a('content', 'Цены и контент') : '')
+        echo '<header><b>COVERCAP</b><nav>' . $a('leads', 'Заявки') . $a('report', 'Отчёт') . (is_admin() ? $a('content', 'Цены и контент') : '') . $a('check', 'Проверка сервера') . $a('password', 'Пароль')
            . '</nav><span class="me">' . h(user()['login']) . ' · <a href="?logout=1">Выйти</a></span></header>';
         if (!empty($_SESSION['flash'])) { echo '<p class="flash">' . h($_SESSION['flash']) . '</p>'; unset($_SESSION['flash']); }
     }
@@ -219,6 +264,15 @@ if ($view === 'lead') {
     echo '<p class="hint">Дата оплаты фиксируется автоматически при статусе «Оплачена»/«Отгружена» и сумме больше нуля: ' . h(fmt_dt($r['paid_at'])) . '</p>';
     echo '<label>Заметка менеджера<textarea name="manager_note" rows="4">' . h($r['manager_note']) . '</textarea></label>';
     echo '<button>Сохранить</button></form></section></div></main>';
+    page_foot(); exit;
+}
+
+if ($view === 'password') {
+    page_head('Пароль');
+    echo '<main><h1>Смена пароля</h1><form method="post" class="stack" style="max-width:420px"><input type="hidden" name="csrf" value="' . csrf() . '"><input type="hidden" name="act" value="password">'
+       . '<label>Текущий пароль<input type="password" name="current" autocomplete="current-password" required></label>'
+       . '<label>Новый пароль (от 10 символов)<input type="password" name="new" autocomplete="new-password" minlength="10" required></label>'
+       . '<button>Сменить пароль</button></form></main>';
     page_foot(); exit;
 }
 
