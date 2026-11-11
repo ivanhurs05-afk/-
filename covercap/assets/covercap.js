@@ -314,11 +314,12 @@
     if (SIZE_LABEL[size]) { chip.textContent = 'Вариант: ' + SIZE_LABEL[size] + (COLOR_LABEL[color] ? ', ' + COLOR_LABEL[color] : ''); chip.hidden = false; }
     else if (size === 'help') { chip.textContent = 'Поможем подобрать диаметр'; chip.hidden = placement !== 'catalog'; }
     var TITLES = {
+      popup: ['Рассчитаем заказ для вашей кофейни?', 'Оставьте имя и телефон — перезвоним, подберём диаметр и пришлём расчёт.'],
       repeat: ['Повторный заказ KISS', 'Оставьте имя и телефон — перезвоним и оформим повторный заказ.'],
       resale: ['KISS для перепродажи', 'Оставьте имя и телефон — расскажем об условиях для поставщиков упаковки.'],
       quote: ['Расчёт заказа KISS', 'Оставьте имя и телефон — перезвоним, уточним вариант и количество и пришлём расчёт.']
     };
-    var tt = TITLES[form.request_type.value] || TITLES.quote;
+    var tt = (placement === 'popup' ? TITLES.popup : TITLES[form.request_type.value]) || TITLES.quote;
     $('[data-form-title]', form).textContent = tt[0];
     $('[data-form-sub]', form).textContent = tt[1];
     var lid = $('[data-form-lid]', form);
@@ -424,6 +425,7 @@
   }
 
   function onSuccess(leadId) {
+    LS.setItem('cc_lead_sent', '1');
     if (!sentLeads[leadId]) { sentLeads[leadId] = true; goal('lead_success', { lead_id: leadId, placement: form.placement.value }); }
     form.hidden = true;
     var s = $('[data-success]', dlg);
@@ -619,6 +621,27 @@
     upd();
   }
 
+  /* ---------- Попап через 45 секунд ---------- */
+  var POPUP_DELAY_MS = 45000;
+  function initPopup() {
+    // Не показываем: уже оставляли заявку; уже показывали за последние сутки.
+    var last = parseInt(LS.getItem('cc_popup_at') || '0', 10);
+    if (LS.getItem('cc_lead_sent') === '1' || SS.getItem('cc_popup_shown') === '1' || (last && Date.now() - last < 24 * 3600 * 1000)) return;
+    var timer = setTimeout(fire, POPUP_DELAY_MS);
+    function busy() {
+      var any = document.querySelector('dialog[open]');
+      var typing = document.activeElement && /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName);
+      return !!any || typing;
+    }
+    function fire() {
+      if (document.hidden || busy()) { timer = setTimeout(fire, 5000); return; } // ждём подходящий момент
+      SS.setItem('cc_popup_shown', '1'); LS.setItem('cc_popup_at', String(Date.now()));
+      var trigger = document.createElement('button');
+      trigger.setAttribute('data-quote', 'popup');
+      openQuote(trigger);
+    }
+  }
+
   /* ---------- Старт ---------- */
   function start() {
     if (DEMO) {
@@ -627,7 +650,7 @@
       document.body.insertBefore(bar, document.body.firstChild);
     }
     initNav(); initMobileBar(); initLightbox(); initForm(); initContactClicks(); initTouches();
-    initReveal(); initStage(); initTilt(); initHeroColors(); initMotion();
+    initReveal(); initStage(); initTilt(); initHeroColors(); initMotion(); initPopup();
     fetch('content.json', { cache: 'no-cache' })
       .then(function (r) { return r.json(); })
       .then(function (json) { C = json; })

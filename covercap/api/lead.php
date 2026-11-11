@@ -76,7 +76,7 @@ if (!preg_match('/^[A-Za-z0-9\-]{8,64}$/', $submission)) {
 $last  = is_array($meta['last_touch'] ?? null) ? $meta['last_touch'] : null;
 $first = is_array($meta['first_touch'] ?? null) ? $meta['first_touch'] : null;
 $t = $last ?: [];
-$placementAllowed = ['header', 'hero', 'catalog', 'price', 'footer', 'mobile_bar', 'repeat'];
+$placementAllowed = ['header', 'hero', 'catalog', 'price', 'footer', 'mobile_bar', 'repeat', 'popup'];
 $placement = in_array($meta['placement'] ?? ($in['placement'] ?? ''), $placementAllowed, true) ? ($meta['placement'] ?? $in['placement']) : 'unknown';
 $ymClient = preg_match('/^\d{5,30}$/', (string)($meta['ym_client_id'] ?? '')) ? (string)$meta['ym_client_id'] : null;
 
