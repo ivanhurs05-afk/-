@@ -34,25 +34,29 @@ def main():
     ap.add_argument('--domain', required=True, help='домен без https://, например covercap.ru')
     ap.add_argument('--out', required=True, help='куда положить zip')
     ap.add_argument('--login', default='ivan', help='логин администратора')
+    ap.add_argument('--notify-email', default='', help='почта для заявок (по умолчанию из content.json)')
+    ap.add_argument('--update', action='store_true',
+                    help='архив-обновление для уже работающего сайта: без content.json, private/ и базы заявок')
     a = ap.parse_args()
     domain = a.domain.strip().lower().removeprefix('https://').removeprefix('http://').strip('/')
     if not re.fullmatch(r'[a-z0-9.-]+\.[a-zа-я0-9-]{2,}', domain):
         sys.exit('Неверный домен: ' + domain)
 
     content = json.load(open(os.path.join(SRC, 'content.json'), encoding='utf-8'))
-    email = (content.get('contacts') or {}).get('email', '')
+    email = a.notify_email or (content.get('contacts') or {}).get('email', '')
 
+    skip_dirs = SKIP_DIRS | ({'private'} if a.update else set())
     work = tempfile.mkdtemp()
     site = os.path.join(work, 'site')
     for root, dirs, files in os.walk(SRC):
         rel = os.path.relpath(root, SRC)
         top = rel.split(os.sep)[0]
-        if top in SKIP_DIRS:
+        if top in skip_dirs:
             continue
-        dirs[:] = [d for d in dirs if not (rel == '.' and d in SKIP_DIRS)]
+        dirs[:] = [d for d in dirs if not (rel == '.' and d in skip_dirs)]
         os.makedirs(os.path.join(site, rel), exist_ok=True)
         for f in files:
-            if f in SKIP_FILES:
+            if f in SKIP_FILES or (a.update and f == 'content.json' and rel == '.'):
                 continue
             src, dst = os.path.join(root, f), os.path.join(site, rel, f)
             ext = os.path.splitext(f)[1] or f
@@ -65,6 +69,20 @@ def main():
     # Пустая папка для базы заявок, закрытая от веба
     os.makedirs(os.path.join(site, 'data'), exist_ok=True)
     shutil.copy2(os.path.join(SRC, 'data', '.htaccess'), os.path.join(site, 'data', '.htaccess'))
+
+    if a.update:
+        # Обновление: только настройки почты. База, пароли, цены и конфиг на сервере не трогаются.
+        json.dump({'notify_email': email}, open(os.path.join(site, 'data', 'settings.json'), 'w', encoding='utf-8'), ensure_ascii=False)
+        os.makedirs(a.out, exist_ok=True)
+        zpath = os.path.join(a.out, 'covercap-%s-update.zip' % domain)
+        with zipfile.ZipFile(zpath, 'w', zipfile.ZIP_DEFLATED) as z:
+            for root, dirs, files in os.walk(site):
+                for f in files:
+                    full = os.path.join(root, f)
+                    z.write(full, os.path.relpath(full, site))
+        shutil.rmtree(work)
+        print('Архив-обновление:', zpath)
+        return
 
     # Боевой конфиг
     alphabet = string.ascii_letters + string.digits

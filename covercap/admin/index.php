@@ -158,6 +158,17 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
         if ($r) { $s = cc_notify($r); $db->prepare('UPDATE leads SET notify_status=? WHERE lead_id=?')->execute([$s, $id]); flash('Уведомление: ' . $s); }
         redirect('view=lead&id=' . rawurlencode($id));
     }
+    if ($act === 'settings' && is_admin()) {
+        $list = cc_str($_POST['notify_email'] ?? '', 200);
+        if (!cc_valid_emails($list)) { flash('Проверьте адрес: нужен email, несколько — через запятую.'); redirect('view=settings'); }
+        $file = $cfg['data_dir'] . '/settings.json';
+        $all = is_file($file) ? (json_decode((string)file_get_contents($file), true) ?: []) : [];
+        $all['notify_email'] = $list;
+        file_put_contents($file, json_encode($all, JSON_UNESCAPED_UNICODE), LOCK_EX);
+        @chmod($file, 0640);
+        flash('Сохранено. Новые заявки будут приходить на ' . $list . '.');
+        redirect('view=settings');
+    }
     if ($act === 'password') {
         $login = user()['login'];
         $cur = (string)($_POST['current'] ?? ''); $new = (string)($_POST['new'] ?? '');
@@ -220,7 +231,7 @@ function page_head(string $title): void
     if (user()) {
         $v = $_GET['view'] ?? 'leads';
         $a = static function ($k, $t) use ($v) { return '<a href="?view=' . $k . '"' . ($v === $k ? ' aria-current="page"' : '') . '>' . $t . '</a>'; };
-        echo '<header><b>COVERCAP</b><nav>' . $a('leads', 'Заявки') . $a('report', 'Отчёт') . (is_admin() ? $a('content', 'Цены и контент') : '') . $a('check', 'Проверка сервера') . $a('password', 'Пароль')
+        echo '<header><b>COVERCAP</b><nav>' . $a('leads', 'Заявки') . $a('report', 'Отчёт') . (is_admin() ? $a('content', 'Цены и контент') . $a('settings', 'Почта заявок') : '') . $a('check', 'Проверка сервера') . $a('password', 'Пароль')
            . '</nav><span class="me">' . h(user()['login']) . ' · <a href="?logout=1">Выйти</a></span></header>';
         if (!empty($_SESSION['flash'])) { echo '<p class="flash">' . h($_SESSION['flash']) . '</p>'; unset($_SESSION['flash']); }
     }
@@ -264,6 +275,16 @@ if ($view === 'lead') {
     echo '<p class="hint">Дата оплаты фиксируется автоматически при статусе «Оплачена»/«Отгружена» и сумме больше нуля: ' . h(fmt_dt($r['paid_at'])) . '</p>';
     echo '<label>Заметка менеджера<textarea name="manager_note" rows="4">' . h($r['manager_note']) . '</textarea></label>';
     echo '<button>Сохранить</button></form></section></div></main>';
+    page_foot(); exit;
+}
+
+if ($view === 'settings' && is_admin()) {
+    page_head('Почта заявок');
+    echo '<main><h1>Почта для заявок</h1><p class="hint">На этот адрес приходит письмо о каждой новой заявке: имя, телефон, вариант и источник. Все заявки остаются и в админке. Нужна российская почта (Яндекс, Mail.ru).</p>'
+       . '<form method="post" class="stack" style="max-width:520px"><input type="hidden" name="csrf" value="' . csrf() . '"><input type="hidden" name="act" value="settings">'
+       . '<label>Адрес (или несколько через запятую)<input name="notify_email" type="text" value="' . h($cfg['notify_email']) . '" required></label>'
+       . '<button>Сохранить</button></form>'
+       . '<h2>Проверить доставку</h2><p class="hint">Отправьте с сайта тестовую заявку: письмо придёт на этот адрес. Если его нет во «Входящих», загляните в «Спам» и отметьте письмо «Не спам».</p></main>';
     page_foot(); exit;
 }
 

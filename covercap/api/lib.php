@@ -21,6 +21,15 @@ const CC_REQUEST_TYPES = ['quote' => 'Расчёт', 'trial' => 'Пробный 
 const CC_SIZES  = ['d80' => 'Д80', 'd90' => 'Д90', 'help' => 'Нужна помощь'];
 const CC_COLORS = ['black' => 'Чёрный', 'white' => 'Белый', 'red' => 'Красный', 'undecided' => 'Не определился'];
 
+/** Один или несколько адресов через запятую; true, если все корректные. */
+function cc_valid_emails(string $list): bool
+{
+    $parts = array_filter(array_map('trim', explode(',', $list)), 'strlen');
+    if (!$parts) return false;
+    foreach ($parts as $e) if (!filter_var($e, FILTER_VALIDATE_EMAIL)) return false;
+    return true;
+}
+
 function cc_cfg(): array
 {
     static $cfg = null;
@@ -41,6 +50,11 @@ function cc_cfg(): array
         'users'           => [],    // логин => ['hash' => password_hash(...), 'role' => 'admin'|'manager']
         'fail_test'       => false, // true — имитировать сбой хранилища (для приёмочного теста)
     ];
+    $set = $cfg['data_dir'] . '/settings.json';
+    if (is_file($set)) {
+        $s = json_decode((string)file_get_contents($set), true);
+        if (is_array($s) && !empty($s['notify_email']) && cc_valid_emails((string)$s['notify_email'])) $cfg['notify_email'] = (string)$s['notify_email'];
+    }
     $over = $cfg['data_dir'] . '/users.json';
     if (is_file($over)) {
         $u = json_decode((string)file_get_contents($over), true);
@@ -234,9 +248,13 @@ function cc_notify(array $lead): string
         ];
         $body = implode("\n", array_filter($lines, static function ($l) { return $l !== null; }));
         $subject = '=?UTF-8?B?' . base64_encode('Заявка ' . $lead['lead_id'] . ' — крышки KISS') . '?=';
-        $headers = 'From: COVERCAP <' . $cfg['mail_from'] . ">\r\n"
+        $headers = 'From: COVERCAP <' . $cfg['mail_from'] . ">\r\nX-Mailer: covercap\r\n"
             . "MIME-Version: 1.0\r\nContent-Type: text/plain; charset=UTF-8\r\nContent-Transfer-Encoding: 8bit";
-        $res[] = @mail($cfg['notify_email'], $subject, $body, $headers) ? 'mail:ok' : 'mail:fail';
+        // Сначала с явным адресом отправителя (-f): так письма реже попадают в спам. Если хостинг не разрешает — без него.
+        $from = filter_var($cfg['mail_from'], FILTER_VALIDATE_EMAIL) ? $cfg['mail_from'] : '';
+        $ok = $from !== '' && @mail($cfg['notify_email'], $subject, $body, $headers, '-f' . $from);
+        if (!$ok) $ok = @mail($cfg['notify_email'], $subject, $body, $headers);
+        $res[] = $ok ? 'mail:ok' : 'mail:fail';
     }
 
     // В мессенджер — только номер заявки и ссылка в админку, без персональных данных.
