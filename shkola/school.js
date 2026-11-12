@@ -103,7 +103,7 @@
       if (!f.agree.checked) return say('Отметьте согласие на обработку персональных данных.', 'fail');
       if (!f.name.value.trim() || d.length !== 11) return say('Проверьте имя и телефон.', 'fail');
       if (f.botcheck.checked) return;
-      if (!L.leadEndpoint) return say('Приём заявок временно не работает. Позвоните нам: ' + (L.phone || ''), 'fail');
+      if (!L.leadEndpoint) return say('Приём заявок временно не работает. Попробуйте позже.', 'fail');
       var title = document.querySelector('h1').textContent.replace(/\s+/g, ' ').trim();
       var payload = { site: 'school', name: f.name.value.trim(), phone: '+' + d, task: 'Школа Проходной балл · ' + title,
         answers: 'Предмет: ' + f.subject.value + '; класс: ' + f.grade.value, page: location.href, utm: utm, consent: true, consentAt: new Date().toISOString() };
@@ -111,7 +111,7 @@
       fetch(L.leadEndpoint, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=UTF-8' }, body: JSON.stringify(payload) })
         .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); })
         .then(function () { goal('lead_form'); form.reset(); say('Спасибо! Заявка отправлена, мы перезвоним в течение рабочего дня.', 'ok'); })
-        .catch(function (er) { console.error('lead send failed:', er && er.message); say('Не удалось отправить. Позвоните нам: ' + (L.phone || ''), 'fail'); })
+        .catch(function (er) { console.error('lead send failed:', er && er.message); say('Не удалось отправить заявку. Попробуйте ещё раз через минуту.', 'fail'); })
         .then(function () { btn.disabled = false; });
     });
   });

@@ -40,7 +40,7 @@ PAGES += [
 ]
 SUBJECTS = ['Математика', 'Русский язык', 'Английский', 'Физика', 'Химия', 'Биология', 'История', 'Обществознание', 'Информатика']
 GRADES = ['1 класс', '2 класс', '3 класс', '4 класс', '5 класс', '6 класс', '7 класс', '8 класс', '9 класс', '10 класс', '11 класс']
-PHONES = [('+7 (499) 735-32-65', '+74997353265'), ('+7 (916) 062-04-09', '+79160620409')]
+PHONES = []  # телефоны школы не публикуются
 BRAND = 'Проходной балл'
 LOGO = '<span class="logo">Проходной балл<i></i></span>'
 CORE = [('Математика', 'ege/matematika', 'a'), ('Русский язык', 'ege/russkiy', 'b'), ('Английский', 'ege/angliyskiy', 'c'), ('Физика', 'ege/fizika', 'd')]
@@ -64,10 +64,8 @@ def nav_items():
 def form(fid, pg, final=False):
     t = 'Записаться' if final else 'Пробное занятие'
     return f'''<form class="fcard" id="{fid}" data-form novalidate>
-  <p class="fcard__top">Позвоните нам или оставьте заявку</p>
+  <p class="fcard__top">Оставьте заявку</p>
   <p class="fcard__sub">Перезвоним в течение рабочего дня</p>
-  <div class="msgr"><a class="msg" href="tel:{PHONES[0][1]}">Позвонить</a><a class="msg" href="tel:{PHONES[1][1]}">Позвонить (моб.)</a></div>
-  <p class="or"><span>или</span></p>
   <h3>{t}</h3>
   {'' if final else '<p class="ftrial">Пробное занятие 60 минут бесплатно: разберём уровень и пробелы по темам. Дальше занятия платные, от 1 260 ₽ за 60 минут.</p>'}
   <label>Имя родителя<input name="name" autocomplete="name" placeholder="Как к вам обращаться" required></label>
@@ -127,7 +125,7 @@ def fallback_prices():
         rows = ''.join(f'<article class="card price"><h3>{e(p["title"])}</h3><p class="price__sum">{e(p["price"])}</p><p>{e(p.get("note",""))}</p></article>' for p in C['prices'])
         body = f'<div class="grid3">{rows}</div><p class="note">{e(C.get("price_note",""))}</p>'
     else:
-        body = '<div class="card payc"><div><h3>Стоимость назовём по телефону</h3><p>Она зависит от предмета, класса и формата занятий. Оставьте заявку или позвоните: подскажем и подберём группу.</p></div><a class="btn" href="#zapis">Узнать стоимость</a></div>'
+        body = '<div class="card payc"><div><h3>Стоимость назовём по телефону</h3><p>Она зависит от предмета, класса и формата занятий. Оставьте заявку: подскажем и подберём группу.</p></div><a class="btn" href="#zapis">Узнать стоимость</a></div>'
     perks = '<ul class="perks"><li>Мини-группы</li><li>Оплата частями</li><li>Материнский капитал</li><li>Налоговый вычет</li></ul>'
     g = f'<div class="guar"><b>{e(C["guarantee"])}</b></div>' if has('guarantee') else ''
     return f'<section class="sec sec--soft" id="oplata"><div class="wrap"><p class="tag tag--lime">ОПЛАТА</p><h2>Всё честно и сразу</h2><p class="sub">Условия оплаты.</p>{perks}{body}{g}</div></section>'
@@ -165,7 +163,7 @@ def render(pg):
 <header class="top"><div class="wrap top__in">
   <a href="../../" class="brand" aria-label="Проходной балл">{LOGO}</a>
   <nav class="top__nav" aria-label="Разделы">{nav}</nav>
-  <div class="top__r"><div class="top__ph">{phone}</div><a class="btn btn--sm" href="#zapis">Пробное занятие</a></div>
+  <div class="top__r"><a class="btn btn--sm" href="#zapis">Пробное занятие</a></div>
 </div></header>
 <main>
 <section class="hero"><div class="wrap hero__grid">
@@ -216,7 +214,7 @@ def render(pg):
   <div class="foot__grid">
     <div><div class="brand">{LOGO}</div><p class="foot__d">Школа подготовки к ЕГЭ и ОГЭ: математика, русский язык, английский, физика, химия, биология, история, обществознание. Занятия онлайн, индивидуально и в небольших группах.</p></div>
     <div><b>Разделы</b>{"".join(f'<a href="{h}">{t}</a>' for t, h in nav_items())}</div>
-    <div><b>Контакты</b>{phone}<span data-legal-row="email"><a href="#" data-legal="email"></a></span></div>
+    <div><b>Контакты</b><span data-legal-row="email"><a href="#" data-legal="email"></a></span></div>
   </div>
   <div class="req"><span data-legal-row="name" data-legal="name"></span> <span data-legal-row="status" data-legal="status"></span> <span data-legal-row="inn">ИНН <span data-legal="inn"></span></span> <span data-legal-row="ogrnip">ОГРНИП <span data-legal="ogrnip"></span></span> <span data-legal-row="address" data-legal="address"></span>
     <p><a href="../../privacy.html">Политика конфиденциальности</a> · <a href="../../consent.html">Согласие на обработку персональных данных</a> · <a href="#" data-cookie-settings>Настройки cookie</a></p>{lic}</div>
@@ -225,7 +223,7 @@ def render(pg):
   <p>Сайт использует файлы cookie и сервис «Яндекс Метрика» для статистики и улучшения работы, в том числе запись действий на странице. Вы можете отказаться. Подробнее: <a href="../../privacy.html#cookies-info">политика обработки персональных данных</a>.</p>
   <div class="cookie__btns"><button class="btn btn--sm" type="button" data-cookie="yes">Принять</button><button class="btn btn--sm btn--ghost" type="button" data-cookie="no">Отклонить</button></div>
 </div>
-<div class="mbar" id="mbar"><a class="btn btn--ghost" href="tel:{PHONES[0][1]}">Позвонить</a><a class="btn" href="#zapis">Записаться</a></div>
+<div class="mbar" id="mbar"><a class="btn" href="#zapis">Записаться на пробное занятие</a></div>
 <script>window.METRIKA_ID_OVERRIDE = 103512796;</script>
 <script src="../../legal.js"></script><script src="../../../common.js"></script><script src="../../school.js"></script>
 </body></html>'''

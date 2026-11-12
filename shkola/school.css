@@ -177,7 +177,7 @@ h1{font-size:clamp(36px,5.8vw,76px);margin-bottom:26px;letter-spacing:-.035em}
   .pcard{padding:36px 22px 26px;border-radius:32px}.pcard__r{padding:22px 18px}.gcard{padding:24px 22px;border-radius:28px}.gcard__p{text-align:left}.guar2{padding:22px;border-radius:28px;flex-direction:column;align-items:flex-start}
   .final{padding-bottom:56px}.final__grid{padding:26px 18px}
   .cookie{flex-direction:column;align-items:stretch;bottom:80px}.cookie__btns .btn{flex:1}
-  .mbar{display:grid;grid-template-columns:1fr 1.4fr;gap:10px;position:fixed;left:0;right:0;bottom:0;z-index:60;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:rgba(243,246,255,.95);border-top:2px solid var(--line);transition:opacity .25s,transform .25s}
+  .mbar{display:grid;grid-template-columns:1fr;gap:10px;position:fixed;left:0;right:0;bottom:0;z-index:60;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:rgba(243,246,255,.95);border-top:2px solid var(--line);transition:opacity .25s,transform .25s}
   .mbar.is-off{opacity:0;pointer-events:none;transform:translateY(10px)}
 }
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}.js .rv{opacity:1;transform:none}.ticker__in{animation:none}}
