@@ -224,7 +224,7 @@ def render(pg):
   <div class="cookie__btns"><button class="btn btn--sm" type="button" data-cookie="yes">Принять</button><button class="btn btn--sm btn--ghost" type="button" data-cookie="no">Отклонить</button></div>
 </div>
 <div class="mbar" id="mbar"><a class="btn" href="#zapis">Записаться на пробное занятие</a></div>
-<script>window.METRIKA_ID_OVERRIDE = 103512796;</script>
+<script>window.METRIKA_ID_OVERRIDE = 114277085;</script>
 <script src="../../legal.js"></script><script src="../../../common.js"></script><script src="../../school.js"></script>
 </body></html>'''
 
@@ -254,7 +254,7 @@ def legal_page(name, title):
   <p>Сайт использует файлы cookie и сервис «Яндекс Метрика» для статистики и улучшения работы, в том числе запись действий на странице. Вы можете отказаться. Подробнее: <a href="privacy.html#cookies-info">политика обработки персональных данных</a>.</p>
   <div class="cookie__btns"><button class="btn btn--sm" type="button" data-cookie="yes">Принять</button><button class="btn btn--sm btn--ghost" type="button" data-cookie="no">Отклонить</button></div>
 </div>
-<script>window.METRIKA_ID_OVERRIDE = 103512796;</script>
+<script>window.METRIKA_ID_OVERRIDE = 114277085;</script>
 <script src="legal.js"></script><script src="../common.js"></script>
 </body></html>'''
 
