@@ -13,7 +13,7 @@
 import argparse, json, os, re, secrets, shutil, string, subprocess, sys, tempfile, zipfile
 
 SRC = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # папка covercap/
-SKIP_DIRS = {'v1', 'deploy', 'data'}
+SKIP_DIRS = {'v1', 'deploy', 'data', 'seo'}
 SKIP_FILES = {'README.md', '.gitignore', 'config.php'}
 TEXT_EXT = {'.html', '.xml', '.txt', '.php', '.js', '.json', '.css', '.htaccess'}
 

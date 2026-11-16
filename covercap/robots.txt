@@ -7,4 +7,68 @@ Disallow: /v1/
 Disallow: /data/
 Disallow: /private/
 
+# Поисковые и ИИ-роботы: сайт открыт для ответов нейросетей и ИИ-поиска
+User-agent: YandexAdditional
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /thanks/
+Disallow: /v1/
+Disallow: /data/
+Disallow: /private/
+
+User-agent: GPTBot
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /thanks/
+Disallow: /v1/
+Disallow: /data/
+Disallow: /private/
+
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /thanks/
+Disallow: /v1/
+Disallow: /data/
+Disallow: /private/
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /thanks/
+Disallow: /v1/
+Disallow: /data/
+Disallow: /private/
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /thanks/
+Disallow: /v1/
+Disallow: /data/
+Disallow: /private/
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /thanks/
+Disallow: /v1/
+Disallow: /data/
+Disallow: /private/
+
+User-agent: Google-Extended
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /thanks/
+Disallow: /v1/
+Disallow: /data/
+Disallow: /private/
+
 Sitemap: https://covercap.ru/sitemap.xml
