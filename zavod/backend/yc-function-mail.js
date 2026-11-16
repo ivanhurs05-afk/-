@@ -8,6 +8,7 @@
 //   SMTP_PASS   пароль для внешнего приложения (создаётся в настройках почты, НЕ основной пароль)
 //   MAIL_TO     ivan.khurs@inbox.ru     (куда приходят заявки по умолчанию)
 //   MAIL_TO_SCHOOL  (необязательно: получатель для другого сайта; суффикс = имя сайта заглавными)
+//                   несколько адресов пишите через запятую: a@x.ru, b@y.com
 //   ALLOWED_ORIGIN  https://ivanhurs05-afk.github.io   (адрес сайта)
 const tls = require('tls');
 const net = require('net');
@@ -22,8 +23,11 @@ function sendMail({ host, port, secure, user, pass, to, subject, text }) {
     const fail = (e) => { if (!finished) { finished = true; sock.destroy(); reject(e); } };
     const send = (l) => sock.write(l + '\r\n');
     const body = b64(text).replace(/.{1,76}/g, '$&\r\n').trimEnd();
+    // получателей может быть несколько: адреса через запятую или точку с запятой (берутся только из переменных окружения)
+    const rcpts = String(to).split(/[\s,;]+/).filter((a) => /^[^\s<>@]+@[^\s<>@]+\.[^\s<>@]+$/.test(a));
+    if (!rcpts.length) return reject(new Error('no valid recipients'));
     const msg = [
-      'From: ' + user, 'To: ' + to,
+      'From: ' + user, 'To: ' + rcpts.join(', '),
       'Subject: =?UTF-8?B?' + b64(subject) + '?=',
       'MIME-Version: 1.0', 'Content-Type: text/plain; charset=utf-8', 'Content-Transfer-Encoding: base64', '',
       body, '.'
@@ -35,7 +39,7 @@ function sendMail({ host, port, secure, user, pass, to, subject, text }) {
       [334, () => send(b64(user))],
       [334, () => send(b64(pass))],
       [235, () => send('MAIL FROM:<' + user + '>')],
-      [250, () => send('RCPT TO:<' + to + '>')],
+      ...rcpts.map((a, k) => [250, () => send('RCPT TO:<' + a + '>')]),
       [250, () => send('DATA')],
       [354, () => send(msg)],
       [250, () => { send('QUIT'); finished = true; sock.end(); resolve(); }]
