@@ -4,6 +4,8 @@
 
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  // Корень сайта (скрипт подключается и с вложенных страниц вида /kryshki-80-mm/)
+  var ROOT = ((document.currentScript && document.currentScript.getAttribute('src')) || 'assets/covercap.js').replace(/assets\/covercap\.js.*$/, '');
   var C = null;                       // content.json
   var LS = safeStorage('localStorage');
   var SS = safeStorage('sessionStorage');
@@ -113,7 +115,7 @@
       el.hidden = !v || (flag && !get(C, flag));
     });
     var anyContact = $$('.contacts li[data-hide-empty]').some(function (li) { return !li.hidden; });
-    $('[data-contacts-empty]').hidden = anyContact;
+    var ce = $('[data-contacts-empty]'); if (ce) ce.hidden = anyContact;
 
     var L = C.legal || {};
     var legal = [L.seller_name, L.inn && ('ИНН ' + L.inn), L.ogrn && ('ОГРН/ОГРНИП ' + L.ogrn), L.address].filter(Boolean).join(' · ');
@@ -140,7 +142,9 @@
       if (small) small.textContent = has ? fmtRub(amount) + ' / шт.' : 'по запросу';
       if (big) big.innerHTML = has ? fmtRub(amount) + ' <small>/ шт.</small>' : 'Цена по запросу';
     });
-    var box = $('[data-price-terms]'), ul = $('.terms', box);
+    var box = $('[data-price-terms]');
+    if (!box) return; // на вложенных страницах блока цен нет
+    var ul = $('.terms', box);
     ul.innerHTML = '';
     if (anyShown) {
       [['Условие', P.volume_condition], ['НДС', P.vat], ['Минимальный заказ', P.min_order], ['Доставка', P.delivery],
@@ -198,8 +202,8 @@
     if (!img || !/^(black|white|red)$/.test(color)) return;
     var names = { black: 'чёрного', white: 'белого', red: 'красного' };
     var swap = function () {
-      img.src = 'assets/img/lid-' + color + '-460.webp';
-      img.srcset = 'assets/img/lid-' + color + '-300.webp 300w, assets/img/lid-' + color + '-460.webp 460w';
+      img.src = ROOT + 'assets/img/lid-' + color + '-460.webp';
+      img.srcset = ROOT + 'assets/img/lid-' + color + '-300.webp 300w, ' + ROOT + 'assets/img/lid-' + color + '-460.webp 460w';
       img.alt = 'Крышка KISS ' + names[color] + ' цвета, вид сверху';
     };
     if (!animate || reduceMotion || !img.animate) return swap();
@@ -239,8 +243,8 @@
 
   /* ---------- Мобильная кнопка ---------- */
   function initMobileBar() {
-    var bar = $('[data-mbar]'), hero = $('.hero'), fin = $('.final');
-    if (!('IntersectionObserver' in window)) return;
+    var bar = $('[data-mbar]'), hero = $('.hero') || $('.page-top'), fin = $('.final');
+    if (!('IntersectionObserver' in window) || !bar || !hero || !fin) return;
     bar.hidden = false; document.body.classList.add('has-mbar');
     var heroVisible = true, finalVisible = false;
     var upd = function () { bar.classList.toggle('is-on', !heroVisible && !finalVisible); };
@@ -339,7 +343,7 @@
     $('[data-form-sub]', form).textContent = tt[1];
     var lid = $('[data-form-lid]', form);
     if (lid) {
-      lid.src = 'assets/img/lid-' + (COLOR_LABEL[color] ? color : 'black') + '-300.webp';
+      lid.src = ROOT + 'assets/img/lid-' + (COLOR_LABEL[color] ? color : 'black') + '-300.webp';
       lid.style.animation = 'none'; void lid.offsetWidth; lid.style.animation = '';
     }
 
@@ -501,8 +505,8 @@
         fig.setAttribute('data-color', c);
         name.textContent = NAMES[c];
         var swap = function () {
-          img.src = 'assets/img/lid-' + c + '-460.webp';
-          img.srcset = 'assets/img/lid-' + c + '-300.webp 300w, assets/img/lid-' + c + '-460.webp 460w';
+          img.src = ROOT + 'assets/img/lid-' + c + '-460.webp';
+          img.srcset = ROOT + 'assets/img/lid-' + c + '-300.webp 300w, ' + ROOT + 'assets/img/lid-' + c + '-460.webp 460w';
           img.alt = 'Крышка KISS ' + ALT[c] + ' цвета, вид сверху: нос, губы, отверстие для питья и бортик посадки';
           img.classList.toggle('is-swap', false);
         };
@@ -690,7 +694,7 @@
     }
     initNav(); initMobileBar(); initLightbox(); initForm(); initContactClicks(); initTouches();
     initReveal(); initStage(); initTilt(); initHeroColors(); initMotion(); initPopup(); initGoals();
-    fetch('content.json', { cache: 'no-cache' })
+    fetch(ROOT + 'content.json', { cache: 'no-cache' })
       .then(function (r) { return r.json(); })
       .then(function (json) { C = json; })
       .catch(function () { C = null; })
