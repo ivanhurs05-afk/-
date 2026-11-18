@@ -1,177 +1,165 @@
 #!/usr/bin/env python3
 """Сборка сайта «Моя Аренда»: python3 arenda/build.py  ->  arenda/index.html, privacy.html, consent.html"""
-import os, html
+import os, html, json
 ROOT = os.path.dirname(os.path.abspath(__file__))
 METRIKA_ID = 0          # номер счётчика Метрики; 0 = счётчика нет, баннер cookie не показывается
 BRAND = 'Моя Аренда'
 TG = 'MoyArenda_ru'
 e = html.escape
-import json
 REVIEWS = [r for r in json.load(open(os.path.join(ROOT, 'reviews.json'), encoding='utf-8')) if r['name'] != 'Аня Лудан']  # отзыв арендатора не берём: сайт для собственников
-LOGO = '<svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#12A8ED"/><path d="M14 31 32 16l18 15v17a2 2 0 0 1-2 2H16a2 2 0 0 1-2-2z" fill="#fff"/><rect x="27" y="35" width="10" height="15" rx="2" fill="#12A8ED"/></svg>'
-def ic(p): return f'<span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true">{p}</svg></span>'
-I = dict(
- globe='<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/>',
- home='<path d="M3 11 12 4l9 7v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><path d="M9 21v-6h6v6"/>',
- coins='<circle cx="9" cy="9" r="6"/><path d="M15 9.5a6 6 0 1 1-5.5 8"/><path d="M9 6.5v5M7.5 8h3"/>',
- family='<circle cx="8" cy="8" r="3"/><circle cx="17" cy="9" r="2.4"/><path d="M2 20c0-3.5 2.7-6 6-6s6 2.5 6 6M14.5 15c2.8-.6 7 .8 7 5"/>',
- camera='<path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="14" r="3.5"/>',
- check='<path d="M12 3 4 6v6c0 5 3.4 8 8 9 4.6-1 8-4 8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/>',
- key='<circle cx="8" cy="12" r="4"/><path d="M12 12h9M18 12v4M15 12v3"/>',
- report='<path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 13h7M9 17h7"/>',
- tool='<path d="M14.5 6.5a4 4 0 0 0-5 5L3 18l3 3 6.5-6.5a4 4 0 0 0 5-5l-2.5 2.5-2.5-.5-.5-2.5z"/>',
- umbrella='<path d="M3 12a9 9 0 0 1 18 0z"/><path d="M12 12v6a2 2 0 0 1-4 0"/>')
+LOGO = '<svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#12A8ED"/><path d="M14 31 32 16l18 15v17a2 2 0 0 1-2 2H16a2 2 0 0 1-2-2z" fill="#fff"/><rect x="27" y="35" width="10" height="15" rx="2" fill="#12A8ED"/></svg>'
 FORM_BODY = '''<input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
-  <label class="agree"><input type="checkbox" name="agree" required><span>Я согласен на обработку персональных данных (<a href="consent.html" target="_blank" rel="noopener">согласие</a>, <a href="privacy.html" target="_blank" rel="noopener">политика</a>)</span></label>'''
+  <label class="agree"><input type="checkbox" name="agree" required><span>Согласен на обработку персональных данных (<a href="consent.html" target="_blank" rel="noopener">согласие</a>, <a href="privacy.html" target="_blank" rel="noopener">политика</a>)</span></label>'''
 
 def quiz():
     def opts(name, items, one=False):
         return f'<div class="opts{" opts--1" if one else ""}">' + ''.join(f'<label class="opt"><input type="radio" name="{name}" value="{e(v)}" required>{e(v)}</label>' for v in items) + '</div>'
     return f'''<form class="qcard" id="calc" data-form data-kind="calc" novalidate>
-  <h2>Рассчитайте арендный доход</h2><p class="qsub">3 коротких вопроса, затем посчитаем и расскажем, сколько может приносить ваша квартира.</p>
+  <h2>Сколько принесёт ваша квартира</h2><p class="qsub">Ответьте на три вопроса. Мы посчитаем и свяжемся с вами.</p>
   <div class="qprog" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i></div>
-  <div class="qstep is-on" data-step="1"><p class="qq">Сколько комнат в квартире?</p>{opts("rooms", ["Студия", "1 комната", "2 комнаты", "3 и больше"])}</div>
-  <div class="qstep" data-step="2"><p class="qq">Что сейчас с квартирой?</p>{opts("status", ["Пустует", "Сейчас сдаётся сам", "Только купил, планирую сдавать", "Живу в другом городе или стране"], True)}</div>
-  <div class="qstep" data-step="3"><p class="qq">В каком состоянии квартира?</p>{opts("state", ["Нужен ремонт", "Жилая, обычное состояние", "Свежий ремонт или новая"], True)}</div>
+  <div class="qstep is-on" data-step="1"><p class="qq">Сколько комнат?</p>{opts("rooms", ["Студия", "1 комната", "2 комнаты", "3 и больше"])}</div>
+  <div class="qstep" data-step="2"><p class="qq">Что сейчас с квартирой?</p>{opts("status", ["Пустует", "Сдаю сам", "Только купил, хочу сдавать", "Живу в другом городе или стране"], True)}</div>
+  <div class="qstep" data-step="3"><p class="qq">В каком она состоянии?</p>{opts("state", ["Нужен ремонт", "Жилая, обычное состояние", "Свежий ремонт или новая"], True)}</div>
   <div class="qstep" data-step="4"><p class="qq">Куда отправить расчёт?</p>
     <label class="f">Имя<input name="name" autocomplete="name" placeholder="Как к вам обращаться" required></label>
     <label class="f">Телефон<input name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 (___) ___-__-__" required></label>
     {FORM_BODY}
-    <button class="btn btn--lg" type="submit">Получить расчёт дохода</button><p class="fstatus" role="status" aria-live="polite" hidden></p></div>
+    <button class="btn btn--lg" type="submit">Получить расчёт</button><p class="fstatus" role="status" aria-live="polite" hidden></p></div>
   <button class="qback" type="button" hidden>← Назад</button>
 </form>'''
 
 def consult():
-    return f'''<form class="fcard" id="consult" data-form data-kind="consult" novalidate>
-  <h2>Бесплатная консультация</h2><p class="qsub">Ответим на вопросы и подскажем, подойдёт ли вам сдача квартиры под управление.</p>
+    return f'''<form class="qcard" id="consult" data-form data-kind="consult" novalidate>
+  <h2>Остались вопросы?</h2><p class="qsub">Оставьте телефон. Позвоним и ответим.</p>
   <label class="f">Имя<input name="name" autocomplete="name" placeholder="Как к вам обращаться" required></label>
   <label class="f">Телефон<input name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 (___) ___-__-__" required></label>
-  <label class="f">Вопрос (необязательно)<input name="note" placeholder="Например: живу в другом городе"></label>
+  <label class="f">Вопрос, если есть<input name="note" placeholder="Например: живу в другой стране"></label>
   {FORM_BODY}
-  <button class="btn btn--lg" type="submit">Записаться на консультацию</button><p class="fstatus" role="status" aria-live="polite" hidden></p>
+  <button class="btn btn--lg" type="submit">Перезвоните мне</button><p class="fstatus" role="status" aria-live="polite" hidden></p>
 </form>'''
 
 FAQ = [
- ('Чем вы отличаетесь от риелтора?', 'Риелтор, как правило, помогает найти арендатора и оформить сделку, дальше собственник занимается квартирой сам. «Моя Аренда» берёт на себя сдачу квартиры под ключ и управление арендой: вы не ищете жильцов и не решаете вопросы аренды самостоятельно.'),
- ('Я живу в другом городе или за границей. Это нормально?', 'Да. Собственнику не нужно быть в Новосибирске: консультация проходит по телефону или видеосвязи, а квартирой занимаемся мы.'),
- ('Как узнать, сколько принесёт моя квартира?', 'Ответьте на три вопроса в форме расчёта и оставьте телефон. Мы оценим арендный доход по вашей квартире и расскажем результат на консультации.'),
- ('Сколько стоят ваши услуги?', 'Это процент от арендной платы: 10% за один объект (но не менее 4 000 ₽) и 9% за три и более объекта (но не менее 3 500 ₽). Точную сумму назовём после оценки вашей квартиры.'),
- ('А если жильцы испортят имущество?', 'Все квартиры мы страхуем через АльфаСтрахование на 1 млн ₽: от пожара, залива, ущерба соседям и кражи. Ущерб имуществу компенсируем за 48 часов (до 100 000 ₽), при заливе или пожаре выплата до 600 000 ₽. Условия страхования расскажем на консультации.'),
- ('Что происходит после заявки?', 'Мы связываемся с вами, уточняем детали, считаем арендный доход и проводим консультацию: по телефону, по видеосвязи или лично. Если решите работать с нами, заключаем договор.'),
- ('В каких городах вы работаете?', 'Сейчас принимаем квартиры в Новосибирске.')]
+ ('Чем вы отличаетесь от риелтора?', 'Риелтор обычно находит арендатора и оформляет сделку, после этого собственник остаётся с квартирой сам. Мы ведём квартиру всё время аренды: общаемся с жильцами, следим за платежами, решаем поломки.'),
+ ('Я живу в другом городе или за границей. Это нормально?', 'Да, большинство задач не требуют вашего присутствия. Консультация проходит по телефону или видеосвязи, договор можно подписать удалённо.'),
+ ('Как узнать, сколько принесёт моя квартира?', 'Ответьте на три вопроса в форме выше и оставьте телефон. Мы оценим арендную плату по вашей квартире и расскажем, что можно улучшить.'),
+ ('Сколько стоят ваши услуги?', 'Это процент от арендной платы: 10% за одну квартиру (но не меньше 4 000 ₽) и 9%, если квартир три и больше (но не меньше 3 500 ₽). Точную сумму назовём после оценки.'),
+ ('А если жильцы испортят имущество?', 'Все квартиры мы страхуем через АльфаСтрахование на 1 млн ₽: от пожара, залива, ущерба соседям и кражи. Ущерб имуществу компенсируем за 48 часов, до 100 000 ₽. При заливе или пожаре выплата до 600 000 ₽. Условия расскажем на консультации.'),
+ ('Что будет после заявки?', 'Мы позвоним, уточним детали по квартире и посчитаем арендный доход. Дальше консультация по телефону, видеосвязи или лично. Если решите работать с нами, подпишем договор.'),
+ ('В каких городах работаете?', 'Сейчас принимаем квартиры только в Новосибирске.')]
 
 def page():
     faq = ''.join(f'<details{" open" if i == 0 else ""}><summary>{e(q)}</summary><p>{e(a)}</p></details>' for i, (q, a) in enumerate(FAQ))
-    who = [('beach', 'Живёте в другом городе или стране', 'Квартира в Новосибирске, а вы далеко. Не нужно искать жильцов и ездить на показы.'),
-           ('desk', 'Одна квартира, нет времени и опыта', 'Боитесь ошибиться с арендатором или не хотите разбираться в аренде самостоятельно.'),
-           ('investor', 'Инвестор с 2–3 квартирами', 'Хотите получать пассивный доход, а не заниматься сдачей каждой квартиры лично.'),
-           ('family', 'Семья с семейной ипотекой', 'Купили квартиру, но не готовы сами заниматься её сдачей.')]
-    whoh = ''.join(f'<article class="card card--ph rv"><div class="ph"><img src="img/{k}.webp" alt="" width="720" height="560" loading="lazy"></div><div><h3>{e(t)}</h3><p>{e(d)}</p></div></article>' for k, t, d in who)
-    steps = [('Заявка', 'Отвечаете на три вопроса и оставляете телефон.'), ('Оценка квартиры', 'Считаем, какой арендный доход может приносить ваша квартира.'),
-             ('Консультация', 'Обсуждаем результат по телефону, видеосвязи или на личной встрече.'), ('Договор и старт', 'Если всё устраивает, заключаем договор и начинаем сдавать квартиру.')]
-    steph = ''.join(f'<li class="rv"><h3>{e(t)}</h3><p>{e(d)}</p></li>' for t, d in steps)
-
-    svc = [('camera', 'Оценка, фото и объявления', 'Оцениваем квартиру по рыночной цене, делаем качественные фото и размещаем объявление на всех площадках.'),
-           ('check', 'Проверка жильцов', 'Отбираем надёжных арендаторов и проверяем наличие задолженностей у приставов.'),
-           ('key', 'Показы и договор', 'Проводим показы, заселяем и выселяем жильцов сами. Договор составляют юристы.'),
-           ('report', 'Контроль и отчётность', 'Контролируем платежи, осматриваем квартиру каждые 3 месяца с фотоотчётом, отчитываемся после заселения и выезда.'),
-           ('tool', 'Ремонт и обслуживание', 'Устраняем мелкие поломки, следим за электрикой и сантехникой, готовим квартиру к новому заселению.'),
-           ('umbrella', 'Страхование', 'Страхуем квартиру до 1 млн ₽ от ущерба, который мог причинить арендатор.')]
-    svch = ''.join(f'<article class="card rv">{ic(I[k])}<h3>{e(t)}</h3><p>{e(d)}</p></article>' for k, t, d in svc)
-    revh = ''.join(f'<article class="rev rv"><div class="rev__top"><span class="rev__av">{e(r["name"][0])}</span><div><b>{e(r["name"])}</b><span>{e(r["date"])}</span></div></div><p>{e(r["text"])}</p><a href="{e(r["url"])}" target="_blank" rel="noopener">Читать полностью на 2ГИС →</a></article>' for r in REVIEWS)
-    ins = [('tv', 'Ущерб имуществу', 'Жильцы сломали или повредили мебель, технику или другое имущество.', 'Компенсируем за 48 часов', 'до 100 000 ₽'),
-           ('plumber', 'Потоп и залив', 'Вода залила отделку и мебель, пострадали соседи. Страховка покрывает ремонт, замену имущества и компенсацию соседям.', '', 'до 600 000 ₽'),
-           ('fire', 'Пожар', 'Огонь повредил отделку, технику и конструктив. Страховка покрывает ремонт и восстановление имущества.', '', 'до 600 000 ₽')]
-    insh = ''.join(f'<article class="card ins__c rv"><img class="ins__ph" src="img/{im}.webp" alt="" width="720" height="478" loading="lazy"><h3>{e(t)}</h3><p>{e(d)}</p>' + (f'<p class="ins__fast">{e(f)}</p>' if f else '') + f'<p class="ins__sum"><span>Выплата собственнику</span><b>{e(a)}</b></p></article>' for im, t, d, f, a in ins)
-    ck = lambda t: f'<li><i>✓</i><span>{t}</span></li>'
-    cx = lambda t: f'<li><i>–</i><span>{t}</span></li>'
+    who = [('beach', 'Живёте в другом городе или стране', 'Квартира в Новосибирске, а вы далеко. Ездить на показы и искать жильцов не придётся.'),
+           ('desk', 'Одна квартира и нет времени', 'Не хотите разбираться в аренде или боитесь ошибиться с арендатором.'),
+           ('investor', 'Две-три квартиры', 'Хотите получать доход, а не заниматься каждой квартирой лично.'),
+           ('family', 'Купили квартиру в семейную ипотеку', 'Платите ипотеку и не готовы сами сдавать квартиру.')]
+    whoh = ''.join(f'<figure><img src="img/{k}.webp" alt="" width="720" height="540" loading="lazy"><figcaption><b>{e(t)}</b><span>{e(d)}</span></figcaption></figure>' for k, t, d in who)
+    svc = [('Оценка и объявления', 'Оцениваем квартиру по рыночной цене, делаем фото и размещаем объявление на всех площадках.'),
+           ('Проверка жильцов', 'Отбираем арендаторов и проверяем, нет ли у них долгов у приставов.'),
+           ('Показы и договор', 'Сами показываем квартиру, заселяем и выселяем. Договор составляют юристы.'),
+           ('Платежи и осмотры', 'Следим, чтобы аренду платили каждый месяц. Раз в три месяца осматриваем квартиру и присылаем фотоотчёт.'),
+           ('Связь с жильцами', 'Все бытовые вопросы решаем сами, пока жильцы живут в квартире.'),
+           ('Ремонт и обслуживание', 'Вызываем мастера, если что-то сломалось: сантехника, электрика. После выезда жильцов готовим квартиру к новому заселению.')]
+    svch = ''.join(f'<div><h3>{e(t)}</h3><p>{e(d)}</p></div>' for t, d in svc)
+    ins = [('Ущерб имуществу', 'Жильцы сломали технику или мебель. Компенсируем за 48 часов.', 'до 100 000 ₽'),
+           ('Залив', 'Покрываем ремонт, замену имущества и компенсацию соседям.', 'до 600 000 ₽'),
+           ('Пожар', 'Покрываем ремонт и восстановление имущества.', 'до 600 000 ₽')]
+    insh = ''.join(f'<div class="row"><b>{e(t)}</b><span>{e(d)}</span><em>{e(a)}</em></div>' for t, d, a in ins)
+    steps = [('Заявка', 'Вы отвечаете на три вопроса и оставляете телефон.'),
+             ('Оценка', 'Считаем, сколько может приносить квартира.'),
+             ('Консультация', 'Обсуждаем результат по телефону, видеосвязи или лично.'),
+             ('Договор', 'Если всё устраивает, подписываем договор и начинаем искать жильцов.')]
+    steph = ''.join(f'<li><b>{e(t)}</b><span>{e(d)}</span></li>' for t, d in steps)
+    revh = ''.join(f'<blockquote><p>{e(r["text"])}</p><footer>{e(r["name"])}, {e(r["date"])} · <a href="{e(r["url"])}" target="_blank" rel="noopener">читать на 2ГИС</a></footer></blockquote>' for r in REVIEWS)
     return f'''<!doctype html>
 <html lang="ru"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{BRAND} — сдача квартиры в аренду под ключ в Новосибирске</title>
-<meta name="description" content="Управление арендой квартир в Новосибирске под ключ. Рассчитаем арендный доход вашей квартиры. Подходит, если вы живёте в другом городе или не хотите сдавать сами.">
+<title>{BRAND} — управление арендой квартир в Новосибирске</title>
+<meta name="description" content="Сдаём квартиры в Новосибирске в долгосрочную аренду и ведём их под ключ: жильцы, платежи, ремонт, страховка. Рассчитаем, сколько принесёт ваша квартира.">
 <meta name="robots" content="noindex">
-<meta property="og:title" content="{BRAND} — сдача квартиры в аренду под ключ"><meta property="og:type" content="website">
+<meta property="og:title" content="{BRAND} — управление арендой квартир"><meta property="og:type" content="website">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preload" href="../assets/fonts/ffb0f3eb29.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="../assets/fonts.css"><link rel="stylesheet" href="arenda.css">
 </head><body>
 <header class="top"><div class="wrap top__in">
   <a href="#" class="brand" aria-label="{BRAND}">{LOGO}{BRAND}</a>
-  <nav class="top__nav" aria-label="Разделы"><a href="#what">Что это</a><a href="#services">Услуги</a><a href="#insurance">Страховка</a><a href="#price">Стоимость</a><a href="#reviews">Отзывы</a><a href="#faq">Вопросы</a></nav>
+  <nav class="top__nav" aria-label="Разделы"><a href="#what">Отличия</a><a href="#services">Услуги</a><a href="#insurance">Страховка</a><a href="#price">Стоимость</a><a href="#reviews">Отзывы</a><a href="#faq">Вопросы</a></nav>
   <a class="btn btn--sm" href="#calc" data-goal="click_cta">Рассчитать доход</a>
 </div></header>
 <main>
 <section class="hero"><div class="wrap hero__grid">
   <div>
-    <p class="badge">Новосибирск · долгосрочная аренда</p>
-    <h1>Сдадим вашу квартиру в аренду <span class="hl">под ключ</span></h1>
-    <p class="lead">Поиск и проверка жильцов, контроль оплаты, ремонт и страхование. Вы получаете стабильный доход, а всё остальное делаем мы. Не нужно быть в городе.</p>
-    <ul class="chips"><li>Рассчитаем арендный доход</li><li>Можно жить в другом городе</li><li>Консультация бесплатно</li></ul>
+    <h1>Сдаём квартиры в Новосибирске и управляем арендой</h1>
+    <p class="lead">Находим жильцов, проверяем их, заселяем и дальше ведём квартиру сами: платежи, поломки, осмотры. Вам остаются арендная плата и отчёты. Жить в Новосибирске для этого не нужно.</p>
+    <p class="hero__facts">Работаем с 2023 года · 30+ квартир в управлении · оценка 5.0 на 2ГИС · 95% собственников продлили договор</p>
   </div>
   {quiz()}
 </div></section>
-<div class="stats"><div class="wrap stats__in"><div><b>30+</b><span>квартир в управлении</span></div><div><b>3 года</b><span>на рынке долгосрочной аренды</span></div><div><b>5.0</b><span>оценка на 2ГИС</span></div><div><b>95%</b><span>собственников продлили с нами договор</span></div></div></div>
 
-<section class="sec" id="what"><div class="wrap">
-  <p class="tag">Что это</p><h2>Это не риелтор. Это управление арендой</h2>
-  <p class="sub">Многие думают, что мы просто ищем арендатора за комиссию. На самом деле мы ведём сдачу квартиры под ключ как управляющая компания.</p>
-  <div class="what"><img class="what__img rv" src="img/living.webp" alt="Квартира, в которой комфортно жить" width="900" height="666" loading="lazy">
-  <div class="cmp">
-    <div class="cmp__c rv"><h3>Обычный риелтор</h3><p class="who">Разовая услуга</p><ul>{cx("Как правило, находит арендатора и оформляет сделку")}{cx("Дальше собственник занимается квартирой сам")}{cx("Нужно быть на связи и решать вопросы с жильцами")}</ul></div>
-    <div class="cmp__c cmp__c--us rv"><h3>{BRAND}</h3><p class="who">Управление под ключ</p><ul>{ck("Сдаём квартиру в долгосрочную аренду и ведём её дальше")}{ck("Собственнику не нужно заниматься арендой самому")}{ck("Можно жить в другом городе или стране")}</ul></div>
-  </div></div>
+<section class="sec" id="what"><div class="wrap what">
+  <div>
+    <h2>Чем мы отличаемся от риелтора</h2>
+    <p class="sub">Многие принимают нас за риелторов, но работа устроена иначе. Риелтор ищет арендатора и оформляет сделку. Мы остаёмся с квартирой и ведём её, пока она сдаётся.</p>
+    <table class="cmp"><thead><tr><th></th><th>Риелтор</th><th>{BRAND}</th></tr></thead><tbody>
+      <tr><th>Что делает</th><td>Находит арендатора, оформляет сделку</td><td>Находит жильцов и ведёт квартиру всё время аренды</td></tr>
+      <tr><th>Общение с жильцами</th><td>Собственник</td><td>Мы</td></tr>
+      <tr><th>Поломки и ремонт</th><td>Собственник</td><td>Мы вызываем мастера</td></tr>
+      <tr><th>Приезжать в город</th><td>Часто нужно</td><td>Не нужно</td></tr>
+    </tbody></table>
+    <p class="note">В таблице обычная схема работы риелтора, у отдельных специалистов она может отличаться.</p>
+  </div>
+  <img class="what__img" src="img/living.webp" alt="Женщина с планшетом на диване в светлой комнате" width="900" height="666" loading="lazy">
 </div></section>
 
 <section class="sec sec--sky" id="for"><div class="wrap">
-  <div class="sechead"><div><p class="tag">Кому подходит</p><h2>Для тех, кто хочет доход без хлопот</h2></div><img class="deco rv" src="img/phone.webp" alt="" width="566" height="566" loading="lazy"></div>
-  <div class="grid4">{whoh}</div>
+  <h2>Кому мы нужны</h2>
+  <div class="who">{whoh}</div>
 </div></section>
 
 <section class="sec" id="services"><div class="wrap">
-  <div class="sechead"><div><p class="tag">Услуги</p><h2>Что входит в управление под ключ</h2></div><img class="deco rv" src="img/people.webp" alt="" width="560" height="558" loading="lazy"></div>
-  <div class="grid3">{svch}</div>
+  <h2>Что входит в управление</h2>
+  <div class="svc">{svch}</div>
 </div></section>
 
-<section class="sec sec--sky" id="insurance"><div class="wrap">
-  <p class="tag">Страхование</p><h2>Как мы защищаем вашу квартиру</h2>
-  <p class="sub">Все квартиры страхуем через АльфаСтрахование на 1 млн ₽: от пожара, залива, ущерба соседям и кражи. Если жильцы причинили ущерб, вы не остаётесь с ним один на один.</p>
-  <div class="grid3 ins">{insh}</div>
-  <div class="ins__fix rv"><img class="ins__tool" src="img/screwdriver.webp" alt="" width="538" height="538" loading="lazy"><div><h3>Что-то сломалось во время проживания?</h3><p>Организуем выезд мастера: починим сантехнику, электрику и устраним другие мелкие поломки.</p></div></div>
+<section class="sec sec--sky" id="insurance"><div class="wrap narrow">
+  <h2>Страховка</h2>
+  <p class="sub">Все квартиры мы страхуем через АльфаСтрахование на 1 млн ₽: от пожара, залива, ущерба соседям и кражи. Если жильцы что-то испортили, вы не остаётесь с этим один на один.</p>
+  <div class="ins">{insh}</div>
+  <p class="note">Выплаты указаны в рублях на один страховой случай. Подробные условия расскажем на консультации.</p>
 </div></section>
 
-<section class="sec" id="how"><div class="wrap">
-  <div class="sechead"><div><p class="tag">Как это работает</p><h2>От заявки до договора за четыре шага</h2></div><img class="deco rv" src="img/laptop.webp" alt="" width="560" height="653" loading="lazy"></div>
+<section class="sec" id="how"><div class="wrap narrow">
+  <h2>Как начать</h2>
   <ol class="steps">{steph}</ol>
 </div></section>
 
-<section class="sec sec--sky" id="price"><div class="wrap">
-  <div class="sechead"><div><p class="tag">Стоимость</p><h2>Платите процент от аренды</h2><p class="sub">Без предоплаты за поиск жильцов: стоимость считается от арендной платы.</p></div><img class="deco rv" src="img/coins.webp" alt="" width="566" height="304" loading="lazy"></div>
-  <div class="grid2 price">
-    <article class="card rv"><h3>За 1 объект</h3><p class="price__big"><b>10%</b> от аренды</p><p>Но не менее 4 000 ₽</p></article>
-    <article class="card rv"><h3>За 3 и более объекта</h3><p class="price__big"><b>9%</b> от аренды</p><p>Но не менее 3 500 ₽</p></article>
+<section class="sec sec--sky" id="price"><div class="wrap narrow">
+  <h2>Сколько это стоит</h2>
+  <p class="sub">Платите процент от арендной платы.</p>
+  <div class="ins">
+    <div class="row"><b>Одна квартира</b><span>Но не меньше 4 000 ₽ в месяц</span><em>10%</em></div>
+    <div class="row"><b>Три квартиры и больше</b><span>Но не меньше 3 500 ₽ за каждую</span><em>9%</em></div>
   </div>
-  <p class="sub" style="margin-top:22px">Точную сумму назовём после оценки вашей квартиры. <a href="#calc" data-goal="click_cta">Рассчитать доход</a></p>
+  <p class="note">Точную сумму назовём после оценки вашей квартиры. <a href="#calc" data-goal="click_cta">Посчитать</a></p>
 </div></section>
 
 <section class="sec" id="reviews"><div class="wrap">
-  <p class="tag">Отзывы</p><h2>Что говорят клиенты</h2><p class="sub">Отзывы собственников с 2ГИС. По ссылке можно прочитать каждый целиком.</p>
+  <h2>Отзывы собственников</h2>
+  <p class="sub">Отзывы с 2ГИС. Каждый можно прочитать целиком по ссылке.</p>
   <div class="revs">{revh}</div>
 </div></section>
 
-<section class="sec sec--sky"><div class="wrap">
-  <div class="tg rv"><div><h2>Пишем про аренду в Telegram</h2><p>Полезные материалы для собственников: как сдавать квартиру и на что обращать внимание. Уже 500 подписчиков.</p></div>
-  <a class="btn" href="https://t.me/{TG}" target="_blank" rel="noopener" data-goal="click_telegram">@{TG}</a></div>
+<section class="sec sec--sky" id="faq"><div class="wrap narrow">
+  <h2>Вопросы и ответы</h2><div class="faq">{faq}</div>
 </div></section>
 
-<section class="sec" id="faq"><div class="wrap wrap--narrow">
-  <p class="tag">Вопросы</p><h2>Что обычно спрашивают</h2><div class="faq">{faq}</div>
-</div></section>
-
-<section class="final" id="final"><div class="wrap final__grid">
-  <div><h2>Узнайте, сколько принесёт ваша квартира</h2>
-  <p class="sub">Оставьте телефон, и мы свяжемся с вами, ответим на вопросы и подскажем, как лучше сдавать.</p>
-  <ul><li>Бесплатная консультация</li><li>Можно по телефону или видеосвязи</li><li>Подойдёт, даже если вы живёте в другом городе</li></ul><img class="deco deco--final rv" src="img/coin-girl.webp" alt="" width="560" height="840" loading="lazy"></div>
+<section class="sec final" id="final"><div class="wrap final__grid">
+  <div>
+    <h2>Посчитаем, сколько можно получать с вашей квартиры</h2>
+    <p class="sub">Оставьте заявку, и мы оценим квартиру и расскажем, как всё будет устроено. Если вы живёте не в Новосибирске, это не мешает: консультация проходит по телефону или видеосвязи.</p>
+    <p class="tgline">Пишем про аренду в Telegram: <a href="https://t.me/{TG}" target="_blank" rel="noopener" data-goal="click_telegram">@{TG}</a>, там 500 подписчиков.</p>
+  </div>
   {consult()}
 </div></section>
 </main>
@@ -179,8 +167,7 @@ def page():
 <footer class="foot"><div class="wrap">
   <div class="foot__grid">
     <div><a class="brand" href="#">{LOGO}{BRAND}</a><span>Управление арендой квартир в Новосибирске</span></div>
-    <div><b>Разделы</b><a href="#what">Что это</a><a href="#for">Кому подходит</a><a href="#how">Как работает</a><a href="#faq">Вопросы</a></div>
-    <div><b>Связь</b><a href="https://t.me/{TG}" target="_blank" rel="noopener">Telegram @{TG}</a><span data-legal-row="email"><a href="#" data-legal="email"></a></span></div>
+    <div><a href="https://t.me/{TG}" target="_blank" rel="noopener">Telegram @{TG}</a><span data-legal-row="email"><a href="#" data-legal="email"></a></span></div>
   </div>
   <div class="req"><span data-legal-row="status" data-legal="status"></span> <b data-legal="name"></b> <span data-legal-row="inn">ИНН <span data-legal="inn"></span></span> <span data-legal-row="ogrnip">ОГРНИП <span data-legal="ogrnip"></span></span> <span data-legal-row="address" data-legal="address"></span>
   <p><a href="privacy.html">Политика конфиденциальности</a> · <a href="consent.html">Согласие на обработку персональных данных</a> · <a href="#" data-cookie-settings>Настройки cookie</a></p></div>
@@ -205,7 +192,7 @@ def legal_page(name, title):
 <link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="../assets/fonts.css"><link rel="stylesheet" href="arenda.css">
 </head><body>
 <header class="top"><div class="wrap top__in"><a href="./" class="brand" aria-label="На главную">{LOGO}{BRAND}</a><a class="btn btn--sm btn--ghost" href="./">← На главную</a></div></header>
-<main class="sec"><div class="wrap wrap--narrow legal">{body}</div></main>
+<main class="sec"><div class="wrap narrow legal">{body}</div></main>
 <footer class="foot"><div class="wrap"><div class="req"><span data-legal-row="status" data-legal="status"></span> <b data-legal="name"></b> <span data-legal-row="inn">ИНН <span data-legal="inn"></span></span> <span data-legal-row="ogrnip">ОГРНИП <span data-legal="ogrnip"></span></span> <span data-legal-row="address" data-legal="address"></span>
 <p><a href="privacy.html">Политика конфиденциальности</a> · <a href="consent.html">Согласие на обработку персональных данных</a> · <a href="#" data-cookie-settings>Настройки cookie</a></p></div></div></footer>
 {cookie("")}
