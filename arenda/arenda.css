@@ -96,3 +96,7 @@ label.f input:focus,label.f textarea:focus{border-color:var(--brand);outline:0;b
 .ins__tool{width:64px;height:64px;object-fit:contain;mix-blend-mode:multiply;flex:none}
 @media(max-width:760px){.deco{width:120px}.sechead{align-items:flex-start;gap:14px}.deco--final{width:160px}}
 @media(max-width:480px){.sechead{flex-direction:column-reverse;gap:6px}.deco{width:130px;align-self:flex-start}}
+.card--ph{padding:0;overflow:hidden;display:flex;flex-direction:column}.ph{aspect-ratio:4/3;overflow:hidden;background:var(--sky2)}.ph img{width:100%;height:100%;object-fit:cover}.ph--ill{background:var(--sky)}.ph--ill img{object-fit:contain;mix-blend-mode:multiply;padding:10px}.card--ph>div:not(.ph){padding:22px 24px 26px}
+.ins__ph{width:calc(100% + 52px);height:auto;margin:-26px -26px 18px;aspect-ratio:3/2;object-fit:cover;max-width:none;border-radius:20px 20px 0 0}
+.stats__in{grid-template-columns:repeat(4,1fr)}
+@media(max-width:980px){.stats__in{grid-template-columns:1fr 1fr}}
