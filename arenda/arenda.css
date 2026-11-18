@@ -72,3 +72,17 @@ label.f input:focus,label.f textarea:focus{border-color:var(--brand);outline:0;b
  .qcard,.fcard{padding:22px;border-radius:24px}.top__in{height:62px}.top .btn{padding:10px 14px;font-size:14px}.cookie{flex-direction:column;align-items:stretch;bottom:80px}
  .mbar{display:block;position:fixed;left:0;right:0;bottom:0;z-index:60;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:rgba(255,255,255,.96);border-top:2px solid var(--line);transition:opacity .2s,transform .2s}
  .mbar.is-off{opacity:0;pointer-events:none;transform:translateY(10px)}.mbar .btn{width:100%}}
+.stats{border-bottom:1px solid var(--line)}.stats__in{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;padding-top:26px;padding-bottom:26px}
+.stats b{display:block;font-size:26px;font-weight:800;color:var(--brand-d);letter-spacing:-.02em}.stats span{color:var(--mut);font-size:15px}
+.what{display:grid;grid-template-columns:.9fr 1.1fr;gap:28px;align-items:stretch;margin-top:34px}
+.what__img{width:100%;height:100%;object-fit:cover;border-radius:28px;min-height:320px}
+.what .cmp{grid-template-columns:1fr;margin-top:0}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:34px}
+.price .card{padding:32px}.price__big{font-size:20px;color:var(--ink);margin:10px 0 4px}.price__big b{font-size:52px;font-weight:800;color:var(--brand-d);letter-spacing:-.03em;margin-right:6px}
+.revs{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:34px}
+.rev{background:#fff;border:2px solid var(--line);border-radius:var(--r);padding:24px;display:flex;flex-direction:column;gap:14px}
+.rev__top{display:flex;gap:12px;align-items:center}.rev__top b{display:block}.rev__top span:not(.rev__av){color:var(--mut);font-size:14px}
+.rev__av{width:44px;height:44px;border-radius:50%;background:var(--sky);color:var(--brand-d);display:grid;place-items:center;font-weight:800;font-size:18px;flex:none}
+.rev p{color:#2a4a5e;font-size:16px;flex:1}.rev a{font-weight:700;font-size:15px}
+@media(max-width:980px){.what{grid-template-columns:1fr}.what__img{min-height:240px;max-height:360px}.grid3,.revs{grid-template-columns:1fr 1fr}.stats__in{grid-template-columns:1fr}}
+@media(max-width:640px){.grid3,.revs{grid-template-columns:1fr}}

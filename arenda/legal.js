@@ -6,7 +6,7 @@ window.LEGAL = {
   inn: '030904603805',
   ogrnip: '325030000002176',
   address: 'г. Улан-Удэ',                 // коротко: город (адрес с квартирой на сайте не публикуем)
-  email: '',
+  email: 'ivan.khurs@inbox.ru',
   phone: '',
   telegram: 'MoyArenda_ru',
   policyDate: '18 ноября 2026 г.',
