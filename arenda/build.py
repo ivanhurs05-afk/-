@@ -30,7 +30,7 @@ def quiz():
 
 def consult():
     return f'''<form class="qcard" id="consult" data-form data-kind="consult" novalidate>
-  <h2>Остались вопросы?</h2><p class="qsub">Оставьте телефон. Позвоним и ответим.</p>
+  <h2>Перезвоним и ответим</h2><p class="qsub">Оставьте телефон, мы свяжемся с вами.</p>
   <label class="f">Имя<input name="name" autocomplete="name" placeholder="Как к вам обращаться" required></label>
   <label class="f">Телефон<input name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 (___) ___-__-__" required></label>
   <label class="f">Вопрос, если есть<input name="note" placeholder="Например: живу в другой стране"></label>
@@ -48,34 +48,28 @@ FAQ = [
  ('В каких городах работаете?', 'Сейчас принимаем квартиры только в Новосибирске.')]
 
 def page():
-    faq = ''.join(f'<details{" open" if i == 0 else ""}><summary>{e(q)}</summary><p>{e(a)}</p></details>' for i, (q, a) in enumerate(FAQ))
+    faq = ''.join(f'<details{" open" if i == 0 else ""}><summary><span>{e(q)}</span><i aria-hidden="true"></i></summary><p>{e(a)}</p></details>' for i, (q, a) in enumerate(FAQ))
     who = [('beach', 'Живёте в другом городе или стране', 'Квартира в Новосибирске, а вы далеко. Ездить на показы и искать жильцов не придётся.'),
            ('desk', 'Одна квартира и нет времени', 'Не хотите разбираться в аренде или боитесь ошибиться с арендатором.'),
            ('investor', 'Две-три квартиры', 'Хотите получать доход, а не заниматься каждой квартирой лично.'),
-           ('family', 'Купили квартиру в семейную ипотеку', 'Платите ипотеку и не готовы сами сдавать квартиру.')]
-    whoh = ''.join(f'<figure><img src="img/{k}.webp" alt="" width="720" height="540" loading="lazy"><figcaption><b>{e(t)}</b><span>{e(d)}</span></figcaption></figure>' for k, t, d in who)
-    svc = [('Оценка и объявления', 'Оцениваем квартиру по рыночной цене, делаем фото и размещаем объявление на всех площадках.'),
-           ('Проверка жильцов', 'Отбираем арендаторов и проверяем, нет ли у них долгов у приставов.'),
-           ('Показы и договор', 'Сами показываем квартиру, заселяем и выселяем. Договор составляют юристы.'),
-           ('Платежи и осмотры', 'Следим, чтобы аренду платили каждый месяц. Раз в три месяца осматриваем квартиру и присылаем фотоотчёт.'),
-           ('Связь с жильцами', 'Все бытовые вопросы решаем сами, пока жильцы живут в квартире.'),
-           ('Ремонт и обслуживание', 'Вызываем мастера, если что-то сломалось: сантехника, электрика. После выезда жильцов готовим квартиру к новому заселению.')]
-    svch = ''.join(f'<div><h3>{e(t)}</h3><p>{e(d)}</p></div>' for t, d in svc)
-    ins = [('Ущерб имуществу', 'Жильцы сломали технику или мебель. Компенсируем за 48 часов.', 'до 100 000 ₽'),
-           ('Залив', 'Покрываем ремонт, замену имущества и компенсацию соседям.', 'до 600 000 ₽'),
-           ('Пожар', 'Покрываем ремонт и восстановление имущества.', 'до 600 000 ₽')]
-    insh = ''.join(f'<div class="row"><b>{e(t)}</b><span>{e(d)}</span><em>{e(a)}</em></div>' for t, d, a in ins)
-    steps = [('Заявка', 'Вы отвечаете на три вопроса и оставляете телефон.'),
-             ('Оценка', 'Считаем, сколько может приносить квартира.'),
-             ('Консультация', 'Обсуждаем результат по телефону, видеосвязи или лично.'),
-             ('Договор', 'Если всё устраивает, подписываем договор и начинаем искать жильцов.')]
-    steph = ''.join(f'<li><b>{e(t)}</b><span>{e(d)}</span></li>' for t, d in steps)
-    revh = ''.join(f'<blockquote><p>{e(r["text"])}</p><footer>{e(r["name"])}, {e(r["date"])} · <a href="{e(r["url"])}" target="_blank" rel="noopener">читать на 2ГИС</a></footer></blockquote>' for r in REVIEWS)
-    return f'''<!doctype html>
+           ('family', 'Купили в семейную ипотеку', 'Платите ипотеку и не готовы сами сдавать квартиру.')]
+    whoh = ''.join(f'<article class="tile"><img src="img/{k}.webp" alt="" width="720" height="540" loading="lazy"><div><h3>{e(t)}</h3><p>{e(d)}</p></div></article>' for k, t, d in who)
+    ins = [('до 100 000 ₽', 'Ущерб имуществу', 'Жильцы сломали технику или мебель. Компенсируем за 48 часов.'),
+           ('до 600 000 ₽', 'Залив', 'Покрываем ремонт, замену имущества и компенсацию соседям.'),
+           ('до 600 000 ₽', 'Пожар', 'Покрываем ремонт и восстановление имущества.')]
+    insh = ''.join(f'<article class="card"><b class="big">{e(a)}</b><h3>{e(t)}</h3><p>{e(d)}</p></article>' for a, t, d in ins)
+    cmp_rows = [('Поиск жильцов', 'Находит арендатора', 'Находит и проверяет жильцов'),
+                ('После заселения', 'Собственник остаётся с квартирой сам', 'Ведём квартиру всё время аренды'),
+                ('Общение с жильцами', 'Собственник', 'Мы'),
+                ('Поломки и ремонт', 'Собственник', 'Вызываем мастера'),
+                ('Приезжать в город', 'Часто нужно', 'Не нужно')]
+    cmph = ''.join(f'<div class="cmp__row"><div><small>{e(l)}</small><span class="no">{e(a)}</span></div><div><small>{e(l)}</small><span class="yes">{e(b)}</span></div></div>' for l, a, b in cmp_rows)
+    revh = ''.join(f'<blockquote class="card"><p>{e(r["text"])}</p><footer><b>{e(r["name"])}</b><span>{e(r["date"])}</span><a href="{e(r["url"])}" target="_blank" rel="noopener">Читать на 2ГИС</a></footer></blockquote>' for r in REVIEWS)
+    return f"""<!doctype html>
 <html lang="ru"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{BRAND} — управление арендой квартир в Новосибирске</title>
-<meta name="description" content="Сдаём квартиры в Новосибирске в долгосрочную аренду и ведём их под ключ: жильцы, платежи, ремонт, страховка. Рассчитаем, сколько принесёт ваша квартира.">
+<meta name="description" content="Берём квартиры в Новосибирске в управление: находим и проверяем жильцов, следим за платежами, решаем поломки, страхуем на 1 млн ₽. Рассчитаем, сколько принесёт ваша квартира.">
 <meta name="robots" content="noindex">
 <meta property="og:title" content="{BRAND} — управление арендой квартир"><meta property="og:type" content="website">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -84,83 +78,96 @@ def page():
 </head><body>
 <header class="top"><div class="wrap top__in">
   <a href="#" class="brand" aria-label="{BRAND}">{LOGO}{BRAND}</a>
-  <nav class="top__nav" aria-label="Разделы"><a href="#what">Отличия</a><a href="#services">Услуги</a><a href="#insurance">Страховка</a><a href="#price">Стоимость</a><a href="#reviews">Отзывы</a><a href="#faq">Вопросы</a></nav>
+  <nav class="top__nav" aria-label="Разделы"><a href="#how">Как это работает</a><a href="#insurance">Страховка</a><a href="#compare">Сравнение</a><a href="#price">Стоимость</a><a href="#reviews">Отзывы</a><a href="#faq">Вопросы</a></nav>
   <a class="btn btn--sm" href="#calc" data-goal="click_cta">Рассчитать доход</a>
 </div></header>
 <main>
-<section class="hero"><div class="wrap hero__grid">
-  <div>
-    <h1>Сдаём квартиры в Новосибирске и управляем арендой</h1>
-    <p class="lead">Находим жильцов, проверяем их, заселяем и дальше ведём квартиру сами: платежи, поломки, осмотры. Вам остаются арендная плата и отчёты. Жить в Новосибирске для этого не нужно.</p>
-    <p class="hero__facts">Работаем с 2023 года · 30+ квартир в управлении · оценка 5.0 на 2ГИС · 95% собственников продлили договор</p>
+<section class="hero"><div class="wrap">
+  <h1>Возьмём вашу квартиру <span class="acc">в управление</span></h1>
+  <p class="lead">Найдём жильцов, будем следить за платежами и решать вопросы с квартирой. Вам остаётся получать арендную плату. Работаем в Новосибирске, жить там необязательно.</p>
+  <div class="hero__btns"><a class="btn" href="#calc" data-goal="click_cta">Рассчитать доход</a><a class="btn btn--grey" href="#final" data-goal="click_cta">Получить консультацию</a></div>
+  <img class="hero__img" src="img/banner.webp" alt="Женщина с планшетом на диване в светлой комнате" width="1184" height="455">
+</div></section>
+
+<section class="sec" id="how"><div class="wrap">
+  <h2>Как это работает</h2>
+  <p class="sub">Сдавайте квартиру без лишних забот, а мы займёмся всем остальным на каждом этапе.</p>
+  <ol class="steps">
+    <li><span class="num">1</span><h3>Оценим квартиру</h3><p>Узнаем, какую арендную плату можно получать и как сдать выгоднее.</p><div class="gcard">{quiz()}</div></li>
+    <li><span class="num">2</span><h3>Найдём и проверим жильцов</h3><p>Оценим квартиру по рыночной цене, сделаем фото и разместим объявление на всех площадках. Проверим кандидатов, в том числе наличие долгов у приставов.</p></li>
+    <li><span class="num">3</span><h3>Проведём показы и заселим</h3><p>Показываем квартиру, заселяем и выселяем жильцов сами. Вам не нужно приезжать.</p></li>
+    <li><span class="num">4</span><h3>Составим договор</h3><p>Договор составляют юристы. Если всё устраивает, подписываем и начинаем работу.</p></li>
+  </ol>
+</div></section>
+
+<section class="sec sec--grey" id="after"><div class="wrap">
+  <h2>Мы рядом, пока квартира сдаётся</h2>
+  <div class="bento">
+    <article class="bcard bcard--acc"><h3>Следим за платежами</h3><p>Контролируем, чтобы аренду платили каждый месяц.</p></article>
+    <article class="bcard"><h3>Страхуем квартиру</h3><p>На 1 млн ₽ через АльфаСтрахование. <a href="#insurance">Что покрывает страховка</a></p></article>
+    <article class="bcard"><h3>Общаемся с жильцами сами</h3><p>Все бытовые вопросы решаем мы, а не вы.</p></article>
+    <article class="bcard"><h3>Ремонт и обслуживание</h3><p>Вызываем мастера, если что-то сломалось. Раз в три месяца осматриваем квартиру и присылаем фотоотчёт.</p></article>
   </div>
-  {quiz()}
 </div></section>
 
-<section class="sec" id="what"><div class="wrap what">
-  <div>
-    <h2>Чем мы отличаемся от риелтора</h2>
-    <p class="sub">Многие принимают нас за риелторов, но работа устроена иначе. Риелтор ищет арендатора и оформляет сделку. Мы остаёмся с квартирой и ведём её, пока она сдаётся.</p>
-    <table class="cmp"><thead><tr><th></th><th>Риелтор</th><th>{BRAND}</th></tr></thead><tbody>
-      <tr><th>Что делает</th><td>Находит арендатора, оформляет сделку</td><td>Находит жильцов и ведёт квартиру всё время аренды</td></tr>
-      <tr><th>Общение с жильцами</th><td>Собственник</td><td>Мы</td></tr>
-      <tr><th>Поломки и ремонт</th><td>Собственник</td><td>Мы вызываем мастера</td></tr>
-      <tr><th>Приезжать в город</th><td>Часто нужно</td><td>Не нужно</td></tr>
-    </tbody></table>
-    <p class="note">В таблице обычная схема работы риелтора, у отдельных специалистов она может отличаться.</p>
-  </div>
-  <img class="what__img" src="img/living.webp" alt="Женщина с планшетом на диване в светлой комнате" width="900" height="666" loading="lazy">
-</div></section>
-
-<section class="sec sec--sky" id="for"><div class="wrap">
-  <h2>Кому мы нужны</h2>
-  <div class="who">{whoh}</div>
-</div></section>
-
-<section class="sec" id="services"><div class="wrap">
-  <h2>Что входит в управление</h2>
-  <div class="svc">{svch}</div>
-</div></section>
-
-<section class="sec sec--sky" id="insurance"><div class="wrap narrow">
-  <h2>Страховка</h2>
+<section class="sec" id="insurance"><div class="wrap">
+  <h2>Что покрывает страховка</h2>
   <p class="sub">Все квартиры мы страхуем через АльфаСтрахование на 1 млн ₽: от пожара, залива, ущерба соседям и кражи. Если жильцы что-то испортили, вы не остаётесь с этим один на один.</p>
-  <div class="ins">{insh}</div>
-  <p class="note">Выплаты указаны в рублях на один страховой случай. Подробные условия расскажем на консультации.</p>
+  <div class="cards3">{insh}</div>
+  <p class="note">Суммы указаны на один страховой случай. Подробные условия расскажем на консультации.</p>
 </div></section>
 
-<section class="sec" id="how"><div class="wrap narrow">
-  <h2>Как начать</h2>
-  <ol class="steps">{steph}</ol>
-</div></section>
-
-<section class="sec sec--sky" id="price"><div class="wrap narrow">
-  <h2>Сколько это стоит</h2>
-  <p class="sub">Платите процент от арендной платы.</p>
-  <div class="ins">
-    <div class="row"><b>Одна квартира</b><span>Но не меньше 4 000 ₽ в месяц</span><em>10%</em></div>
-    <div class="row"><b>Три квартиры и больше</b><span>Но не меньше 3 500 ₽ за каждую</span><em>9%</em></div>
+<section class="sec sec--grey" id="exp"><div class="wrap">
+  <h2>Наш опыт</h2>
+  <div class="bento bento--4">
+    <article class="bcard bcard--acc"><b class="big">30+</b><p>квартир в управлении</p></article>
+    <article class="bcard"><b class="big">3 года</b><p>на рынке долгосрочной аренды</p></article>
+    <article class="bcard"><b class="big">5.0</b><p>оценка на 2ГИС</p></article>
+    <article class="bcard"><b class="big">95%</b><p>собственников продлили с нами договор</p></article>
   </div>
-  <p class="note">Точную сумму назовём после оценки вашей квартиры. <a href="#calc" data-goal="click_cta">Посчитать</a></p>
 </div></section>
 
-<section class="sec" id="reviews"><div class="wrap">
-  <h2>Отзывы собственников</h2>
-  <p class="sub">Отзывы с 2ГИС. Каждый можно прочитать целиком по ссылке.</p>
+<section class="sec" id="compare"><div class="wrap">
+  <h2>Давайте сравним?</h2>
+  <div class="cmp">
+    <div class="cmp__head"><div class="cmp__h cmp__h--grey"><h3>Риелтор</h3><p>Обычная схема работы</p></div><div class="cmp__h cmp__h--acc"><h3>{BRAND}</h3><p>Ведём квартиру под ключ</p></div></div>
+    {cmph}
+  </div>
+  <p class="note center">В таблице обычная схема работы риелтора. У отдельных специалистов она может отличаться.</p>
+</div></section>
+
+<section class="sec sec--grey" id="for"><div class="wrap">
+  <h2>Кому мы нужны</h2>
+  <div class="tiles">{whoh}</div>
+</div></section>
+
+<section class="sec" id="price"><div class="wrap">
+  <h2>Сколько это стоит</h2>
+  <p class="sub">Платите процент от арендной платы. Точную сумму назовём после оценки вашей квартиры.</p>
+  <div class="cards2">
+    <article class="card"><b class="big">10%</b><h3>Одна квартира</h3><p>От арендной платы, но не меньше 4 000 ₽ в месяц.</p></article>
+    <article class="card"><b class="big">9%</b><h3>Три квартиры и больше</h3><p>От арендной платы, но не меньше 3 500 ₽ за каждую.</p></article>
+  </div>
+</div></section>
+
+<section class="sec sec--grey" id="reviews"><div class="wrap">
+  <h2>Что говорят собственники</h2>
+  <p class="sub">Отзывы с 2ГИС. По ссылке можно прочитать каждый целиком.</p>
   <div class="revs">{revh}</div>
 </div></section>
 
-<section class="sec sec--sky" id="faq"><div class="wrap narrow">
-  <h2>Вопросы и ответы</h2><div class="faq">{faq}</div>
-</div></section>
-
-<section class="sec final" id="final"><div class="wrap final__grid">
-  <div>
-    <h2>Посчитаем, сколько можно получать с вашей квартиры</h2>
-    <p class="sub">Оставьте заявку, и мы оценим квартиру и расскажем, как всё будет устроено. Если вы живёте не в Новосибирске, это не мешает: консультация проходит по телефону или видеосвязи.</p>
+<section class="sec" id="final"><div class="wrap">
+  <div class="cta">
+    <h2>Узнайте, сколько принесёт ваша квартира</h2>
+    <p class="sub">Оставьте телефон, и мы позвоним, ответим на вопросы и подскажем, как лучше сдавать. Если вы живёте не в Новосибирске, консультация проходит по телефону или видеосвязи.</p>
+    <div class="cta__form">{consult()}</div>
     <p class="tgline">Пишем про аренду в Telegram: <a href="https://t.me/{TG}" target="_blank" rel="noopener" data-goal="click_telegram">@{TG}</a>, там 500 подписчиков.</p>
   </div>
-  {consult()}
+</div></section>
+
+<section class="sec sec--tight" id="faq"><div class="wrap narrow">
+  <h2>Остались вопросы?</h2>
+  <div class="faq">{faq}</div>
 </div></section>
 </main>
 
@@ -176,7 +183,7 @@ def page():
 <div class="mbar" id="mbar"><a class="btn" href="#calc" data-goal="click_cta">Рассчитать доход</a></div>
 <script>window.METRIKA_ID_OVERRIDE = {METRIKA_ID};</script>
 <script src="legal.js"></script><script src="../common.js"></script><script src="arenda.js"></script>
-</body></html>'''
+</body></html>"""
 
 def cookie(pre):
     return f'''<div class="cookie" id="cookie" role="dialog" aria-label="Файлы cookie" hidden>

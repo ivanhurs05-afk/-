@@ -2,7 +2,7 @@
 <html lang="ru"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Моя Аренда — управление арендой квартир в Новосибирске</title>
-<meta name="description" content="Сдаём квартиры в Новосибирске в долгосрочную аренду и ведём их под ключ: жильцы, платежи, ремонт, страховка. Рассчитаем, сколько принесёт ваша квартира.">
+<meta name="description" content="Берём квартиры в Новосибирске в управление: находим и проверяем жильцов, следим за платежами, решаем поломки, страхуем на 1 млн ₽. Рассчитаем, сколько принесёт ваша квартира.">
 <meta name="robots" content="noindex">
 <meta property="og:title" content="Моя Аренда — управление арендой квартир"><meta property="og:type" content="website">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -11,17 +11,22 @@
 </head><body>
 <header class="top"><div class="wrap top__in">
   <a href="#" class="brand" aria-label="Моя Аренда"><svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#12A8ED"/><path d="M14 31 32 16l18 15v17a2 2 0 0 1-2 2H16a2 2 0 0 1-2-2z" fill="#fff"/><rect x="27" y="35" width="10" height="15" rx="2" fill="#12A8ED"/></svg>Моя Аренда</a>
-  <nav class="top__nav" aria-label="Разделы"><a href="#what">Отличия</a><a href="#services">Услуги</a><a href="#insurance">Страховка</a><a href="#price">Стоимость</a><a href="#reviews">Отзывы</a><a href="#faq">Вопросы</a></nav>
+  <nav class="top__nav" aria-label="Разделы"><a href="#how">Как это работает</a><a href="#insurance">Страховка</a><a href="#compare">Сравнение</a><a href="#price">Стоимость</a><a href="#reviews">Отзывы</a><a href="#faq">Вопросы</a></nav>
   <a class="btn btn--sm" href="#calc" data-goal="click_cta">Рассчитать доход</a>
 </div></header>
 <main>
-<section class="hero"><div class="wrap hero__grid">
-  <div>
-    <h1>Сдаём квартиры в Новосибирске и управляем арендой</h1>
-    <p class="lead">Находим жильцов, проверяем их, заселяем и дальше ведём квартиру сами: платежи, поломки, осмотры. Вам остаются арендная плата и отчёты. Жить в Новосибирске для этого не нужно.</p>
-    <p class="hero__facts">Работаем с 2023 года · 30+ квартир в управлении · оценка 5.0 на 2ГИС · 95% собственников продлили договор</p>
-  </div>
-  <form class="qcard" id="calc" data-form data-kind="calc" novalidate>
+<section class="hero"><div class="wrap">
+  <h1>Возьмём вашу квартиру <span class="acc">в управление</span></h1>
+  <p class="lead">Найдём жильцов, будем следить за платежами и решать вопросы с квартирой. Вам остаётся получать арендную плату. Работаем в Новосибирске, жить там необязательно.</p>
+  <div class="hero__btns"><a class="btn" href="#calc" data-goal="click_cta">Рассчитать доход</a><a class="btn btn--grey" href="#final" data-goal="click_cta">Получить консультацию</a></div>
+  <img class="hero__img" src="img/banner.webp" alt="Женщина с планшетом на диване в светлой комнате" width="1184" height="455">
+</div></section>
+
+<section class="sec" id="how"><div class="wrap">
+  <h2>Как это работает</h2>
+  <p class="sub">Сдавайте квартиру без лишних забот, а мы займёмся всем остальным на каждом этапе.</p>
+  <ol class="steps">
+    <li><span class="num">1</span><h3>Оценим квартиру</h3><p>Узнаем, какую арендную плату можно получать и как сдать выгоднее.</p><div class="gcard"><form class="qcard" id="calc" data-form data-kind="calc" novalidate>
   <h2>Сколько принесёт ваша квартира</h2><p class="qsub">Ответьте на три вопроса. Мы посчитаем и свяжемся с вами.</p>
   <div class="qprog" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i></div>
   <div class="qstep is-on" data-step="1"><p class="qq">Сколько комнат?</p><div class="opts"><label class="opt"><input type="radio" name="rooms" value="Студия" required>Студия</label><label class="opt"><input type="radio" name="rooms" value="1 комната" required>1 комната</label><label class="opt"><input type="radio" name="rooms" value="2 комнаты" required>2 комнаты</label><label class="opt"><input type="radio" name="rooms" value="3 и больше" required>3 и больше</label></div></div>
@@ -34,81 +39,89 @@
   <label class="agree"><input type="checkbox" name="agree" required><span>Согласен на обработку персональных данных (<a href="consent.html" target="_blank" rel="noopener">согласие</a>, <a href="privacy.html" target="_blank" rel="noopener">политика</a>)</span></label>
     <button class="btn btn--lg" type="submit">Получить расчёт</button><p class="fstatus" role="status" aria-live="polite" hidden></p></div>
   <button class="qback" type="button" hidden>← Назад</button>
-</form>
+</form></div></li>
+    <li><span class="num">2</span><h3>Найдём и проверим жильцов</h3><p>Оценим квартиру по рыночной цене, сделаем фото и разместим объявление на всех площадках. Проверим кандидатов, в том числе наличие долгов у приставов.</p></li>
+    <li><span class="num">3</span><h3>Проведём показы и заселим</h3><p>Показываем квартиру, заселяем и выселяем жильцов сами. Вам не нужно приезжать.</p></li>
+    <li><span class="num">4</span><h3>Составим договор</h3><p>Договор составляют юристы. Если всё устраивает, подписываем и начинаем работу.</p></li>
+  </ol>
 </div></section>
 
-<section class="sec" id="what"><div class="wrap what">
-  <div>
-    <h2>Чем мы отличаемся от риелтора</h2>
-    <p class="sub">Многие принимают нас за риелторов, но работа устроена иначе. Риелтор ищет арендатора и оформляет сделку. Мы остаёмся с квартирой и ведём её, пока она сдаётся.</p>
-    <table class="cmp"><thead><tr><th></th><th>Риелтор</th><th>Моя Аренда</th></tr></thead><tbody>
-      <tr><th>Что делает</th><td>Находит арендатора, оформляет сделку</td><td>Находит жильцов и ведёт квартиру всё время аренды</td></tr>
-      <tr><th>Общение с жильцами</th><td>Собственник</td><td>Мы</td></tr>
-      <tr><th>Поломки и ремонт</th><td>Собственник</td><td>Мы вызываем мастера</td></tr>
-      <tr><th>Приезжать в город</th><td>Часто нужно</td><td>Не нужно</td></tr>
-    </tbody></table>
-    <p class="note">В таблице обычная схема работы риелтора, у отдельных специалистов она может отличаться.</p>
+<section class="sec sec--grey" id="after"><div class="wrap">
+  <h2>Мы рядом, пока квартира сдаётся</h2>
+  <div class="bento">
+    <article class="bcard bcard--acc"><h3>Следим за платежами</h3><p>Контролируем, чтобы аренду платили каждый месяц.</p></article>
+    <article class="bcard"><h3>Страхуем квартиру</h3><p>На 1 млн ₽ через АльфаСтрахование. <a href="#insurance">Что покрывает страховка</a></p></article>
+    <article class="bcard"><h3>Общаемся с жильцами сами</h3><p>Все бытовые вопросы решаем мы, а не вы.</p></article>
+    <article class="bcard"><h3>Ремонт и обслуживание</h3><p>Вызываем мастера, если что-то сломалось. Раз в три месяца осматриваем квартиру и присылаем фотоотчёт.</p></article>
   </div>
-  <img class="what__img" src="img/living.webp" alt="Женщина с планшетом на диване в светлой комнате" width="900" height="666" loading="lazy">
 </div></section>
 
-<section class="sec sec--sky" id="for"><div class="wrap">
-  <h2>Кому мы нужны</h2>
-  <div class="who"><figure><img src="img/beach.webp" alt="" width="720" height="540" loading="lazy"><figcaption><b>Живёте в другом городе или стране</b><span>Квартира в Новосибирске, а вы далеко. Ездить на показы и искать жильцов не придётся.</span></figcaption></figure><figure><img src="img/desk.webp" alt="" width="720" height="540" loading="lazy"><figcaption><b>Одна квартира и нет времени</b><span>Не хотите разбираться в аренде или боитесь ошибиться с арендатором.</span></figcaption></figure><figure><img src="img/investor.webp" alt="" width="720" height="540" loading="lazy"><figcaption><b>Две-три квартиры</b><span>Хотите получать доход, а не заниматься каждой квартирой лично.</span></figcaption></figure><figure><img src="img/family.webp" alt="" width="720" height="540" loading="lazy"><figcaption><b>Купили квартиру в семейную ипотеку</b><span>Платите ипотеку и не готовы сами сдавать квартиру.</span></figcaption></figure></div>
-</div></section>
-
-<section class="sec" id="services"><div class="wrap">
-  <h2>Что входит в управление</h2>
-  <div class="svc"><div><h3>Оценка и объявления</h3><p>Оцениваем квартиру по рыночной цене, делаем фото и размещаем объявление на всех площадках.</p></div><div><h3>Проверка жильцов</h3><p>Отбираем арендаторов и проверяем, нет ли у них долгов у приставов.</p></div><div><h3>Показы и договор</h3><p>Сами показываем квартиру, заселяем и выселяем. Договор составляют юристы.</p></div><div><h3>Платежи и осмотры</h3><p>Следим, чтобы аренду платили каждый месяц. Раз в три месяца осматриваем квартиру и присылаем фотоотчёт.</p></div><div><h3>Связь с жильцами</h3><p>Все бытовые вопросы решаем сами, пока жильцы живут в квартире.</p></div><div><h3>Ремонт и обслуживание</h3><p>Вызываем мастера, если что-то сломалось: сантехника, электрика. После выезда жильцов готовим квартиру к новому заселению.</p></div></div>
-</div></section>
-
-<section class="sec sec--sky" id="insurance"><div class="wrap narrow">
-  <h2>Страховка</h2>
+<section class="sec" id="insurance"><div class="wrap">
+  <h2>Что покрывает страховка</h2>
   <p class="sub">Все квартиры мы страхуем через АльфаСтрахование на 1 млн ₽: от пожара, залива, ущерба соседям и кражи. Если жильцы что-то испортили, вы не остаётесь с этим один на один.</p>
-  <div class="ins"><div class="row"><b>Ущерб имуществу</b><span>Жильцы сломали технику или мебель. Компенсируем за 48 часов.</span><em>до 100 000 ₽</em></div><div class="row"><b>Залив</b><span>Покрываем ремонт, замену имущества и компенсацию соседям.</span><em>до 600 000 ₽</em></div><div class="row"><b>Пожар</b><span>Покрываем ремонт и восстановление имущества.</span><em>до 600 000 ₽</em></div></div>
-  <p class="note">Выплаты указаны в рублях на один страховой случай. Подробные условия расскажем на консультации.</p>
+  <div class="cards3"><article class="card"><b class="big">до 100 000 ₽</b><h3>Ущерб имуществу</h3><p>Жильцы сломали технику или мебель. Компенсируем за 48 часов.</p></article><article class="card"><b class="big">до 600 000 ₽</b><h3>Залив</h3><p>Покрываем ремонт, замену имущества и компенсацию соседям.</p></article><article class="card"><b class="big">до 600 000 ₽</b><h3>Пожар</h3><p>Покрываем ремонт и восстановление имущества.</p></article></div>
+  <p class="note">Суммы указаны на один страховой случай. Подробные условия расскажем на консультации.</p>
 </div></section>
 
-<section class="sec" id="how"><div class="wrap narrow">
-  <h2>Как начать</h2>
-  <ol class="steps"><li><b>Заявка</b><span>Вы отвечаете на три вопроса и оставляете телефон.</span></li><li><b>Оценка</b><span>Считаем, сколько может приносить квартира.</span></li><li><b>Консультация</b><span>Обсуждаем результат по телефону, видеосвязи или лично.</span></li><li><b>Договор</b><span>Если всё устраивает, подписываем договор и начинаем искать жильцов.</span></li></ol>
+<section class="sec sec--grey" id="exp"><div class="wrap">
+  <h2>Наш опыт</h2>
+  <div class="bento bento--4">
+    <article class="bcard bcard--acc"><b class="big">30+</b><p>квартир в управлении</p></article>
+    <article class="bcard"><b class="big">3 года</b><p>на рынке долгосрочной аренды</p></article>
+    <article class="bcard"><b class="big">5.0</b><p>оценка на 2ГИС</p></article>
+    <article class="bcard"><b class="big">95%</b><p>собственников продлили с нами договор</p></article>
+  </div>
 </div></section>
 
-<section class="sec sec--sky" id="price"><div class="wrap narrow">
+<section class="sec" id="compare"><div class="wrap">
+  <h2>Давайте сравним?</h2>
+  <div class="cmp">
+    <div class="cmp__head"><div class="cmp__h cmp__h--grey"><h3>Риелтор</h3><p>Обычная схема работы</p></div><div class="cmp__h cmp__h--acc"><h3>Моя Аренда</h3><p>Ведём квартиру под ключ</p></div></div>
+    <div class="cmp__row"><div><small>Поиск жильцов</small><span class="no">Находит арендатора</span></div><div><small>Поиск жильцов</small><span class="yes">Находит и проверяет жильцов</span></div></div><div class="cmp__row"><div><small>После заселения</small><span class="no">Собственник остаётся с квартирой сам</span></div><div><small>После заселения</small><span class="yes">Ведём квартиру всё время аренды</span></div></div><div class="cmp__row"><div><small>Общение с жильцами</small><span class="no">Собственник</span></div><div><small>Общение с жильцами</small><span class="yes">Мы</span></div></div><div class="cmp__row"><div><small>Поломки и ремонт</small><span class="no">Собственник</span></div><div><small>Поломки и ремонт</small><span class="yes">Вызываем мастера</span></div></div><div class="cmp__row"><div><small>Приезжать в город</small><span class="no">Часто нужно</span></div><div><small>Приезжать в город</small><span class="yes">Не нужно</span></div></div>
+  </div>
+  <p class="note center">В таблице обычная схема работы риелтора. У отдельных специалистов она может отличаться.</p>
+</div></section>
+
+<section class="sec sec--grey" id="for"><div class="wrap">
+  <h2>Кому мы нужны</h2>
+  <div class="tiles"><article class="tile"><img src="img/beach.webp" alt="" width="720" height="540" loading="lazy"><div><h3>Живёте в другом городе или стране</h3><p>Квартира в Новосибирске, а вы далеко. Ездить на показы и искать жильцов не придётся.</p></div></article><article class="tile"><img src="img/desk.webp" alt="" width="720" height="540" loading="lazy"><div><h3>Одна квартира и нет времени</h3><p>Не хотите разбираться в аренде или боитесь ошибиться с арендатором.</p></div></article><article class="tile"><img src="img/investor.webp" alt="" width="720" height="540" loading="lazy"><div><h3>Две-три квартиры</h3><p>Хотите получать доход, а не заниматься каждой квартирой лично.</p></div></article><article class="tile"><img src="img/family.webp" alt="" width="720" height="540" loading="lazy"><div><h3>Купили в семейную ипотеку</h3><p>Платите ипотеку и не готовы сами сдавать квартиру.</p></div></article></div>
+</div></section>
+
+<section class="sec" id="price"><div class="wrap">
   <h2>Сколько это стоит</h2>
-  <p class="sub">Платите процент от арендной платы.</p>
-  <div class="ins">
-    <div class="row"><b>Одна квартира</b><span>Но не меньше 4 000 ₽ в месяц</span><em>10%</em></div>
-    <div class="row"><b>Три квартиры и больше</b><span>Но не меньше 3 500 ₽ за каждую</span><em>9%</em></div>
+  <p class="sub">Платите процент от арендной платы. Точную сумму назовём после оценки вашей квартиры.</p>
+  <div class="cards2">
+    <article class="card"><b class="big">10%</b><h3>Одна квартира</h3><p>От арендной платы, но не меньше 4 000 ₽ в месяц.</p></article>
+    <article class="card"><b class="big">9%</b><h3>Три квартиры и больше</h3><p>От арендной платы, но не меньше 3 500 ₽ за каждую.</p></article>
   </div>
-  <p class="note">Точную сумму назовём после оценки вашей квартиры. <a href="#calc" data-goal="click_cta">Посчитать</a></p>
 </div></section>
 
-<section class="sec" id="reviews"><div class="wrap">
-  <h2>Отзывы собственников</h2>
-  <p class="sub">Отзывы с 2ГИС. Каждый можно прочитать целиком по ссылке.</p>
-  <div class="revs"><blockquote><p>Отзыв от мамы. Хорошие ребята, соблюдают все договоренности. Приехали, сфоткали, через 3 дня уже нашли жильцов айтишников. Ключи им отдали удаленно через Яндекс доставку, очень удобно. Точно рекомендую, кто решит сдать квартиру.</p><footer>Алиса Дудчено, 13.09.2025 · <a href="https://2gis.ru/reviews/70000001102882233/review/186254796" target="_blank" rel="noopener">читать на 2ГИС</a></footer></blockquote><blockquote><p>Обратился в компанию, чтобы сдать квартиру на длительный срок. Сдали очень быстро, все прошло так, как обещали, без моего личного участия, я только передал ключи и подписал договор. Агент приехали, отсняли квартиру, обсудили со мной....</p><footer>Sergey Gaitan, 04.03.2024 · <a href="https://2gis.ru/reviews/70000001102882233/review/183782604" target="_blank" rel="noopener">читать на 2ГИС</a></footer></blockquote><blockquote><p>Первый раз сдавала квартиру через сервис, и могу сказать , что это самый удобный способ для меня . Моя квартира находится на евроберегу , мне крайне неудобно ездить ездить каждый раз ее показывать жильцам. Обратилась...</p><footer>Фарах Аль-Бейрак, 30.06.2025 · <a href="https://2gis.ru/reviews/70000001102882233/review/175416010" target="_blank" rel="noopener">читать на 2ГИС</a></footer></blockquote><blockquote><p>Сказали написать честный отзыв. Уже полгода сдаю квартиру через этих ребят. Жилец тот же самый, проблем не создает, но ребята всегда на подхвате что надо сразу решают: ключи заменять, кран подтянуть. Меня не дергают, сами делают...</p><footer>Никита Калашников, 17.09.2025 · <a href="https://2gis.ru/reviews/70000001102882233/review/187095593" target="_blank" rel="noopener">читать на 2ГИС</a></footer></blockquote><blockquote><p>Оперативно помогли сдать квартиру в аренду, спасибо!</p><footer>Екатерина Неделкова, 31.10.2025 · <a href="https://2gis.ru/reviews/70000001102882233/review/196839290" target="_blank" rel="noopener">читать на 2ГИС</a></footer></blockquote></div>
+<section class="sec sec--grey" id="reviews"><div class="wrap">
+  <h2>Что говорят собственники</h2>
+  <p class="sub">Отзывы с 2ГИС. По ссылке можно прочитать каждый целиком.</p>
+  <div class="revs"><blockquote class="card"><p>Отзыв от мамы. Хорошие ребята, соблюдают все договоренности. Приехали, сфоткали, через 3 дня уже нашли жильцов айтишников. Ключи им отдали удаленно через Яндекс доставку, очень удобно. Точно рекомендую, кто решит сдать квартиру.</p><footer><b>Алиса Дудчено</b><span>13.09.2025</span><a href="https://2gis.ru/reviews/70000001102882233/review/186254796" target="_blank" rel="noopener">Читать на 2ГИС</a></footer></blockquote><blockquote class="card"><p>Обратился в компанию, чтобы сдать квартиру на длительный срок. Сдали очень быстро, все прошло так, как обещали, без моего личного участия, я только передал ключи и подписал договор. Агент приехали, отсняли квартиру, обсудили со мной....</p><footer><b>Sergey Gaitan</b><span>04.03.2024</span><a href="https://2gis.ru/reviews/70000001102882233/review/183782604" target="_blank" rel="noopener">Читать на 2ГИС</a></footer></blockquote><blockquote class="card"><p>Первый раз сдавала квартиру через сервис, и могу сказать , что это самый удобный способ для меня . Моя квартира находится на евроберегу , мне крайне неудобно ездить ездить каждый раз ее показывать жильцам. Обратилась...</p><footer><b>Фарах Аль-Бейрак</b><span>30.06.2025</span><a href="https://2gis.ru/reviews/70000001102882233/review/175416010" target="_blank" rel="noopener">Читать на 2ГИС</a></footer></blockquote><blockquote class="card"><p>Сказали написать честный отзыв. Уже полгода сдаю квартиру через этих ребят. Жилец тот же самый, проблем не создает, но ребята всегда на подхвате что надо сразу решают: ключи заменять, кран подтянуть. Меня не дергают, сами делают...</p><footer><b>Никита Калашников</b><span>17.09.2025</span><a href="https://2gis.ru/reviews/70000001102882233/review/187095593" target="_blank" rel="noopener">Читать на 2ГИС</a></footer></blockquote><blockquote class="card"><p>Оперативно помогли сдать квартиру в аренду, спасибо!</p><footer><b>Екатерина Неделкова</b><span>31.10.2025</span><a href="https://2gis.ru/reviews/70000001102882233/review/196839290" target="_blank" rel="noopener">Читать на 2ГИС</a></footer></blockquote></div>
 </div></section>
 
-<section class="sec sec--sky" id="faq"><div class="wrap narrow">
-  <h2>Вопросы и ответы</h2><div class="faq"><details open><summary>Чем вы отличаетесь от риелтора?</summary><p>Риелтор обычно находит арендатора и оформляет сделку, после этого собственник остаётся с квартирой сам. Мы ведём квартиру всё время аренды: общаемся с жильцами, следим за платежами, решаем поломки.</p></details><details><summary>Я живу в другом городе или за границей. Это нормально?</summary><p>Да, большинство задач не требуют вашего присутствия. Консультация проходит по телефону или видеосвязи, договор можно подписать удалённо.</p></details><details><summary>Как узнать, сколько принесёт моя квартира?</summary><p>Ответьте на три вопроса в форме выше и оставьте телефон. Мы оценим арендную плату по вашей квартире и расскажем, что можно улучшить.</p></details><details><summary>Сколько стоят ваши услуги?</summary><p>Это процент от арендной платы: 10% за одну квартиру (но не меньше 4 000 ₽) и 9%, если квартир три и больше (но не меньше 3 500 ₽). Точную сумму назовём после оценки.</p></details><details><summary>А если жильцы испортят имущество?</summary><p>Все квартиры мы страхуем через АльфаСтрахование на 1 млн ₽: от пожара, залива, ущерба соседям и кражи. Ущерб имуществу компенсируем за 48 часов, до 100 000 ₽. При заливе или пожаре выплата до 600 000 ₽. Условия расскажем на консультации.</p></details><details><summary>Что будет после заявки?</summary><p>Мы позвоним, уточним детали по квартире и посчитаем арендный доход. Дальше консультация по телефону, видеосвязи или лично. Если решите работать с нами, подпишем договор.</p></details><details><summary>В каких городах работаете?</summary><p>Сейчас принимаем квартиры только в Новосибирске.</p></details></div>
-</div></section>
-
-<section class="sec final" id="final"><div class="wrap final__grid">
-  <div>
-    <h2>Посчитаем, сколько можно получать с вашей квартиры</h2>
-    <p class="sub">Оставьте заявку, и мы оценим квартиру и расскажем, как всё будет устроено. Если вы живёте не в Новосибирске, это не мешает: консультация проходит по телефону или видеосвязи.</p>
-    <p class="tgline">Пишем про аренду в Telegram: <a href="https://t.me/MoyArenda_ru" target="_blank" rel="noopener" data-goal="click_telegram">@MoyArenda_ru</a>, там 500 подписчиков.</p>
-  </div>
-  <form class="qcard" id="consult" data-form data-kind="consult" novalidate>
-  <h2>Остались вопросы?</h2><p class="qsub">Оставьте телефон. Позвоним и ответим.</p>
+<section class="sec" id="final"><div class="wrap">
+  <div class="cta">
+    <h2>Узнайте, сколько принесёт ваша квартира</h2>
+    <p class="sub">Оставьте телефон, и мы позвоним, ответим на вопросы и подскажем, как лучше сдавать. Если вы живёте не в Новосибирске, консультация проходит по телефону или видеосвязи.</p>
+    <div class="cta__form"><form class="qcard" id="consult" data-form data-kind="consult" novalidate>
+  <h2>Перезвоним и ответим</h2><p class="qsub">Оставьте телефон, мы свяжемся с вами.</p>
   <label class="f">Имя<input name="name" autocomplete="name" placeholder="Как к вам обращаться" required></label>
   <label class="f">Телефон<input name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 (___) ___-__-__" required></label>
   <label class="f">Вопрос, если есть<input name="note" placeholder="Например: живу в другой стране"></label>
   <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
   <label class="agree"><input type="checkbox" name="agree" required><span>Согласен на обработку персональных данных (<a href="consent.html" target="_blank" rel="noopener">согласие</a>, <a href="privacy.html" target="_blank" rel="noopener">политика</a>)</span></label>
   <button class="btn btn--lg" type="submit">Перезвоните мне</button><p class="fstatus" role="status" aria-live="polite" hidden></p>
-</form>
+</form></div>
+    <p class="tgline">Пишем про аренду в Telegram: <a href="https://t.me/MoyArenda_ru" target="_blank" rel="noopener" data-goal="click_telegram">@MoyArenda_ru</a>, там 500 подписчиков.</p>
+  </div>
+</div></section>
+
+<section class="sec sec--tight" id="faq"><div class="wrap narrow">
+  <h2>Остались вопросы?</h2>
+  <div class="faq"><details open><summary><span>Чем вы отличаетесь от риелтора?</span><i aria-hidden="true"></i></summary><p>Риелтор обычно находит арендатора и оформляет сделку, после этого собственник остаётся с квартирой сам. Мы ведём квартиру всё время аренды: общаемся с жильцами, следим за платежами, решаем поломки.</p></details><details><summary><span>Я живу в другом городе или за границей. Это нормально?</span><i aria-hidden="true"></i></summary><p>Да, большинство задач не требуют вашего присутствия. Консультация проходит по телефону или видеосвязи, договор можно подписать удалённо.</p></details><details><summary><span>Как узнать, сколько принесёт моя квартира?</span><i aria-hidden="true"></i></summary><p>Ответьте на три вопроса в форме выше и оставьте телефон. Мы оценим арендную плату по вашей квартире и расскажем, что можно улучшить.</p></details><details><summary><span>Сколько стоят ваши услуги?</span><i aria-hidden="true"></i></summary><p>Это процент от арендной платы: 10% за одну квартиру (но не меньше 4 000 ₽) и 9%, если квартир три и больше (но не меньше 3 500 ₽). Точную сумму назовём после оценки.</p></details><details><summary><span>А если жильцы испортят имущество?</span><i aria-hidden="true"></i></summary><p>Все квартиры мы страхуем через АльфаСтрахование на 1 млн ₽: от пожара, залива, ущерба соседям и кражи. Ущерб имуществу компенсируем за 48 часов, до 100 000 ₽. При заливе или пожаре выплата до 600 000 ₽. Условия расскажем на консультации.</p></details><details><summary><span>Что будет после заявки?</span><i aria-hidden="true"></i></summary><p>Мы позвоним, уточним детали по квартире и посчитаем арендный доход. Дальше консультация по телефону, видеосвязи или лично. Если решите работать с нами, подпишем договор.</p></details><details><summary><span>В каких городах работаете?</span><i aria-hidden="true"></i></summary><p>Сейчас принимаем квартиры только в Новосибирске.</p></details></div>
 </div></section>
 </main>
 
