@@ -24,7 +24,7 @@ def quiz():
     def opts(name, items, one=False):
         return f'<div class="opts{" opts--1" if one else ""}">' + ''.join(f'<label class="opt"><input type="radio" name="{name}" value="{e(v)}" required>{e(v)}</label>' for v in items) + '</div>'
     return f'''<form class="qcard" id="calc" data-form data-kind="calc" novalidate>
-  <h2>Сколько принесёт ваша квартира</h2><p class="qsub">Ответьте на три вопроса. Мы посчитаем и свяжемся с вами.</p>
+  <h2>Три вопроса о квартире</h2><p class="qsub">Потом мы посчитаем и свяжемся с вами.</p>
   <div class="qprog" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i></div>
   <div class="qstep is-on" data-step="1"><p class="qq">Сколько комнат?</p>{opts("rooms", ["Студия", "1 комната", "2 комнаты", "3 и больше"])}</div>
   <div class="qstep" data-step="2"><p class="qq">Что сейчас с квартирой?</p>{opts("status", ["Пустует", "Сдаю сам", "Только купил, хочу сдавать", "Живу в другом городе или стране"], True)}</div>
@@ -91,20 +91,42 @@ def page():
   <a class="btn btn--sm" href="#calc" data-goal="click_cta">Рассчитать доход</a>
 </div></header>
 <main>
-<section class="hero"><div class="wrap">
-  <h1>Возьмём вашу квартиру <span class="acc">в управление</span></h1>
-  <p class="lead">Найдём жильцов, будем следить за платежами и решать вопросы с квартирой. Вам остаётся получать арендную плату. Работаем в Новосибирске, жить там необязательно.</p>
-  <div class="hero__btns"><a class="btn" href="#calc" data-goal="click_cta">Рассчитать доход</a><a class="btn btn--grey" href="#final" data-goal="click_cta">Получить консультацию</a></div>
-  <img class="hero__img" src="img/banner.webp" alt="Женщина с планшетом на диване в светлой комнате" width="1184" height="455">
+<section class="hero"><div class="wrap hero__grid">
+  <div class="hero__txt">
+    <p class="eyebrow">Управление арендой в Новосибирске</p>
+    <h1>Возьмём вашу квартиру <span class="acc">в управление</span></h1>
+    <p class="lead">Найдём жильцов, будем следить за платежами и решать вопросы с квартирой. Вам остаётся получать арендную плату. Жить в Новосибирске для этого необязательно.</p>
+    <div class="hero__btns"><a class="btn" href="#calc" data-goal="click_cta">Рассчитать доход</a><a class="btn btn--grey" href="#final" data-goal="click_cta">Получить консультацию</a></div>
+    <dl class="hero__facts">
+      <div><dt>30+</dt><dd>квартир в управлении</dd></div>
+      <div><dt>5.0</dt><dd>оценка на 2ГИС</dd></div>
+      <div><dt>от 9%</dt><dd>от аренды за услугу</dd></div>
+    </dl>
+  </div>
+  <div class="hero__vis">
+    <img src="img/hero-v.webp" alt="Женщина с планшетом на диване в светлой комнате" width="700" height="876">
+    <div class="float float--a"><i class="ok" aria-hidden="true"></i><div><b>Платёж получен</b><span>аренда за месяц</span></div></div>
+    <div class="float float--b"><i class="shield" aria-hidden="true"></i><div><b>Страховка до 1 млн ₽</b><span>пожар, залив, ущерб</span></div></div>
+    <div class="float float--c"><i class="doc" aria-hidden="true"></i><div><b>Фотоотчёт</b><span>после каждого осмотра</span></div></div>
+  </div>
+</div></section>
+
+<section class="sec sec--grey" id="estimate"><div class="wrap calc">
+  <div class="calc__txt">
+    <h2>Сколько принесёт ваша квартира</h2>
+    <p class="sub">Ответьте на три вопроса. Мы оценим арендную плату, подскажем, что можно улучшить, и расскажем, как всё будет устроено.</p>
+    <ul class="ticks"><li>Рассчитываем по вашей квартире, а не по средней цифре</li><li>Консультация бесплатная, по телефону, видеосвязи или лично</li><li>Заявка ни к чему не обязывает, пока вы не подписали договор</li></ul>
+  </div>
+  <div class="calc__form">{quiz()}</div>
 </div></section>
 
 <section class="sec" id="how"><div class="wrap">
   <h2>Как это работает</h2>
   <p class="sub">Сдавайте квартиру без лишних забот, а мы займёмся всем остальным на каждом этапе.</p>
   <ol class="steps">
-    <li><span class="num">1</span><h3>Оценим квартиру</h3><p>Узнаем, какую арендную плату можно получать и как сдать выгоднее.</p><div class="gcard">{quiz()}</div></li>
-    <li><span class="num">2</span><h3>Найдём и проверим жильцов</h3><p>Оценим квартиру по рыночной цене, сделаем фото и разместим объявление на всех площадках. Проверим кандидатов, в том числе наличие долгов у приставов.</p></li>
-    <li><span class="num">3</span><h3>Проведём показы и заселим</h3><p>Показываем квартиру, заселяем и выселяем жильцов сами. Вам не нужно приезжать.</p></li>
+    <li><span class="num">1</span><h3>Оценим квартиру</h3><p>Считаем, какую арендную плату можно получать и как сдать выгоднее.</p></li>
+    <li><span class="num">2</span><h3>Найдём и проверим жильцов</h3><p>Сделаем фото и разместим объявление на всех площадках. Проверим кандидатов, в том числе долги у приставов.</p></li>
+    <li><span class="num">3</span><h3>Проведём показы и заселим</h3><p>Показываем квартиру, заселяем и выселяем жильцов сами. Приезжать вам не нужно.</p></li>
     <li><span class="num">4</span><h3>Составим договор</h3><p>Договор составляют юристы. Если всё устраивает, подписываем и начинаем работу.</p></li>
   </ol>
 </div></section>

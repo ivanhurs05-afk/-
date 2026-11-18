@@ -16,14 +16,6 @@ a:focus-visible,.btn:focus-visible,input:focus-visible,summary:focus-visible,.op
 .top__in{display:flex;align-items:center;justify-content:space-between;gap:20px;height:64px}
 .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:20px;color:var(--ink);text-decoration:none}.brand svg{width:32px;height:32px}
 .top__nav{display:flex;gap:22px}.top__nav a{color:var(--mut);text-decoration:none;font-size:15px;font-weight:600}.top__nav a:hover{color:var(--ink)}
-.hero{padding:64px 0 40px;text-align:center}.hero h1{max-width:900px;margin:0 auto}
-.lead{margin:22px auto 28px;font-size:19px;color:var(--mut);max-width:640px}
-.hero__btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-.hero__img{width:100%;height:auto;aspect-ratio:2.6/1;object-fit:cover;border-radius:var(--r);margin-top:48px}
-.steps{list-style:none;padding:0;max-width:640px;margin:44px auto 0;display:grid;gap:44px;text-align:center}
-.num{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:var(--acc);color:var(--on-acc);font-weight:800;margin:0 auto 14px}
-.steps h3{font-size:22px;margin-bottom:8px}.steps p{color:var(--mut)}
-.gcard{margin-top:22px;background:var(--grey);border-radius:var(--r);padding:26px;text-align:left}
 .qcard h2{font-family:Manrope,sans-serif;font-size:22px;text-align:left;margin-bottom:6px;font-weight:700}.qsub{color:var(--mut);font-size:15px;margin-bottom:16px}
 .qprog{display:flex;gap:5px;margin:12px 0 18px}.qprog i{flex:1;height:5px;border-radius:5px;background:#d6e1e8}.qprog i.on{background:var(--acc)}
 .qstep{display:none}.qstep.is-on{display:block}.qq{font-weight:700;font-size:18px;margin-bottom:12px}
@@ -72,3 +64,37 @@ blockquote footer{display:flex;flex-direction:column;gap:2px;font-size:14px;colo
  .mbar.is-off{opacity:0;pointer-events:none}.mbar .btn{width:100%}}
 
 .cards3 .big{font-size:clamp(22px,2.4vw,30px);white-space:nowrap}
+
+/* главный экран: текст слева, фото с карточками справа */
+.hero{padding:56px 0 72px}.hero__grid{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
+.eyebrow{color:var(--acc-d);font-weight:700;font-size:15px;margin-bottom:14px}
+.hero h1{text-align:left;font-size:clamp(30px,4.2vw,52px)}
+.lead{margin:20px 0 28px;font-size:19px;color:var(--mut);max-width:520px}
+.hero__btns{display:flex;gap:12px;flex-wrap:wrap}
+.hero__facts{display:grid;grid-template-columns:repeat(3,auto);gap:12px 36px;margin-top:40px;padding-top:28px;border-top:1px solid var(--line);justify-content:start}
+.hero__facts dt{font-family:Unbounded,Manrope,sans-serif;font-weight:700;font-size:clamp(22px,2.4vw,30px);line-height:1.1}.hero__facts dd{margin:4px 0 0;color:var(--mut);font-size:14px;max-width:130px}
+.hero__vis{position:relative}.hero__vis>img{width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;border-radius:var(--r);background:var(--grey)}
+.float{position:absolute;display:flex;align-items:center;gap:12px;background:#fff;border-radius:18px;padding:12px 16px 12px 12px;box-shadow:0 10px 30px rgba(15,31,43,.14)}
+.float b{display:block;font-size:15px;line-height:1.2}.float span{display:block;color:var(--mut);font-size:13px}
+.float i{flex:none;width:40px;height:40px;border-radius:12px;background:var(--sky);position:relative}
+.float i::before{content:"";position:absolute;inset:0;margin:auto;width:20px;height:20px;background:var(--acc-d);-webkit-mask:var(--m) center/contain no-repeat;mask:var(--m) center/contain no-repeat}
+.float i.ok{--m:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7'/%3E%3C/svg%3E")}
+.float i.shield{--m:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linejoin='round'%3E%3Cpath d='M12 3 4.5 6v6c0 4.6 3.1 7.7 7.5 9 4.4-1.3 7.5-4.4 7.5-9V6z'/%3E%3C/svg%3E")}
+.float i.doc{--m:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linejoin='round' stroke-linecap='round'%3E%3Cpath d='M6 3h8l4 4v14H6z'/%3E%3Cpath d='M9 13h6M9 17h6'/%3E%3C/svg%3E")}
+.float--a{top:7%;left:-34px}.float--b{bottom:22%;right:-28px}.float--c{bottom:6%;left:-22px}
+/* блок расчёта: текст слева, опросник справа */
+.calc{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}.calc h2{text-align:left}.calc .sub{margin:0;text-align:left}
+.ticks{list-style:none;padding:0;margin-top:24px;display:grid;gap:12px}.ticks li{position:relative;padding-left:30px;color:#2a3d4b}
+.ticks li::before{content:"";position:absolute;left:0;top:4px;width:20px;height:20px;border-radius:50%;background:var(--acc)}
+.ticks li::after{content:"";position:absolute;left:7px;top:8px;width:5px;height:9px;border:solid var(--on-acc);border-width:0 2.5px 2.5px 0;transform:rotate(45deg)}
+.calc .qcard{background:#fff;border-radius:var(--r);padding:30px}
+/* шаги в четыре колонки */
+.steps{list-style:none;padding:0;margin:40px 0 0;display:grid;grid-template-columns:repeat(4,1fr);gap:16px;text-align:left}
+.steps li{background:var(--grey);border-radius:var(--r);padding:28px 26px}
+.num{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:var(--acc);color:var(--on-acc);font-weight:800;margin:0 0 18px}
+.steps h3{font-size:19px;margin-bottom:8px}.steps p{color:var(--mut);font-size:16px}
+@media(max-width:980px){.hero__grid,.calc{grid-template-columns:1fr;gap:36px}.hero__vis{max-width:520px}.float--a{left:-10px}.float--b{right:-10px}.float--c{left:-6px}.steps{grid-template-columns:1fr 1fr}}
+@media(max-width:640px){.hero{padding:32px 0 48px}.hero__facts{grid-template-columns:repeat(3,1fr);gap:10px 14px}.hero__facts dd{font-size:13px}.float{padding:9px 12px 9px 9px;border-radius:14px}.float b{font-size:13px}.float span{font-size:12px}.float i{width:34px;height:34px}.float--a{left:8px;top:5%}.float--b{right:8px;bottom:24%}.float--c{left:8px;bottom:5%}.steps{grid-template-columns:1fr}.calc .qcard{padding:22px}}
+
+.calc .opt,.calc label.f input{background:var(--grey)}.calc .opt:has(input:checked){background:var(--sky)}
+@media(max-width:640px){.hero__btns .btn{flex:1 1 100%}}
