@@ -6,6 +6,15 @@ METRIKA_ID = 0          # номер счётчика Метрики; 0 = счё
 BRAND = 'Моя Аренда'
 TG = 'MoyArenda_ru'
 e = html.escape
+import hashlib, re
+def _ver():
+    h = hashlib.md5()
+    for f in ('arenda.css', 'arenda.js', 'legal.js', '../common.js'):
+        h.update(open(os.path.join(ROOT, f), 'rb').read())
+    return h.hexdigest()[:8]
+def bust(t):
+    v = _ver()
+    return re.sub(r'((?:arenda\.css|arenda\.js|legal\.js|common\.js))"', lambda m: m.group(1) + '?v=' + v + '"', t)
 REVIEWS = [r for r in json.load(open(os.path.join(ROOT, 'reviews.json'), encoding='utf-8')) if r['name'] != 'Аня Лудан']  # отзыв арендатора не берём: сайт для собственников
 LOGO = '<svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#12A8ED"/><path d="M14 31 32 16l18 15v17a2 2 0 0 1-2 2H16a2 2 0 0 1-2-2z" fill="#fff"/><rect x="27" y="35" width="10" height="15" rx="2" fill="#12A8ED"/></svg>'
 FORM_BODY = '''<input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
@@ -208,8 +217,8 @@ def legal_page(name, title):
 </body></html>'''
 
 if __name__ == '__main__':
-    open(os.path.join(ROOT, 'index.html'), 'w', encoding='utf-8').write(page())
+    open(os.path.join(ROOT, 'index.html'), 'w', encoding='utf-8').write(bust(page()))
     for n, t in (('privacy', 'Политика обработки персональных данных'), ('consent', 'Согласие на обработку персональных данных')):
-        open(os.path.join(ROOT, n + '.html'), 'w', encoding='utf-8').write(legal_page(n, t))
+        open(os.path.join(ROOT, n + '.html'), 'w', encoding='utf-8').write(bust(legal_page(n, t)))
     print('ok')
     if not METRIKA_ID: print('ВНИМАНИЕ: METRIKA_ID не задан: счётчик не подключён')

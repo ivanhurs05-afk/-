@@ -258,12 +258,22 @@ def legal_page(name, title):
 <script src="legal.js"></script><script src="../common.js"></script>
 </body></html>'''
 
+import hashlib, re as _re
+def _ver():
+    h = hashlib.md5()
+    for f in ('school.css', 'school.js', 'legal.js', os.path.join('..', 'common.js')):
+        h.update(open(os.path.join(ROOT, f), 'rb').read())
+    return h.hexdigest()[:8]
+def bust(t):
+    v = _ver()
+    return _re.sub(r'((?:school\.css|school\.js|legal\.js|common\.js))"', lambda m: m.group(1) + '?v=' + v + '"', t)
+
 if __name__ == '__main__':
     for n, t in (('privacy', 'Политика обработки персональных данных'), ('consent', 'Согласие на обработку персональных данных')):
-        open(os.path.join(OUT, n + '.html'), 'w', encoding='utf-8').write(legal_page(n, t))
+        open(os.path.join(OUT, n + '.html'), 'w', encoding='utf-8').write(bust(legal_page(n, t)))
     for p in PAGES:
         d = os.path.join(OUT, p['path']); os.makedirs(d, exist_ok=True)
-        open(os.path.join(d, 'index.html'), 'w', encoding='utf-8').write(render(p))
+        open(os.path.join(d, 'index.html'), 'w', encoding='utf-8').write(bust(render(p)))
     open(os.path.join(OUT, 'index.html'), 'w', encoding='utf-8').write(catalog())
     print('pages:', len(PAGES))
     for k in ('license',):
