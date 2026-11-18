@@ -91,3 +91,8 @@ label.f input:focus,label.f textarea:focus{border-color:var(--brand);outline:0;b
 .ins__sum{margin-top:auto!important;padding-top:18px}.ins__sum span{display:block;color:var(--mut);font-size:14px;font-weight:700}.ins__sum b{display:block;font-size:30px;color:var(--brand-d);letter-spacing:-.02em}
 .ins__fix{display:flex;gap:18px;align-items:center;margin-top:18px;background:#fff;border:2px solid var(--line);border-radius:var(--r);padding:22px 26px}.ins__fix .ico{margin:0;flex:none}.ins__fix p{color:var(--mut);margin-top:4px}
 @media(max-width:640px){.ins__fix{flex-direction:column;align-items:flex-start}}
+.sechead{display:flex;justify-content:space-between;align-items:center;gap:30px}.sechead>div{flex:1;min-width:0}
+.deco{flex:none;width:min(260px,28vw);height:auto;mix-blend-mode:multiply}.deco--final{display:block;width:220px;margin-top:24px}
+.ins__tool{width:64px;height:64px;object-fit:contain;mix-blend-mode:multiply;flex:none}
+@media(max-width:760px){.deco{width:120px}.sechead{align-items:flex-start;gap:14px}.deco--final{width:160px}}
+@media(max-width:480px){.sechead{flex-direction:column-reverse;gap:6px}.deco{width:130px;align-self:flex-start}}

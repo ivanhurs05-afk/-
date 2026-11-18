@@ -124,12 +124,12 @@ def page():
 </div></section>
 
 <section class="sec sec--sky" id="for"><div class="wrap">
-  <p class="tag">Кому подходит</p><h2>Для тех, кто хочет доход без хлопот</h2>
+  <div class="sechead"><div><p class="tag">Кому подходит</p><h2>Для тех, кто хочет доход без хлопот</h2></div><img class="deco rv" src="img/phone.webp" alt="" width="566" height="566" loading="lazy"></div>
   <div class="grid4">{whoh}</div>
 </div></section>
 
 <section class="sec" id="services"><div class="wrap">
-  <p class="tag">Услуги</p><h2>Что входит в управление под ключ</h2>
+  <div class="sechead"><div><p class="tag">Услуги</p><h2>Что входит в управление под ключ</h2></div><img class="deco rv" src="img/people.webp" alt="" width="560" height="558" loading="lazy"></div>
   <div class="grid3">{svch}</div>
 </div></section>
 
@@ -137,16 +137,16 @@ def page():
   <p class="tag">Страхование</p><h2>Как мы защищаем вашу квартиру</h2>
   <p class="sub">Страхуем квартиру до 1 млн ₽. Если жильцы причинили ущерб, вы не остаётесь с ним один на один.</p>
   <div class="grid3 ins">{insh}</div>
-  <div class="ins__fix rv">{ic(I["tool"])}<div><h3>Что-то сломалось во время проживания?</h3><p>Организуем выезд мастера: починим сантехнику, электрику и устраним другие мелкие поломки.</p></div></div>
+  <div class="ins__fix rv"><img class="ins__tool" src="img/screwdriver.webp" alt="" width="538" height="538" loading="lazy"><div><h3>Что-то сломалось во время проживания?</h3><p>Организуем выезд мастера: починим сантехнику, электрику и устраним другие мелкие поломки.</p></div></div>
 </div></section>
 
 <section class="sec" id="how"><div class="wrap">
-  <p class="tag">Как это работает</p><h2>От заявки до договора за четыре шага</h2>
+  <div class="sechead"><div><p class="tag">Как это работает</p><h2>От заявки до договора за четыре шага</h2></div><img class="deco rv" src="img/laptop.webp" alt="" width="560" height="653" loading="lazy"></div>
   <ol class="steps">{steph}</ol>
 </div></section>
 
 <section class="sec sec--sky" id="price"><div class="wrap">
-  <p class="tag">Стоимость</p><h2>Платите процент от аренды</h2><p class="sub">Без предоплаты за поиск жильцов: стоимость считается от арендной платы.</p>
+  <div class="sechead"><div><p class="tag">Стоимость</p><h2>Платите процент от аренды</h2><p class="sub">Без предоплаты за поиск жильцов: стоимость считается от арендной платы.</p></div><img class="deco rv" src="img/coins.webp" alt="" width="566" height="304" loading="lazy"></div>
   <div class="grid2 price">
     <article class="card rv"><h3>За 1 объект</h3><p class="price__big"><b>10%</b> от аренды</p><p>Но не менее 4 000 ₽</p></article>
     <article class="card rv"><h3>За 3 и более объекта</h3><p class="price__big"><b>9%</b> от аренды</p><p>Но не менее 3 500 ₽</p></article>
@@ -171,7 +171,7 @@ def page():
 <section class="final" id="final"><div class="wrap final__grid">
   <div><h2>Узнайте, сколько принесёт ваша квартира</h2>
   <p class="sub">Оставьте телефон, и мы свяжемся с вами, ответим на вопросы и подскажем, как лучше сдавать.</p>
-  <ul><li>Бесплатная консультация</li><li>Можно по телефону или видеосвязи</li><li>Подойдёт, даже если вы живёте в другом городе</li></ul></div>
+  <ul><li>Бесплатная консультация</li><li>Можно по телефону или видеосвязи</li><li>Подойдёт, даже если вы живёте в другом городе</li></ul><img class="deco deco--final rv" src="img/coin-girl.webp" alt="" width="560" height="840" loading="lazy"></div>
   {consult()}
 </div></section>
 </main>
